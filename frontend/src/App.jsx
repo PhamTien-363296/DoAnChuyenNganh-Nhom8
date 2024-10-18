@@ -4,7 +4,7 @@ function App() {
   return (
     <>
       <p className="read-the-docs">
-        Chào năm mới các bạn
+        Chào năm mới các bạn lần 2
       </p>
     </>
   )
