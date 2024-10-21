@@ -6,9 +6,9 @@ import Dangnhap from './components/auth/dangnhap'
 import Navadmin from './components/common/Navadmin'
 import Navmain from './components/common/Navmain'
 import Sidebar from './components/common/Sidebar'
-import Trangchu from './components/pages/Trangchu';
-import Tintuc from './components/pages/Tintuc';
-import Tinnhan from './components/pages/Tinnhan';
+import Trangchu from './components/pages/sidebar/Trangchu';
+import Tintuc from './components/pages/sidebar/Tintuc';
+import Tinnhan from './components/pages/sidebar/Tinnhan';
 
 function App() {
   return (

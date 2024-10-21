@@ -1,6 +1,5 @@
-
 export default function Tintuc() {
     return (
-        <div>Tintuc</div>
+        <div>Tintuc 2</div>
     )
 }
