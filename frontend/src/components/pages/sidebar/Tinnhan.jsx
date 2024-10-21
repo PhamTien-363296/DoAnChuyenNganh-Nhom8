@@ -1,5 +1,5 @@
 export default function Tinnhan() {
     return (
-        <div>Tinnhan</div>
+        <div>Tinnhan 2 nè</div>
     )
 }
