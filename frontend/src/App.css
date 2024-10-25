@@ -1,5 +1,33 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.main {
+  flex: 1;
+  display: flex; 
+  flex-direction: column; 
+}
+
+.content {
+  flex: 1;
+  background-color: #FFF3E2;
+  margin: 0 0 0 142px;
+}
+
+@media (max-width: 768px) {
+  .Sidebar {
+      width: 100%; 
+  }
+}
+

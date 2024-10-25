@@ -1,42 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
-  const [hienThiThongBao, setHienThiThongBao] = useState("");
+//Import css
+import '../../assets/css/Sidebar.css'
 
-  const xulyThongBao = () => {
-    setHienThiThongBao("Hienthi");
-  }
+// Import icon
+import { 
+  HiOutlineHome, 
+  HiOutlineUserGroup, 
+  HiOutlineChatBubbleOvalLeftEllipsis,
+  HiOutlineBell
+} from "react-icons/hi2";
+
+import { HiOutlineLogout } from "react-icons/hi";
+
+export default function Sidebar() {
+    const [hienThiThongBao, setHienThiThongBao] = useState(false);
+
+    const xulyThongBao = () => {
+        setHienThiThongBao(prev => !prev);
+    };
+
+    const handleClickOutside = (event) => {
+        // Kiểm tra xem nhấp chuột có nằm ngoài thông báo hay không
+        if (!event.target.closest('.thongbao_button') && 
+            !event.target.closest('#Thongbao')) {
+            setHienThiThongBao(false); 
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+
+        // Dọn dẹp sự kiện khi component unmount
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
+      <nav className="Sidebar">
+        <ul className="SidebarList">
+          <li className="SidebarRow">
+            <Link to="/"><HiOutlineHome /></Link>
           </li>
-          <li>
-            <Link to="/tintuc">Tin Tức</Link>
+          <li className="SidebarRow">
+            <Link to="/tintuc"><HiOutlineUserGroup /></Link>
           </li>
-          <li>
-            <Link to="/" onClick={() => xulyThongBao()}>Thông Báo</Link>
+          <li className="SidebarRow">
+            <div className="thongbao_button" onClick={xulyThongBao}>
+              <HiOutlineBell />
+            </div>
           </li>
-          <li>
-            <Link to="/tinnhan">Tin Nhắn</Link>
+          <li className="SidebarRow">
+            <Link to="/tinnhan"><HiOutlineChatBubbleOvalLeftEllipsis /></Link>
+          </li>
+          <li className="SidebarRow LogoutRow">
+            <Link to="/"><HiOutlineLogout /></Link>
           </li>
         </ul>
       </nav>
 
       <div>
-        {hienThiThongBao === "Hienthi" && (
-          <div id="Thongbao"  style={{ backgroundColor: 'lightyellow'}}>
+        {hienThiThongBao && (
+          <div 
+            id="Thongbao">
             <h2>Thông báo</h2>
             <p>Đây là thông báo</p>
           </div>
         )}
       </div>
     </>
-  )
-}
-
-export default Sidebar
+  );
+};
