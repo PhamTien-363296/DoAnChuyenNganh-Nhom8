@@ -3,6 +3,7 @@ import { HiOutlineChevronLeft , HiOutlineChevronRight } from "react-icons/hi";
 
 import Sidebar from '../../components/common/Sidebar'
 import Searchmain from '../../components/common/Searchmain';
+import '../../App.css'
 
 export default function Trangchu() {
     return (
@@ -71,7 +72,7 @@ export default function Trangchu() {
                                     </div>
 
                                     <div className="trending-card-hinhanh">
-                                        <img src="https://placehold.co/160x250" alt="Book cover of Tôi Thấy Hoa Vàng Trên Cỏ Xanh" className="rounded-lg shadow-lg"/>
+                                        <img src="https://placehold.co/160x220" alt="Book cover of Tôi Thấy Hoa Vàng Trên Cỏ Xanh" className="rounded-lg shadow-lg"/>
                                     </div>
                                 </div>
                                 <div className="trending-card">
@@ -115,7 +116,7 @@ export default function Trangchu() {
                                     </div>
 
                                     <div className="trending-card-hinhanh">
-                                        <img src="https://placehold.co/160x250"/>
+                                        <img src="https://placehold.co/160x220"/>
                                     </div>
                                 </div>
                             </div>

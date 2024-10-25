@@ -1,6 +1,6 @@
 .Sidebar {
-    height: 100vh;  
-    width: 140px;
+    height: 100vh;
+    width: 60px;
     background-color: #FFF3E2;
     border-right: 1px solid #D7B98E;
     position: fixed;              
@@ -11,8 +11,8 @@
 
 .SidebarList {
     height: auto;
-    padding: 130px 0 0 0;
-    width: 88px;
+    padding: 80px 0 0 0;
+    width: 50px;
     margin: 0 auto auto auto;
     background-color: #FFF3E2;
     display: flex; 
@@ -22,8 +22,8 @@
 }
 
 .SidebarList .SidebarRow {
-    width: 55px;
-    height: 55px;
+    width: 40px;
+    height: 40px;
     margin-bottom: 31px;
     list-style-type: none;
     display: flex;
@@ -34,7 +34,7 @@
 }
 
 .SidebarList .LogoutRow {
-    margin-top: 250px;
+    margin-top: 120px;
 }
 
 .SidebarList .SidebarRow:hover {
@@ -44,8 +44,8 @@
 
 .SidebarList .SidebarRow svg {
     color: #49372F; 
-    width: 40px;
-    height: 40px; 
+    width: 25px;
+    height: 25px; 
 }
 
 .SidebarList .SidebarRow:hover svg {
@@ -54,16 +54,15 @@
 
 #Thongbao {
     height: 93vh;
-    width: 400px;
+    width: 300px;
     position: fixed;
     background-color: #FFF3E2; 
     padding: 10px;
-    top: 20px;
-    bottom: 20px;
+    top: 10px;
     border-radius: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
     border: 1px solid #D7B98E;
-    margin-left: 162px;
+    margin-left: 70px;
     z-index: 1000;
 }
 
@@ -71,16 +70,16 @@
     background-color: #FFF3E2;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
     border: 2px solid #DBC8AD;
-    margin: 50px 30px 20px 30px;
+    margin: 15px;  
     border-radius: 15px;
-    padding: 0 35px 35px 35px;
+    padding: 0 25px 25px 25px;
     color: #49372F;
 }
 
 .theloai-tieude{
     display: flex;
     justify-content: space-between;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .theloai-tieude a{
@@ -94,75 +93,73 @@
 .theloai-noidung {
     display: flex;
     justify-content: space-between;
-    gap: 30px;
+    gap: 15px;
 }
 
 .theloai-noidung button{
     border: none;
     background-color: #F1E1CA;
-    height: 70px;
+    height: 50px;
     border-radius: 15px;
-    font-size: 18px;
+    font-size: 13px;
     flex: 1;
 }
 
 .trending{
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .trending-listcard{
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
+    gap: 15px;
 }
 
 .button{
     background-color: #F1E1CA;
     color: #49372F;
     border-radius: 30px;
-    width: 30px;
-    height: 30px;
-    font-size: 30px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
 }
 
 .trending-card {
     background-color: #FFF3E2;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
     border: 2px solid #DBC8AD;
-    margin: 20px 0 20px 0;
+    margin: 10px 0 10px 0;
     border-radius: 15px;
-    padding: 20px;
+    padding: 15px;
     color: #49372F;
     display: flex;
-    width: 720px;
-    height: 332px;
+    width: 510px;
+    height: 260px;
 }
 
 .trending-card-noidung{
     flex-direction: column;
     justify-content: space-between;
-    width: 73%;
+    width: 70%;
 }
 .trending-card-noidung-Trending{
     background-color: #FFD08A;
     color: #A67763;
-    height: 40px;
-    width: 170px;
+    height: 35px;
+    width: 150px;
     border-radius: 15px 30px 30px 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
 }
 
 .trending-card-noidung-tieude {
-    font-size: 1.5rem;
+    font-size: 18px;
     font-weight: 700;
     margin: 15px 0 0 0;
     overflow-x: hidden;
@@ -171,15 +168,15 @@
 }
 
 .trending-card-noidung-tacgia{
-    margin: 8px 0 15px 0;
-    font-size: 18px;
+    margin: 5px 0 10px 0;
+    font-size: 12px;
 }
 
 .trending-card-noidung-thongtin{
     display: flex;
     justify-content: space-between;
-    width: 400px;
-    font-size: 14px;
+    width: 300px;
+    font-size: 10px;
 }
 
 .trending-card-noidung-thongtin .view{
@@ -221,12 +218,12 @@
 }
 .trending-card-noidung-mota .tieude{
     font-weight: 500;
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .trending-card-noidung-mota .mota{
     font-weight: 300;
-    font-size: 13px;                 
+    font-size: 10px;                 
     overflow: hidden;                
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -243,28 +240,29 @@
 .trending-card-noidung-docngay .docngay{
     background-color: #D7B98E;
     border: none;
-    padding: 13px 40px;
+    padding: 10px 30px;
     border-radius: 30px;
     color: #49372F;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 14px;
 }
 
 .trending-card-noidung-docngay .yeuthich{
     border: 2px solid #DBC8AD;
     border-radius: 30px;
     color: #D7B98E;
-    font-size: 30px;
+    font-size: 21px;
     margin-left: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 }
 .trending-card-hinhanh{
     margin: 20px;
     border-radius: 15px;
+    width: 100%;
 }
 
 .trending-card-hinhanh img{
@@ -280,3 +278,5 @@
     padding: 0 35px 35px 35px;
     color: #49372F;
 }
+
+
