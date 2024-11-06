@@ -1,4 +1,4 @@
-import Navadmin from "../../components/common/Navadmin"
+import Navadmin from "../../components/admin/navigation/Navadmin"
 import "../../assets/css/Adminhome.css"
 import { HiUserGroup } from "react-icons/hi2";
 import { HiBookOpen } from "react-icons/hi2";
@@ -6,7 +6,7 @@ import AreaChartComponent from "./AreaChart"
 const Home = () => {
   return (
     <>
-   <Navadmin>
+  <Navadmin>
 <div className="main-content">
   <div className="dashboard">
       <div className="boxes"> 

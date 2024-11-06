@@ -1,0 +1,96 @@
+.book-item-container {
+    display: grid; 
+    grid-template-columns: 1fr 4fr 4fr 2fr 2fr; 
+    grid-auto-rows: auto; 
+    grid-template-areas: 
+        "image noidung noidung thongtin thongtin"
+        "image noidung noidung thongtin thongtin";
+    gap: 10px;
+    background-color: #FFF3E2;
+    border: 2px solid #DBC8AD;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.book-item-image {
+    grid-area: image;
+    width: 130px;
+    height: 200px;
+    border-radius: 15px;
+}
+
+.book-item-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.book-item-noidung {
+    grid-area: noidung; 
+    background-color: #e2e2e2;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.book-item-noidung-thongtin{
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    font-size: 10px;
+}
+
+.book-item-view{
+    background-color: #EBD9BF;
+    padding: 6px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.book-item-chuong{
+    background-color: #EBD9BF;
+    padding: 6px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.book-item-trangthai{
+    padding: 6px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.book-item-danhgia{
+    background-color: #49372F;
+    color: #FFE100;
+    padding: 6px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.book-item-noidung-thongtin span{
+    margin-left: 5px;
+}
+
+.book-item-gioithieu{
+    font-weight: 300;
+    font-size: 10px;                 
+    overflow: hidden;                
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.5;
+}
+
+.book-item-thongtin {
+    grid-area: thongtin;
+    background-color: #d3d3d3;
+    padding: 10px;
+    border-radius: 5px;
+}
