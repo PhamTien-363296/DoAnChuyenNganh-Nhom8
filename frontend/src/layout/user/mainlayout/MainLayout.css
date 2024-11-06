@@ -1,0 +1,28 @@
+.container {
+    display: grid;
+    grid-template-columns: 60px auto;
+    grid-template-rows: 76px auto 130px;
+    grid-template-areas: 
+    "sidebar header"
+    "sidebar content"
+    "sidebar footer";
+}
+
+.content {
+    grid-area: content;
+    background-color: #FFF3E2;
+    padding: 15px;
+}
+
+@media (max-width: 550px) {
+    .container {
+        display: grid;
+        grid-template-rows: 76px auto 100px;
+        grid-template-columns: 50px auto;
+        grid-template-areas: 
+        "sidebar header"
+        "sidebar content"
+        "sidebar footer";
+    }
+}
+

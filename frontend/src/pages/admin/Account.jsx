@@ -1,4 +1,4 @@
-import Navadmin from "../../components/common/Navadmin"
+import Navadmin from "../../components/admin/navigation/Navadmin"
 
 const Account = () => {
   return (

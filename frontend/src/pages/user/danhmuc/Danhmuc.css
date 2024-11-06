@@ -1,0 +1,108 @@
+.danhmuc-theloai {
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
+    padding: 0 25px 25px 25px;
+    color: #49372F;
+}
+
+.danhmuc-tieude {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+}
+
+.danhmuc-noidung {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
+.danhmuc-noidung button {
+    border: none;
+    background-color: #F1E1CA;
+    height: 50px;
+    border-radius: 15px;
+    font-size: 13px;
+    flex: 1;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.danhmuc-noidung button:hover {
+    background-color: #E0C5A8; 
+    transform: scale(1.05);
+}
+
+.listsach {
+    margin-top: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(6,170px);
+    column-gap: 18px;
+    row-gap: 18px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    border-radius: 15px;
+}
+
+.dieuhuong{
+    background-color: #F1E1CA;
+    width: 100%;
+    display: flex; /* Hoặc có thể để mặc định */
+    justify-content: center; /* Căn giữa nội dung */
+    padding: 20px; /* Khoảng cách */
+    background-color: #f1f1f1; /* Màu nền */
+}
+
+@media (max-width: 550px) {
+    .danhmuc-noidung {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        column-gap: 10px;
+        row-gap: 10px;
+    }
+
+    .listsach {
+        grid-template-columns: repeat(2,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+}
+
+@media (min-width: 550px) and (max-width: 720px) {
+    .danhmuc-noidung {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        column-gap: 10px;
+        row-gap: 10px;
+    }
+    
+    .listsach {
+        grid-template-columns: repeat(3,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+}
+@media (min-width: 720px)  and (max-width: 1024px) {
+    .danhmuc-noidung {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        column-gap: 10px;
+        row-gap: 10px;
+    }
+
+    .listsach {
+        grid-template-columns: repeat(4,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+
+}

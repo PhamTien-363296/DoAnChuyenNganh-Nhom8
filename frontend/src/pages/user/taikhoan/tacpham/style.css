@@ -1,0 +1,36 @@
+.tp-container{
+    display: grid;
+    grid-template-rows: auto;
+    color: #49372F;
+}
+
+.tp-noidung{
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    column-gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tp-tieude{
+    background-color: #F1E1CA;
+    border: 2px solid #DBC8AD;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
+    padding: 0 20px;
+    border-radius: 15px 0 0 15px;
+}
+
+.tp-themtruyen {
+    background-color: #F1E1CA;
+    border: 2px solid #DBC8AD;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
+    padding: 0 20px;
+    border-radius: 0 15px 15px 0;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+}
+
+
+.tp-themtruyen button:active {
+    transform: scale(0.98); /* Hiệu ứng khi nhấn nút */
+}
