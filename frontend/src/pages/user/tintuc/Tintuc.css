@@ -1,0 +1,61 @@
+.tt-tintuc-container {
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    column-gap: 20px;
+    grid-template-areas: 
+    "noidung congdong";
+    margin-bottom: 20px;
+}
+
+.tt-noidung{
+    grid-area: noidung;
+    display: grid;
+    grid-template-rows: 60px auto;
+    row-gap: 10px;
+}
+
+.tt-noidung .tt-tieude {
+    background-color: #FFF3E2;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
+    border: 2px solid #DBC8AD;
+    color: #49372F;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-size: 20px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.tt-congdong{
+    grid-area: congdong;
+    display: grid;
+    grid-template-rows: 60px auto;
+    row-gap: 10px;
+    color: #49372F;
+}
+
+.tt-congdong .tt-tieude{
+    background-color: #FFF3E2;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
+    border: 2px solid #DBC8AD;
+    color: #49372F;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-size: 20px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.tt-congdong .tt-list-congdong {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #FFF3E2;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
+    border: 2px solid #DBC8AD;
+}
+
+

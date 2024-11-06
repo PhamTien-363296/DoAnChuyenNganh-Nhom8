@@ -1,0 +1,74 @@
+.taikhoan {
+    width: auto;
+    height: auto;
+    background-color: #F1E1CA;
+    color: #49372F;
+    padding: 20px;
+    display: grid;
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    grid-template-columns: repeat(6, auto);
+    grid-template-rows: 1fr 30px auto;
+    grid-template-areas: 
+        "avata name name name name name"
+        "avata nguoitheodoi dangtheodoi baiviet content content"
+        "avata null null null edit edit";
+}
+
+.taikhoan .avata {
+    grid-area: avata;
+    background-color: aliceblue;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.taikhoan .avata img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.taikhoan .tennguoidung {
+    grid-area: name;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: end;
+}
+
+.taikhoan .nguoitheodoi {
+    grid-area: nguoitheodoi;
+}
+
+.taikhoan .dangtheodoi {
+    grid-area: dangtheodoi;
+}
+
+.taikhoan .slbaiviet {
+    grid-area: baiviet;
+}
+
+.taikhoan .chinhsua {
+    grid-area: edit;
+    display: flex;
+    justify-content: end;
+}
+
+.taikhoan .chinhsua .button{
+    background-color: #DDCBB1;
+    border: 5px solid #EBD9BF;
+    height: 55px;
+    width: 80%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+

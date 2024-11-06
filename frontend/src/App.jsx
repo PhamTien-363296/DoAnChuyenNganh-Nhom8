@@ -2,18 +2,27 @@ import './App.css'
 
 import { Routes, Route } from 'react-router-dom';
 
-import Trangchu from './pages/sidebar/Trangchu';
-import Tintuc from './pages/sidebar/Tintuc';
-import Tinnhan from './pages/sidebar/Tinnhan';
+
 import Home from './pages/admin/Home';
-import Baocao from './pages/admin/Baocao';
 import Chat from './pages/admin/Chat';
 import Account from './pages/admin/Account';
-import Dangky from './pages/auth/Dangky';
-import Chitiettruyen from './pages/truyen/Chitiettruyen';
-import Viettruyen from './pages/truyen/Viettruyen';
-import Taotruyen from './pages/truyen/Taotruyen';
-import Dangnhap from './pages/auth/Dangnhap';
+import Chitiettruyen from './pages/user/truyen/chitiettruyen/Chitiettruyen';
+import Viettruyen from './pages/user/truyen/viettruyen/Viettruyen';
+import Taotruyen from './pages/user/truyen/taotruyen/Taotruyen';
+
+import Trangchu from './pages/user/trangchu/Trangchu';
+import Tintuc from './pages/user/tintuc/Tintuc';
+import Tinnhan from './pages/user/tinnhan/Tinnhan';
+import Danhmuc from './pages/user/danhmuc/Danhmuc';
+import Dangnhap from './pages/user/auth/Dangnhap/Dangnhap';
+import Dangky from './pages/user/auth/Dangky/Dangky';
+import Baiviet from './pages/user/taikhoan/baiviet/Baiviet';
+import Tacpham from './pages/user/taikhoan/tacpham/TacPham';
+import Lichsu from './pages/user/taikhoan/lichsu/LichSu';
+import Yeuthich from './pages/user/taikhoan/yeuthich/YeuThich';
+import Vitien from './pages/user/taikhoan/vitien/ViTien';
+import Baocao from './pages/user/taikhoan/baocao/BaoCao';
+
 
 
 function App() {
@@ -23,6 +32,13 @@ function App() {
       <Route path="/" element={<Trangchu />} />
       <Route path="/tintuc" element={<Tintuc />} />
       <Route path="/tinnhan" element={<Tinnhan />} />
+      <Route path="/theloai" element={<Danhmuc />} />
+      <Route path="/taikhoan/baiviet" element={<Baiviet/>} />
+      <Route path="/taikhoan/tacpham" element={<Tacpham/>} />
+      <Route path="/taikhoan/lichsu" element={<Lichsu/>} />
+      <Route path="/taikhoan/yeuthich" element={<Yeuthich/>} />
+      <Route path="/taikhoan/vitien" element={<Vitien/>} />
+      <Route path="/taikhoan/baocao" element={<Baocao/>} />
 
       <Route path="/chitiettruyen" element={<Chitiettruyen />} />
       <Route path="/viettruyen" element={<Viettruyen />} />
