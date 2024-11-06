@@ -70,6 +70,6 @@ const nguoidungSchema = new mongoose.Schema(
     }
 )
 
-const Nguoidung = mongoose.model("Nguoidung", nguoidungSchema);
+const Nguoidung = mongoose.model("Nguoidung", nguoidungSchema,"Nguoidung");
 
 export default Nguoidung;
