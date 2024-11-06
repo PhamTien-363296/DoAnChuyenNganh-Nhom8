@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import '../../assets/css/Searchmain.css'
 import { HiMagnifyingGlass } from "react-icons/hi2";
+import { HiOutlineUserGroup} from "react-icons/hi2";
 
 export default function Searchmain() {
     return (
@@ -15,6 +17,7 @@ export default function Searchmain() {
                 </div>
 
                 <div className="profile-container">
+                    <Link to="/taikhoan"><HiOutlineUserGroup /></Link>
                 </div>
             </header>
         </>

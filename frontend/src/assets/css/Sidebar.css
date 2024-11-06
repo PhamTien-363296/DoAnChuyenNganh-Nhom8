@@ -103,6 +103,13 @@
     border-radius: 15px;
     font-size: 13px;
     flex: 1;
+    cursor: pointer;
+}
+
+.theloai-noidung button:hover{
+    background-color: #D7B98E;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .trending{
@@ -138,6 +145,11 @@
     display: flex;
     width: 510px;
     height: 260px;
+    cursor: pointer;
+}
+
+.trending-card:hover {
+    background-color: #ebd9bf4b;
 }
 
 .trending-card-noidung{
@@ -247,6 +259,11 @@
     font-size: 14px;
 }
 
+.trending-card-noidung-docngay .docngay:hover{
+    background-color: #A67763;
+    color: #FFF3E2;
+}
+
 .trending-card-noidung-docngay .yeuthich{
     border: 2px solid #DBC8AD;
     border-radius: 30px;
@@ -258,6 +275,11 @@
     justify-content: center;
     width: 30px;
     height: 30px;
+}
+
+.trending-card-noidung-docngay .yeuthich:hover{
+    border: 2px solid red;
+    color: red;
 }
 .trending-card-hinhanh{
     margin: 20px;
@@ -273,10 +295,233 @@
     background-color: #FFF3E2;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
     border: 2px solid #DBC8AD;
-    margin: 20px 30px 20px 30px;
+    margin: 20px 15px 20px 15px;
     border-radius: 15px;
-    padding: 0 35px 35px 35px;
+    padding: 25px;
     color: #49372F;
+    width: auto;
+}
+
+.hot-tieude{
+    display: flex;
+    justify-content: space-between;
+}
+
+.hot-listcard{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.hot-card{
+    width: 210px;
+    padding: 10px 0;
+}
+
+.hot-card:hover{
+    background-color: #F1E1CA;
+    border-radius: 15px;
+}
+
+.hot-card-container{
+    margin: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.hot-card-thongtin .trangthai{
+    background-color: rgba(0, 255, 68, 0.2);
+    color: #066C21;
+    font-size: 10px;
+    padding: 4px 6px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.hot-card-thongtin .danhgia{
+    background-color: #49372F;
+    color: #FFE100;
+    font-size: 10px;
+    padding: 4px 6px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.hot-card-thongtin{
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+.hot-card-container img{
+    margin: auto;
+    border-radius: 15px;
+}
+
+.hot-card-tieude{
+    font-size: 14px;
+    margin: 5px 5px;
+    text-align: center;
+    font-weight: 600;
+}
+.hot-card-luotxem{
+    display: flex;
+    font-size: 12px;
+    margin: 3px 5px;
+    justify-content: center;
+}
+
+.quangcao{
+    background-color: dimgray;
+    height: 300px;
+    margin: 30px 0;
+}
+
+.theloai-list{
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    margin: 15px;  
+    border-radius: 15px;
+    padding: 0 25px 25px 25px;
+    color: #49372F;
+    height: 100px;
+}
+
+.tacgia{
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    margin: 15px;  
+    border-radius: 15px;
+    padding: 0 25px 25px 25px;
+    color: #49372F;
+    height: 100px;
+}
+
+.hoanthanh{
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    margin: 15px;  
+    border-radius: 15px;
+    padding: 0 25px 25px 25px;
+    color: #49372F;
+    height: 100px;
+}
+
+@media screen and (max-width: 768px) {
+    .trending-listcard{
+        flex-wrap: wrap;
+    }
+
+    .button{
+        width: 15px;
+        height: 15px;
+        font-size: 15px;
+    }
+    
+    .trending-card {
+        width: 310px;
+        height: auto;
+        margin: 0;
+    }
+    
+    .trending-card-noidung{
+        flex-direction: column;
+        justify-content: space-between;
+        width: 60%;
+    }
+    .trending-card-noidung-Trending{
+        height: 19px;
+        width: 100px;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    
+    .trending-card-noidung-tieude {
+        font-size: 13px;
+        overflow-x: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    
+    .trending-card-noidung-tacgia{
+        margin: 5px 0 10px 0;
+        font-size: 10px;
+    }
+    
+    .trending-card-noidung-thongtin{
+        display: flex;
+        width: 190px;
+        font-size: 6.5px;
+    }
+    
+    .trending-card-noidung-thongtin .view{
+        padding: 3px;
+    }
+    
+    .trending-card-noidung-thongtin .chuong{
+        padding: 3px;
+    }
+    
+    .trending-card-noidung-thongtin .trangthai{
+        padding: 3px;
+    }
+    
+    .trending-card-noidung-thongtin .danhgia{
+        padding: 3px;
+    }
+    
+    .trending-card-noidung-thongtin span{
+        margin-left: 5px;
+    }
+    .trending-card-noidung-mota .tieude{
+        font-weight: 500;
+        font-size: 10px;
+    }
+    
+    .trending-card-noidung-mota .mota{
+        font-weight: 300;
+        font-size: 8px;                 
+    }
+    
+    .trending-card-noidung-docngay {
+        display: flex;
+        align-items: center;
+    }
+    
+    .trending-card-noidung-docngay .docngay{
+        font-size: 10px;
+    }
+    
+    .trending-card-noidung-docngay .yeuthich{
+        width: 20px;
+        height: 20px;
+    }
+    
+    .trending-card-hinhanh img{
+        border-radius: 15px;
+        width:  120%;
+    }
+    
+    .hot{
+        margin: 20px 15px 20px 15px;
+        border-radius: 15px;
+        padding: 25px;
+        width: auto;
+    }
+
+    .hot-listcard{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
 }
 
 
