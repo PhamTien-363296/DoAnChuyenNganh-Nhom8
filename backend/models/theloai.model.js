@@ -4,7 +4,11 @@ const theloaiSchema = new mongoose.Schema(
     {
         tieuDeTheLoai: {
             type: String,
-        }
+        },
+        idTruyen:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Truyen"
+        },],
     },{ timestamps: true }
 )
 

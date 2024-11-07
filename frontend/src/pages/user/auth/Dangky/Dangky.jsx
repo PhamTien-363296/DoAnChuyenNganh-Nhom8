@@ -3,18 +3,18 @@ import './Dangky.css';
 import book from './book-bonen.png';
 import axios from 'axios';
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query'; 
 
 const Dangky = () => {
-
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [matKhau, setMatKhau] = useState('');
   const [thongBao, setThongBao] = useState('');
 
+  const queryClient = useQueryClient(); 
 
   const handleDangKy = async (e) => {
-    e.preventDefault(); 
-
+    e.preventDefault();
 
     if (!username || !email || !matKhau) {
       setThongBao('Vui lòng điền đầy đủ thông tin!');
@@ -22,17 +22,19 @@ const Dangky = () => {
     }
 
     try {
-     
       const response = await axios.post('/api/auth/signup', {
         username: username,
         email: email,
-        matKhau: matKhau, 
+        matKhau: matKhau,
       });
 
       setThongBao('Đăng ký thành công!');
-      console.log(response.data); 
-    } catch (error) {
+      console.log(response.data);
 
+    
+      queryClient.invalidateQueries({ queryKey: ['authUser'] });
+
+    } catch (error) {
       if (error.response) {
         console.error('Lỗi từ server:', error.response.data);
         setThongBao(error.response.data.message || 'Lỗi đăng ký. Vui lòng thử lại!');
@@ -67,7 +69,7 @@ const Dangky = () => {
           <input
             type="password"
             placeholder="Mật khẩu"
-            value={matKhau} 
+            value={matKhau}
             onChange={(e) => setMatKhau(e.target.value)}
           />
           <button type="submit" className="submit-btn">Đăng ký</button>

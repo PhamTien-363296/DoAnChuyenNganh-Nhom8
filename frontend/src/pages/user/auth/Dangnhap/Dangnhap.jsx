@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query'; 
 import './Dangnhap.css';
 
 function Dangnhap() {
   const [email, setEmail] = useState('');
   const [matKhau, setMatKhau] = useState('');
   const [thongBao, setThongBao] = useState('');
+
+  const queryClient = useQueryClient(); 
 
   const handleDangNhap = async (e) => {
     e.preventDefault();
@@ -14,8 +17,13 @@ function Dangnhap() {
         email: email,
         matKhau: matKhau,
       });
+      
+  
       setThongBao('Đăng nhập thành công');
       console.log(response.data);
+
+  
+      queryClient.invalidateQueries({ queryKey: ['authUser'] });
     } catch (error) {
       if (error.response) {
         console.error('Lỗi từ server:', error.response.data);
