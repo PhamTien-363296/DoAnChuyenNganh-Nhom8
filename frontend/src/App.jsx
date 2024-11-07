@@ -20,7 +20,9 @@ import Tacpham from './pages/user/taikhoan/tacpham/TacPham';
 import Lichsu from './pages/user/taikhoan/lichsu/LichSu';
 import Yeuthich from './pages/user/taikhoan/yeuthich/YeuThich';
 import Vitien from './pages/user/taikhoan/vitien/ViTien';
-import Baocao from './pages/user/taikhoan/baocao/BaoCao';
+import UserBaoCao from './pages/user/taikhoan/baocao/BaoCao';
+import Theloai from './pages/admin/theloai/Theloai';
+import AdminBaocao from './pages/admin/Baocao';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -55,13 +57,13 @@ function App() {
 
       <Route path="/tintuc" element={<Tintuc />} />
       <Route path="/tinnhan" element={<Tinnhan />} />
-      <Route path="/theloai" element={<Danhmuc />} />
+      <Route path="/theloai/:tenTheLoai" element={<Danhmuc />} />
       <Route path="/taikhoan/baiviet" element={<Baiviet />} />
       <Route path="/taikhoan/tacpham" element={<Tacpham />} />
       <Route path="/taikhoan/lichsu" element={<Lichsu />} />
       <Route path="/taikhoan/yeuthich" element={<Yeuthich />} />
       <Route path="/taikhoan/vitien" element={<Vitien />} />
-      <Route path="/taikhoan/baocao" element={<Baocao />} />
+      <Route path="/taikhoan/baocao" element={<UserBaoCao />} />
 
       {/* Các trang truyện */}
       <Route path="/chitiettruyen" element={<Chitiettruyen />} />
@@ -74,7 +76,8 @@ function App() {
 
       {/* Trang quản trị */}
       <Route path="/adminhome" element={<Home />} />
-      <Route path="/baocao" element={<Baocao />} />
+      <Route path="/adminbaocao" element={<AdminBaocao/>} />
+      <Route path="/quanly/theloai" element={<Theloai/>} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/account" element={<Account />} />
     </Routes>

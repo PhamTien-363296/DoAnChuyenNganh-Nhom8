@@ -1,9 +1,11 @@
 import express from "express"
-import { protectRoute } from "../middleware/protectRoute.js"
-import {themTruyen } from '../controllers/truyen.controller.js'
+
+
+import { layTatcaTruyen, layTruyenTheoTheloai } from "../controllers/truyen.controller.js"
+
 const router = express.Router()
 
-router.post("/them",protectRoute,themTruyen)
-
+router.get("/", layTatcaTruyen)
+router.get("/laytheotheloai/:id", layTruyenTheoTheloai)
 
 export default router

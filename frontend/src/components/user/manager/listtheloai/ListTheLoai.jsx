@@ -1,27 +1,43 @@
-import { Link } from 'react-router-dom';
-
-const theloais = [
-    { name: "Tất cả", path: "/theloai" },
-    { name: "Hành động", path: "/theloai" },
-    { name: "Lãng mạn", path: "/theloai" },
-    { name: "Kinh dị", path: "/theloai" },
-    { name: "Huyền bí", path: "/theloai" },
-    { name: "Tâm lý", path: "/theloai" },
-    { name: "Phiêu lưu", path: "/theloai" },
-    { name: "Gia đình", path: "/theloai" },
-    { name: "Cổ tích", path: "/theloai" },
-    { name: "Kịch tính", path: "/theloai" },
-    { name: "Lịch sử", path: "/theloai" },
-    { name: "Hoạt hình", path: "/theloai" },
-];
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
 function ListTheloaiHome() {
+    const [theloais, setTheloai] = useState([]);
+    const navigate = useNavigate(); // Hook để điều hướng
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('/api/theloai');
+                // Thêm phần tử 'Tất cả' vào đầu mảng
+                const theloaiName = [{ id: 'all', name: 'Tất cả' }, ...response.data.map(theloai => ({
+                    id: theloai._id,
+                    name: theloai.tieuDeTheLoai,
+                }))];
+                setTheloai(theloaiName); 
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    const handleCategoryClick = (theloaiId, theloaiName) => {
+        // Điều hướng đến trang chi tiết thể loại với ID thể loại và tên thể loại trong URL
+        navigate(`/theloai/${theloaiName.replace(/\s+/g, '-').toLowerCase()}`, { state: { theloaiId } });
+    };
+
     return (
         <>
             {theloais.map((theloai, index) => (
-                <Link to={theloai.path} key={index}>
-                    <button>{theloai.name}</button>
-                </Link>
+                <button 
+                    key={index} 
+                    onClick={() => handleCategoryClick(theloai.id, theloai.name)} // Điều hướng khi bấm vào thể loại
+                >
+                    {theloai.name}
+                </button>
             ))}
         </>
     );
