@@ -27,10 +27,14 @@ const truyenSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
 			ref: "Nguoidung",
 			required: true,
+        },
+        theLoaiIdTruyen: {
+            type: mongoose.Schema.Types.ObjectId,
+			ref: "Theloai",
         }
     },{ timestamps: true }
 )
 
-const Truyen = mongoose.model("Truyen", truyenSchema);
+const Truyen = mongoose.model("Truyen", truyenSchema,"Truyen");
 
 export default Truyen;

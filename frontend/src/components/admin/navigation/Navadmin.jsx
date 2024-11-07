@@ -6,6 +6,7 @@ import { HiClipboardDocumentCheck } from "react-icons/hi2";
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
 import { MdAccountCircle } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { HiBookmarkAlt } from "react-icons/hi";
 
 function Navadmin({ children }) {
   return (
@@ -26,19 +27,20 @@ function Navadmin({ children }) {
                   <Link to="/adminhome"><AiFillHome style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
                 </li>
                 <li>
-                  <Link to="/baocao"> <HiClipboardDocumentCheck style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
+                  <Link to="/adminbaocao"> <HiClipboardDocumentCheck style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
                 </li>
                 <li>
                   <Link to="/chat"> <IoChatbubbleEllipsesSharp style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
+                </li>
+                <li>
+                  <Link to="/quanly/theloai"><HiBookmarkAlt  style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
                 </li>
                 <li>
                   <Link to="/account"><MdAccountCircle style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
                 </li>
               </ul>
             </div>
-
             {children}
-
       </div>
     </div>
     </>

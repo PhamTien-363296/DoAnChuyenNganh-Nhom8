@@ -8,6 +8,6 @@ const theloaiSchema = new mongoose.Schema(
     },{ timestamps: true }
 )
 
-const Theloai = mongoose.model("Theloai", theloaiSchema);
+const Theloai = mongoose.model("Theloai", theloaiSchema, "Theloai");
 
 export default Theloai;
