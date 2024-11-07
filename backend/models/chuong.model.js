@@ -38,14 +38,18 @@ const chuongSchema = new mongoose.Schema(
             },
         ],
         truyenIdChuong: {
-			type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Truyen",
             required: true,
+        },
+        trangThaiChuong: {
+			type: String,
+            default: "Riêng tư",  
 		},
 	},
 	{ timestamps: true }
 );
 
-const Chuong = mongoose.model("Chuong", chuongSchema);
+const Chuong = mongoose.model("Chuong", chuongSchema, "Chuong");
 
 export default Chuong;

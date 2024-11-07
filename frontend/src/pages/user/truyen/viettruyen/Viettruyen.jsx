@@ -1,38 +1,75 @@
 import './Viettruyen.css';
 import TextEditor from "./TextEditor";
 import { useState } from "react";
-
+import axios from 'axios'; 
 import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
 
 const Viettruyen = () => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(""); 
+  const [chapterTitle, setChapterTitle] = useState("");
+  const [thongBao, setThongBao] = useState("");
 
   const replaceSpacesWithNbsp = (content) => {
     if (!content) return content;
     return content.replace(/ /g, '&nbsp;');
   };
 
+  const handleTitleChange = (e) => {
+    setChapterTitle(e.target.value); 
+  };
+
+  const handleViettruyen = async (e) => {
+    e.preventDefault();
+
+    try {
+   
+      const response = await axios.post('/api/chuong/them', {
+        tenChuong: chapterTitle,  
+        noiDungChuong: text,     
+      });
+
+      setThongBao('Xuất bản thành công!');
+      console.log(response.data);
+    } catch (error) {
+      if (error.response) {
+        console.error('Lỗi từ server:', error.response.data);
+        setThongBao(error.response.data.message || 'Lỗi xuất bản. Vui lòng thử lại!');
+      } else {
+        console.error('Lỗi không xác định:', error.message);
+        setThongBao('Lỗi không xác định. Vui lòng thử lại sau!');
+      }
+    }
+  };
+
   return (
     <>
-  <MainLayout>
-      <div className="all">
-        <div className="block">
-          <div className="block-1"
-            style={{
-              width: '100%',
-              wordWrap: 'break-word',
-              whiteSpace: 'pre-wrap',
-            }}
-            dangerouslySetInnerHTML={{ __html: replaceSpacesWithNbsp(text) || "<br />" }}
-          />
-          <div className="block-2">
-            <form>
-              <TextEditor setText={setText} />
-            </form>
+      <MainLayout>
+        <div className="all">
+          <div className="block">
+            <input
+              type="text"
+              value={chapterTitle}
+              onChange={handleTitleChange}
+              placeholder="Nhập tên chương"
+              className="chapter-title-input"
+            />
+            <div className="block-1"
+              style={{
+                width: '100%',
+                wordWrap: 'break-word',
+                whiteSpace: 'pre-wrap',
+              }}
+              dangerouslySetInnerHTML={{ __html: replaceSpacesWithNbsp(text) || "<br />" }}
+            />
+            <div className="block-2">
+              <form>
+                <TextEditor setText={setText} />
+              </form>
+            </div>
           </div>
+          <button className="create-story" onClick={handleViettruyen}>Xuất bản</button>
+          {thongBao && <div className="thong-bao">{thongBao}</div>}
         </div>
-        <button className="create-story">Xuất bản</button>
-      </div>
       </MainLayout>
     </>
   );

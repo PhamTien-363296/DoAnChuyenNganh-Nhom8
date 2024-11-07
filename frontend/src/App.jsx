@@ -13,7 +13,7 @@ import Trangchu from './pages/user/trangchu/Trangchu';
 import Tintuc from './pages/user/tintuc/Tintuc';
 import Tinnhan from './pages/user/tinnhan/Tinnhan';
 import Danhmuc from './pages/user/danhmuc/Danhmuc';
-import Dangnhap from './pages/user/auth/Dangnhap/Dangnhap.jsx';
+import Dangnhap from './pages/user/auth/Dangnhap/Dangnhap';
 import Dangky from './pages/user/auth/Dangky/Dangky';
 import Baiviet from './pages/user/taikhoan/baiviet/Baiviet';
 import Tacpham from './pages/user/taikhoan/tacpham/TacPham';
@@ -48,13 +48,9 @@ function App() {
     return <div>Loading...</div>;
   }
 
-
   return (
     <Routes>
-
       <Route path="/" element={authUser ? <Trangchu /> : <Navigate to="/dangky" />} />
-
-
       <Route path="/tintuc" element={<Tintuc />} />
       <Route path="/tinnhan" element={<Tinnhan />} />
       <Route path="/theloai/:tenTheLoai" element={<Danhmuc />} />
@@ -68,7 +64,7 @@ function App() {
       {/* Các trang truyện */}
       <Route path="/chitiettruyen" element={<Chitiettruyen />} />
       <Route path="/viettruyen" element={<Viettruyen />} />
-      <Route path="/taotruyen" element={<Taotruyen />} />
+      <Route path="/taotruyen" element={<Taotruyen authUser={authUser} />} />
 
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />

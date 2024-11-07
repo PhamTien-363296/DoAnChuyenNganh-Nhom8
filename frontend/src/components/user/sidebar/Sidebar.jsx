@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query'; 
 
-
-import './Sidebar.css'
-
+import './Sidebar.css';
 
 import { 
   HiOutlineHome, 
@@ -18,7 +17,7 @@ export default function Sidebar() {
     const [thongBao, setThongBao] = useState('');
     const [hienThiThongBao, setHienThiThongBao] = useState(false);
     const location = useLocation();
-    // const navigate = useNavigate();
+    const queryClient = useQueryClient(); 
 
     const handleDangXuat = async (e) => {
         e.preventDefault();
@@ -26,7 +25,10 @@ export default function Sidebar() {
           const response = await axios.post('/api/auth/logout');
           setThongBao('Đăng xuất thành công');
           console.log(response.data);
-        //   navigate('/dangnhap'); 
+
+          // Gọi invalidateQueries sau khi đăng xuất thành công để cập nhật dữ liệu
+          queryClient.invalidateQueries('authUser'); // Hoặc tên truy vấn bạn đang sử dụng để lưu thông tin người dùng
+
         } catch (error) {
           if (error.response) {
             console.error('Lỗi từ server:', error.response.data);
