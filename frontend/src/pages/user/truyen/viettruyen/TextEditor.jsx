@@ -67,7 +67,7 @@ const TextEditor = ({ setText }) => {
     }, [setText]);
 
     return (
-        <div id='container' className="container"></div>
+        <div id='container' className="textedit-container"></div>
     );
 };
 
