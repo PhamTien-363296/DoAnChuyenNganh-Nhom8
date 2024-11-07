@@ -1,12 +1,10 @@
 import Chuong from "../models/chuong.model.js";  
 import Truyen from "../models/truyen.model.js";
 
-
 export const themChuong = async (req, res) => {
     try {
         const { tenChuong, noiDungChuong, truyenIdChuong } = req.body;
 
-       
         if (!truyenIdChuong) {
             return res.status(400).json({ error: "TruyenIdChuong is required" });
         }
@@ -20,10 +18,8 @@ export const themChuong = async (req, res) => {
             truyenIdChuong, 
         });
 
-       
         await chuongMoi.save();
 
-     
         truyen.idCacChuong.push(chuongMoi._id);
         await truyen.save();
 
@@ -34,8 +30,16 @@ export const themChuong = async (req, res) => {
     }
 };
 
-
-
+export const layChuong = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const chuong = await Chuong.find({ truyenIdChuong: id });
+        res.status(200).json(chuong);
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+        console.error("Error in layChuong controller", error);
+    }
+};
 
 export const suaChuong = async (req, res) => {
     const { tenChuong, noiDungChuong } = req.body;

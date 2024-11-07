@@ -3,11 +3,17 @@ import TextEditor from "./TextEditor";
 import { useState } from "react";
 import axios from 'axios'; 
 import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
+import { useLocation } from 'react-router-dom';
 
 const Viettruyen = () => {
   const [text, setText] = useState(""); 
   const [chapterTitle, setChapterTitle] = useState("");
   const [thongBao, setThongBao] = useState("");
+
+  const location = useLocation();
+  const { idTruyen } = location.state || {}; // Access the passed `id`
+
+  console.log('ID:', idTruyen);
 
   const replaceSpacesWithNbsp = (content) => {
     if (!content) return content;
@@ -26,6 +32,7 @@ const Viettruyen = () => {
       const response = await axios.post('/api/chuong/them', {
         tenChuong: chapterTitle,  
         noiDungChuong: text,     
+        truyenIdChuong: idTruyen,
       });
 
       setThongBao('Xuất bản thành công!');

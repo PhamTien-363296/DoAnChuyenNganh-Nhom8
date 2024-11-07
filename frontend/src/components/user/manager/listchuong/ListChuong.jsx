@@ -1,21 +1,43 @@
 import ChuongItem from '../../common/items/chuongitem/ChuongItem';
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
-function ListChuong() {
-    const chuongList = [
-        { tenChuong: "Chương 1: Khởi đầu mới", trangThai: "CÔNG KHAI", ngay: "01/11/2024" },
-        { tenChuong: "Chương 2: Cuộc phiêu lưu", trangThai: "CÔNG KHAI", ngay: "03/11/2024" },
-        { tenChuong: "Chương 3: Những thử thách", trangThai: "RIÊNG TƯ", ngay: "05/11/2024" },
-        { tenChuong: "Chương 4: Cái kết mở", trangThai: "RIÊNG TƯ", ngay: "07/11/2024" }
-    ];
+function ListChuong({ idTruyen }) {
+    const [chuongs, setChuong] = useState([]);
+
+    ListChuong.propTypes = {
+        idTruyen: PropTypes.string.isRequired,
+    };
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get(`/api/chuong/${idTruyen}`);
+                const chuongName = response.data.map(chuong => ({
+                    id: chuong._id,
+                    tenChuong: chuong.tenChuong,
+                    trangThaiChuong: chuong.trangThaiChuong,
+                    ngayCapNhat: chuong.updatedAt,
+                }));
+                setChuong(chuongName);
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
+        };
+
+        fetchCategories();
+    }, [idTruyen]);
 
     return (
         <>
-            {chuongList.map((chuong, index) => (
+            {chuongs.map((chuong, index) => (
                 <ChuongItem 
                     key={index}
+                    idChuong={chuong.id}
                     tenChuong={chuong.tenChuong}
-                    trangThai={chuong.trangThai}
-                    ngay={chuong.ngay}
+                    trangThai={chuong.trangThaiChuong}
+                    ngay={new Date(chuong.ngayCapNhat)} 
                 />
             ))}
         </>
