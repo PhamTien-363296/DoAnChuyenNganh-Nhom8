@@ -21,4 +21,3 @@ export const layTruyenTheoTheloai = async (req, res) => {
     }
 };
 
-
