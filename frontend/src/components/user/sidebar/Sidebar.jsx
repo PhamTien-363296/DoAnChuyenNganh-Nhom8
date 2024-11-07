@@ -1,22 +1,42 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from 'axios';
 
-// Import css
+
 import './Sidebar.css'
 
-// Import icon
+
 import { 
   HiOutlineHome, 
   HiOutlineUserGroup, 
   HiOutlineChatBubbleOvalLeftEllipsis,
   HiOutlineBell
 } from "react-icons/hi2";
-
 import { HiOutlineLogout } from "react-icons/hi";
 
 export default function Sidebar() {
+    const [thongBao, setThongBao] = useState('');
     const [hienThiThongBao, setHienThiThongBao] = useState(false);
-    const location = useLocation(); // Lấy đường dẫn hiện tại
+    const location = useLocation();
+    // const navigate = useNavigate();
+
+    const handleDangXuat = async (e) => {
+        e.preventDefault();
+        try {
+          const response = await axios.post('/api/auth/logout');
+          setThongBao('Đăng xuất thành công');
+          console.log(response.data);
+        //   navigate('/dangnhap'); 
+        } catch (error) {
+          if (error.response) {
+            console.error('Lỗi từ server:', error.response.data);
+            setThongBao(error.response.data.message || 'Lỗi đăng xuất. Vui lòng thử lại!');
+          } else {
+            console.error('Lỗi không xác định:', error.message);
+            setThongBao('Lỗi không xác định. Vui lòng thử lại sau!');
+          }
+        }
+    };
 
     const xulyThongBao = () => {
         setHienThiThongBao(prev => !prev);
@@ -36,7 +56,6 @@ export default function Sidebar() {
         };
     }, []);
 
-    // Hàm để kiểm tra xem đường dẫn hiện tại có phải là của liên kết không
     const isActive = (path) => {
         return location.pathname === path ? "active" : "";
     };
@@ -66,9 +85,9 @@ export default function Sidebar() {
                         </Link>
                     </li>
                     <li className="SidebarRow LogoutRow">
-                        <Link to="/dangnhap" className={isActive("/dangnhap")}>
+                        <div onClick={handleDangXuat}>
                             <HiOutlineLogout />
-                        </Link>
+                        </div>
                     </li>
                 </ul>
             </nav>
@@ -80,7 +99,8 @@ export default function Sidebar() {
                         <p>Đây là thông báo</p>
                     </div>
                 )}
+                {thongBao && <p className="thongBao">{thongBao}</p>}
             </div>
         </>
     );
-};
+}
