@@ -20,7 +20,6 @@ export default function Trangchu() {
             <div className="theloai">
                 <div className="dstheloai-tieude">
                     <p style={{ fontWeight: "bold" }}>Thể loại</p>
-                    <p><Link to="/theloai">Xem thêm</Link></p>
                 </div>
                 <div className="dstheloai-noidung">
                     <ListTheloaiHome/>

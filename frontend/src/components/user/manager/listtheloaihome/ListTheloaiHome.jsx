@@ -1,21 +1,42 @@
-import { Link } from 'react-router-dom';
-
-const theloais = [
-    { name: "Tất cả", path: "/theloai" },
-    { name: "Hành động", path: "/theloai" },
-    { name: "Lãng mạn", path: "/theloai" },
-    { name: "Kinh dị", path: "/theloa" },
-    { name: "Khoa học viễn tưởng", path: "/theloai" },
-    { name: "Huyền bí", path: "/theloai" },
-];
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
 function ListTheloaiHome() {
+    const [theloais, setTheloai] = useState([]);
+    const navigate = useNavigate(); // Hook để điều hướng
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('/api/theloai');
+                const theloaiName = [{ id: 'all', name: 'Tất cả' }, ...response.data.map(theloai => ({
+                    id: theloai._id,
+                    name: theloai.tieuDeTheLoai,
+                }))];
+                setTheloai(theloaiName);
+            } catch (error) {
+                console.error("There was an error fetching the categories:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    const handleCategoryClick = (theloaiId, theloaiName) => {
+        const formattedName = theloaiName.replace(/\s+/g, '-').toLowerCase();
+        navigate(`/theloai/${formattedName}`, { state: { theloaiId } });
+    };
+
     return (
         <>
-            {theloais.map((theloai, index) => (
-                <Link to={theloai.path} key={index}>
-                    <button>{theloai.name}</button>
-                </Link>
+            {theloais.slice(0, 6).map((theloai, index) => (
+                <button 
+                    key={index} 
+                    onClick={() => handleCategoryClick(theloai.id, theloai.name)}
+                >
+                    {theloai.name}
+                </button>
             ))}
         </>
     );

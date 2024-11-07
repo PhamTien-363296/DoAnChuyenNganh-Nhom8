@@ -1,6 +1,6 @@
 import Navadmin from "../../components/admin/navigation/Navadmin"
 
-const Baocao = () => {
+const AdminBaocao = () => {
   return (
     <Navadmin>
         TRANG BAO CAO !!!
@@ -8,4 +8,4 @@ const Baocao = () => {
   )
 }
 
-export default Baocao
+export default AdminBaocao
