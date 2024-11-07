@@ -2,6 +2,7 @@ import './Style.css'
 import { HiOutlineBookOpen, HiStar, HiOutlineEye } from "react-icons/hi";
 import { HiOutlineCheckCircle } from "react-icons/hi";
 import { HiOutlineFire } from "react-icons/hi";
+import ListChuong from '../../../manager/listchuong/ListChuong';
 
 function BookItem() {
     return (
@@ -47,7 +48,8 @@ function BookItem() {
                     </div>
                 </div>
                 <div className='book-item-thongtin'>
-                    <p>xin chào</p>
+                    <div className='book-item-tieptucviet' style={{display:'flex', alignItems:'center'}}>Tiếp tục viết</div>
+                    <div className='book-item-list-chuong'><ListChuong/></div>
                 </div>
             </div>
         </div>

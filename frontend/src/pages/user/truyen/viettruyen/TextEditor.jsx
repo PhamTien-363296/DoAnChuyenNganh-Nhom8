@@ -46,14 +46,12 @@ const TextEditor = ({ setText }) => {
                     body: formData
                 });
                 const data = await response.json();
-
-       
+                
                 const range = quillInstance.getSelection();
                 quillInstance.insertEmbed(range.index, 'image', data.url);
             };
         };
 
-      
         quillInstance.getModule('toolbar').addHandler('image', handleImageUpload);
 
 
@@ -67,7 +65,7 @@ const TextEditor = ({ setText }) => {
     }, [setText]);
 
     return (
-        <div id='container' className="container-quill"></div>
+        <div id='container' className="textedit-container"></div>
     );
 };
 

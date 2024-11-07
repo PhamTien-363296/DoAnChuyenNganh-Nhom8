@@ -1,0 +1,24 @@
+.chuong-book-item{
+    background-color: #EBD9BF;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    margin-bottom: 7px;
+}
+
+.chuong-book-item-tieude{
+    margin: 0;
+}
+
+.chuong-book-item-thongtin{
+    display: flex;
+    font-weight: normal;
+}
+
+.chuong-book-item-trangthai{
+    margin: 10px 10px 0 0;
+}
+.chuong-book-item-ngay{
+    margin: 10px 0 0 0;
+}
+
