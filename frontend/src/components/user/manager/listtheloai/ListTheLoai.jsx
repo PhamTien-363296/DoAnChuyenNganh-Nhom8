@@ -25,7 +25,6 @@ function ListTheloaiHome() {
     }, []);
 
     const handleCategoryClick = (theloaiId, theloaiName) => {
-        // Điều hướng đến trang chi tiết thể loại với ID thể loại và tên thể loại trong URL
         navigate(`/theloai/${theloaiName.replace(/\s+/g, '-').toLowerCase()}`, { state: { theloaiId } });
     };
 

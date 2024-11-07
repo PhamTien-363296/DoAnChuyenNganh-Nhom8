@@ -11,6 +11,7 @@
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     padding: 20px;
+    margin-bottom: 15px;
 }
 
 .book-item-image {
@@ -91,18 +92,37 @@
     grid-area: thongtin;
 }
 
-.book-item-tieptucviet{
-    background-color: #EBD9BF;
-    border: 2px solid #DBC8AD;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+.book-item-luachon{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     color: #49372F;
     font-weight: bold;
     font-size: 15px;
-    padding: 10px 0;
+}
+
+.book-item-luachon-cs{
+    background-color: #EBD9BF;
+    border: 2px solid #DBC8AD;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    width: 47%;
+    margin-right: 3%;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.book-item-luachon-tc{
+    background-color: #EBD9BF;
+    border: 2px solid #DBC8AD;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    width: 50%;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
     border-radius: 0 10px 0 0;
+    cursor: pointer;
 }
 
 .book-item-list-chuong{

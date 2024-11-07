@@ -1,4 +1,4 @@
-import BookItem from '../../../../components/user/common/items/bookitem/BookItem';
+import ListBookTacPham from '../../../../components/user/manager/listitem/listbook-tacpham/ListBookTacPham';
 import TaiKhoanLayout from '../../../../layout/user/taikhoanlayout/TaiKhoanLayout';
 import './style.css'
 
@@ -14,7 +14,7 @@ export default function Tacpham() {
                 </div>
 
                 <div className='tp-danhsach'>
-                    <BookItem/>
+                    <ListBookTacPham/>
                 </div>
             </div>
         </TaiKhoanLayout>
