@@ -32,3 +32,11 @@ body {
     height: fit-content;
     margin-bottom: 50px;
 }
+
+.create-story{
+    background-color: #482F0B;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 10%;
+}

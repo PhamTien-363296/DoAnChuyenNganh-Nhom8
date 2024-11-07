@@ -85,3 +85,10 @@ body {
 width: 320px;
 }
 
+.tologin{
+  text-decoration: none;
+  color: #7a5c40;
+  font-weight: bold;
+  margin-left: 300px;
+  margin-top: 25px;
+}

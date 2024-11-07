@@ -17,8 +17,6 @@ const Viettruyen = () => {
   <MainLayout>
       <div className="all">
         <div className="block">
-        <button>nut nhan ne</button>
-        <button>xuatban</button>
           <div className="block-1"
             style={{
               width: '100%',
@@ -33,6 +31,7 @@ const Viettruyen = () => {
             </form>
           </div>
         </div>
+        <button className="create-story">Xuất bản</button>
       </div>
       </MainLayout>
     </>
