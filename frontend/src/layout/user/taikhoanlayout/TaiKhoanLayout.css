@@ -72,3 +72,39 @@
     font-weight: 600;
 }
 
+@media (max-width: 550px) {
+    .taikhoan {
+        grid-template-columns: repeat(6, auto);
+        grid-template-rows: 1fr auto auto;
+        grid-template-areas: 
+            "avata name name name name name"
+            "avata nguoitheodoi nguoitheodoi dangtheodoi dangtheodoi baiviet"
+            "avata null edit edit edit edit";
+    }
+
+    .taikhoan .avata {
+        height: 50px;
+        width: 50px;
+    }
+
+    .taikhoan p{
+        font-size: 12px;
+    }
+
+    .taikhoan .chinhsua {
+        font-size: 15px;
+        margin: 0;
+    }
+}
+
+@media (min-width: 550px) and (max-width: 920px) {
+    .book-item-container {
+        display: grid; 
+        grid-template-columns: 1fr 2fr 2fr; 
+        grid-auto-rows: auto; 
+        grid-template-areas: 
+            "image noidung noidung"
+            "image noidung noidung"
+            "thongtin thongtin thongtin"
+    }
+}

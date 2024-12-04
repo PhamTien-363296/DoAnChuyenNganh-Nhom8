@@ -103,35 +103,33 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
-    height: 400px;
-    background-color: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.25rem;
+    height: 200px;
+    background-color: #f4e6d3;
+    border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #49372F;
 }
 
-#ThemTheloai .header, #SuaTheloai .header {
-    border-bottom: 1px solid #e5e7eb; 
-    padding: 0.5rem 1rem; 
+.btn-cancel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+}
+
+.btn-cancel:hover {
+    color: #444;
+}
+
+.ThemTheloai-content, .SuaTheloai-content{
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
-#ThemTheloai .header h2, #SuaTheloai .header h2 {
-    font-size: 1.125rem; 
-    font-weight: 600; 
-}
-
-#ThemTheloai .content, #SuaTheloai .content {
-    padding: 1rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 1rem;
-}
-
-#ThemTheloai .content p, #SuaTheloai .content p {
-    font-size: 0.875rem;
-    color: #4b5563;
+.ThemTheloai-input, .SuaTheloai-input{
+    padding: 10px 20px;
 }

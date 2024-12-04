@@ -50,6 +50,7 @@ function ListBookDanhMuc() {
                 bookList.map((book, index) => (
                     <BookCard 
                         key={index}
+                        id={book._id}
                         tieuDe={book.tenTruyen}
                         soSao={5}
                         trangThai={book.tinhTrangTruyen}

@@ -44,7 +44,7 @@ function ListBookTacPham() {
                     trangThai={book.trangThaiTruyen}
                     imgSrc={book.anhTruyen}
                 />
-            ))};
+            ))}
         </>
     )
 }

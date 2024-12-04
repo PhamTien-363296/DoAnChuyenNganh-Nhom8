@@ -3,9 +3,10 @@ import './Taotruyen.css';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useQuery } from '@tanstack/react-query';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate  } from 'react-router-dom';
 
 const Taotruyen = () => {
+  const navigate = useNavigate();
   const [coverImage, setCoverImage] = useState(null); 
   const { data: authUser } = useQuery({
     queryKey: ['authUser'],
@@ -75,7 +76,7 @@ const Taotruyen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/truyen/them', formData);
+      const response = await axios.post('/api/truyen/them', formData)
       if (response.status === 201) {
         alert("Thêm thành công!");
         setFormData({
@@ -85,6 +86,7 @@ const Taotruyen = () => {
           theLoaiIdTruyen: '',
         });
         setCoverImage(null);
+        navigate('/taikhoan/tacpham');
       }
     } catch (error) {
       console.error("Lỗi khi thêm truyện:", error);

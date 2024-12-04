@@ -16,8 +16,8 @@
 
 .book-item-image {
     grid-area: image;
-    width: 130px;
-    height: 200px;
+    width: 170px;
+    height: 240px;
     border-radius: 15px;
 }
 
@@ -36,38 +36,41 @@
 
 .book-item-noidung-thongtin{
     display: flex;
-    justify-content: space-between;
     width: 300px;
     font-size: 10px;
 }
 
 .book-item-view{
     background-color: #EBD9BF;
-    padding: 6px;
+    padding: 6px 10px;
     border-radius: 30px;
     display: flex;
     align-items: center;
+    margin-right: 6px;
 }
 
 .book-item-chuong{
     background-color: #EBD9BF;
-    padding: 6px;
+    padding: 6px 10px;
     border-radius: 30px;
     display: flex;
     align-items: center;
+    margin-right: 6px;
 }
 
-.book-item-trangthai{
-    padding: 6px;
+.book-item-thongtin .trangthai{
+    font-size: 10px;
+    padding: 6px 10px;
     border-radius: 30px;
     display: flex;
     align-items: center;
+    margin-right: 6px;
 }
 
 .book-item-danhgia{
     background-color: #49372F;
     color: #FFE100;
-    padding: 6px;
+    padding: 1px 10px;
     border-radius: 30px;
     display: flex;
     align-items: center;
@@ -111,6 +114,13 @@
     display: flex;
     justify-content: center;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.book-item-luachon-cs:hover {
+    background-color: #49372f;
+    color: white;
+    transform: scale(0.95); 
 }
 
 .book-item-luachon-tc{
@@ -123,11 +133,19 @@
     justify-content: center;
     border-radius: 0 10px 0 0;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+.book-item-luachon-tc:hover {
+    background-color: #49372f;
+    color: white;
+    transform: scale(0.95); 
+}
+
 
 .book-item-list-chuong{
     margin-top: 10px;
-    height: 180px;
+    height: 150px;
     overflow-y: auto;
     background-color: #FFF3E2;
     border: 2px solid #DBC8AD;
@@ -150,5 +168,34 @@
 
 .book-item-list-chuong::-webkit-scrollbar-thumb:hover {
     background-color: #DBC8AD; 
+}
+
+@media (max-width: 550px) {
+    .book-item-container {
+        display: grid; 
+        grid-template-columns: 1fr 1fr 1fr; 
+        grid-auto-rows: auto; 
+        grid-template-areas: 
+            "image noidung noidung"
+            "image noidung noidung"
+            "thongtin thongtin thongtin"
+    }
+
+    .book-item-noidung-thongtin{
+        width: 220px;
+        font-size: 9px;
+    }
+}
+
+@media (min-width: 550px) and (max-width: 920px) {
+    .book-item-container {
+        display: grid; 
+        grid-template-columns: 1fr 2fr 2fr; 
+        grid-auto-rows: auto; 
+        grid-template-areas: 
+            "image noidung noidung"
+            "image noidung noidung"
+            "thongtin thongtin thongtin"
+    }
 }
 
