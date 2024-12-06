@@ -1,44 +1,73 @@
 import TrendCard from "../../../common/cards/trendcard/TrendCard";
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
-const books = [
-    { 
-        tieuDe: "Tôi Thấy Hoa Vàng Trên Cỏ Xanh", 
-        tacGia: "Nguyễn Nhật Ánh", 
-        soSao: 4.4, 
-        chuong: 10, 
-        trangThai: "Hoàn thành", 
-        luotXem: "1.000.000", 
-        moTa: "Một câu chuyện về tuổi thơ đầy ắp kỷ niệm của những đứa trẻ vùng quê nghèo...", 
-        imgSrc: "https://placehold.co/160x250" 
-    },
-    { 
-        tieuDe: "Mắt Biếc", 
-        tacGia: "Nguyễn Nhật Ánh", 
-        soSao: 4.7, 
-        chuong: 12, 
-        trangThai: "Đang viết", 
-        luotXem: "850.000", 
-        moTa: "Tình yêu đơn phương của chàng trai dành cho người bạn thời thơ ấu với biết bao đau khổ...", 
-        imgSrc: "https://placehold.co/100x250" 
-    }
-];
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 
 function ListBookTrend() {
+    const [dsTruyen, setdsTruyen] = useState([]);
+    const [batDau, setBatDau] = useState(0);
+    const soLuongTruyen = 2;
+
+    useEffect(() => {
+        const layTruyen = async () => {
+            try {
+                const response = await axios.get('/api/truyen/lay/trangchu/trending');
+                console.log(response.data);
+                setdsTruyen(response.data.truyen);
+            } catch (error) {
+                console.error("Có lỗi khi lấy truyện:", error);
+            }
+        };
+    
+        layTruyen();
+    }, []);
+
+    const handleNext = () => {
+        if (batDau + soLuongTruyen < dsTruyen.length) {
+            setBatDau(batDau + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        if (batDau > 0) {
+            setBatDau(batDau - 1);
+        }
+    };
+
+    const soLuongTruyenGiam = dsTruyen.slice(batDau, batDau + soLuongTruyen);
+
     return (
         <>
-            {books.map((book, index) => (
-                <TrendCard 
-                    key={index}
-                    tieuDe={book.tieuDe}
-                    tacGia={book.tacGia}
-                    soSao={book.soSao}
-                    chuong={book.chuong}
-                    trangThai={book.trangThai}
-                    luotXem={book.luotXem}
-                    moTa={book.moTa}
-                    imgSrc={book.imgSrc}
-                />
-            ))}
+            <div
+                className="trending-button"
+                style={{ marginRight: '10px' }}
+                onClick={handlePrev}
+            >
+                <HiOutlineChevronLeft />
+            </div>
+            <div className="trending-listcard">
+                {soLuongTruyenGiam.map((book, index) => (
+                    <TrendCard 
+                        key={index}
+                        tieuDe={book.tenTruyen}
+                        tacGia={book.tacGiaIdTruyen.username}
+                        soSao={book.soSao}
+                        chuong={book.idCacChuong.length}
+                        trangThai={book.tinhTrangTruyen}
+                        luotXem={book.luotXemTruyen}
+                        moTa={book.moTaTruyen}
+                        imgSrc={book.anhTruyen}
+                    />
+                ))}
+            </div>
+            <div
+                className="trending-button"
+                style={{ marginLeft: '10px' }}
+                onClick={handleNext}
+            >
+                <HiOutlineChevronRight />
+            </div>
         </>
     );
 }

@@ -41,6 +41,17 @@ export const layChuong = async (req, res) => {
     }
 };
 
+export const layTheoId = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const chuong = await Chuong.findById({ _id: id });
+        res.status(200).json(chuong);
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+        console.error("Error in layTheoId controller", error);
+    }
+};
+
 export const suaChuong = async (req, res) => {
     const { tenChuong, noiDungChuong } = req.body;
 

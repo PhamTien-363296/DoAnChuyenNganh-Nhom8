@@ -4,11 +4,14 @@ import { useState } from "react";
 import axios from 'axios'; 
 import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 
 const Viettruyen = () => {
   const [text, setText] = useState(""); 
   const [chapterTitle, setChapterTitle] = useState("");
   const [thongBao, setThongBao] = useState("");
+  
+  const navigate = useNavigate();
 
   const location = useLocation();
   const { idTruyen } = location.state || {}; // Access the passed `id`
@@ -28,7 +31,6 @@ const Viettruyen = () => {
     e.preventDefault();
 
     try {
-   
       const response = await axios.post('/api/chuong/them', {
         tenChuong: chapterTitle,  
         noiDungChuong: text,     
@@ -36,6 +38,7 @@ const Viettruyen = () => {
       });
 
       setThongBao('Xuất bản thành công!');
+      navigate('/taikhoan/tacpham');
       console.log(response.data);
     } catch (error) {
       if (error.response) {

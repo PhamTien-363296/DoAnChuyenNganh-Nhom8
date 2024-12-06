@@ -2,11 +2,13 @@ import { HiOutlineCheckCircle , HiStar, HiOutlineEye, HiOutlinePencilAlt, HiOutl
 
 import PropTypes from 'prop-types';
 import './style.css'
+import { useNavigate } from 'react-router-dom'; 
 
 function BookCard(props) {
-    const { tieuDe, soSao, trangThai, luotXem, imgSrc } = props;
+    const { id, tieuDe, soSao, trangThai, luotXem, imgSrc } = props;
 
     BookCard.propTypes = {
+        id: PropTypes.string,
         tieuDe: PropTypes.string.isRequired,
         soSao: PropTypes.number.isRequired,
         trangThai: PropTypes.string.isRequired,
@@ -14,8 +16,13 @@ function BookCard(props) {
         imgSrc: PropTypes.string.isRequired,
     };
     
+    const navigate = useNavigate();
+    const chiTietTruyen = (tieuDe) => {
+        const urlTieuDe = tieuDe.replace(/\s+/g, '-');
+        navigate(`/chitiettruyen/${urlTieuDe}`, { state: { idTruyen: id } });
+    };
     return (
-        <div className="book-card">
+        <div className="book-card" onClick={() => chiTietTruyen(tieuDe)}>
             <div className="book-card-container">
                 <div className="book-card-thongtin">
                     {trangThai === "Hoàn thành" && (
@@ -42,7 +49,7 @@ function BookCard(props) {
                     </div>
                 </div>
             
-                <div className="book-card-image-container"> {/* Bọc img trong div này */}
+                <div className="book-card-image-container">
                     <img src={imgSrc} alt={tieuDe} />
                 </div>
                 <p className="book-card-tieude">{tieuDe}</p>

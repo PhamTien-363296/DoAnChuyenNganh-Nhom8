@@ -6,6 +6,7 @@ import moment from 'moment';
 import { FaRegEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Toaster, toast } from 'react-hot-toast';
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 function Theloai() {
     const [theloais, setTheloai] = useState([]);
@@ -151,25 +152,25 @@ function Theloai() {
             {hienthiThem && (
                     <div id="ThemTheloai">
                         <div className="header">
-                            <h2>THÊM THỂ LOẠI</h2>
-                            <button type="button" onClick={() => setHienthiThem(false)} className="btn-cancel">Thoát</button>
+                            <h2 >THÊM THỂ LOẠI</h2>
+                            <button type="button" onClick={() => setHienthiThem(false)} className="btn-cancel"><IoIosCloseCircleOutline/></button>
                         </div>
-                        <div className="content">
-                            <form className="space-y-4" onSubmit={handleSubmitThem}>
+                        <div className="ThemTheloai-content">
+                            <form onSubmit={handleSubmitThem}>
                                 <div>
-                                    <label className="block text-gray-600 font-medium mb-1">
-                                        TÊN THỂ LOẠI
+                                    <label className="ThemTheloai-tieude" style={{marginRight:'15px'}}>
+                                        Tên thể loại
                                     </label>
                                     <input
                                         type="text"
                                         name="tieuDeTheLoai"
                                         value={formData.tieuDeTheLoai}
                                         onChange={handleChange}
-                                        className="input-theloai-tieude"
+                                        className="ThemTheloai-input"
                                         required
                                     />
                                 </div>
-                                <button type="submit" className="btn-submit">Xác nhận</button>
+                                <button type="submit" className="btn-submit" style={{backgroundColor:'#49372F', color:'white', marginTop:'20px', padding:'10px 20px',borderRadius:'10px'}}>Xác nhận</button>
                             </form>
                         </div>
                     </div>
@@ -179,12 +180,12 @@ function Theloai() {
                     <div id="SuaTheloai">
                         <div className="header">
                             <h2>SỬA THỂ LOẠI</h2>
-                            <button type="button" onClick={() => setHienthiSua(false)} className="btn-cancel">Thoát</button>
+                            <button type="button" onClick={() => setHienthiSua(false)} className="btn-cancel"><IoIosCloseCircleOutline/></button>
                         </div>
-                        <div className="content">
-                            <form className="space-y-4" onSubmit={handleSubmitSua}>
+                        <div className="SuaTheloai-content">
+                            <form onSubmit={handleSubmitSua}>
                                 <div>
-                                    <label className="block text-gray-600 font-medium mb-1">
+                                    <label className="SuaTheloai-tieude" style={{marginRight:'15px'}}>
                                         TÊN THỂ LOẠI
                                     </label>
                                     <input
@@ -192,11 +193,11 @@ function Theloai() {
                                         name="tieuDeTheLoai"
                                         value={formData.tieuDeTheLoai}
                                         onChange={handleChange}
-                                        className="input-theloai-tieude"
+                                        className="SuaTheloai-input"
                                         required
                                     />
                                 </div>
-                                <button type="submit" className="btn-submit">Xác nhận</button>
+                                <button type="submit" className="btn-submit" style={{backgroundColor:'#49372F', color:'white', marginTop:'20px', padding:'10px 20px',borderRadius:'10px'}}>Xác nhận</button>
                             </form>
                         </div>
                     </div>

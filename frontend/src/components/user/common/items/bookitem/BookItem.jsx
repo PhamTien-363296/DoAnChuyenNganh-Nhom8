@@ -1,6 +1,6 @@
 import './Style.css'
 import { HiOutlineBookOpen, HiStar, HiOutlineEye } from "react-icons/hi";
-import { HiOutlineCheckCircle } from "react-icons/hi";
+import { HiOutlineCheckCircle , HiOutlinePencilAlt, HiOutlineMinusCircle } from "react-icons/hi";
 import { HiOutlineFire } from "react-icons/hi";
 import ListChuong from '../../../manager/listchuong/ListChuong';
 import PropTypes from 'prop-types';
@@ -27,7 +27,7 @@ function BookItem(props) {
 
     const ChinhsuaClick = () => {
         console.log('Chỉnh sửa:', tenTruyen);
-        
+        navigate('/suatruyen', { state: { idTruyen: idTruyen } });
     };
     
     const ThemChuongClick = () => {
@@ -54,9 +54,25 @@ function BookItem(props) {
                             <HiOutlineBookOpen />
                             <span>{chuong} Chương</span>
                         </div>
-                        <div className="book-item-trangthai" style={{backgroundColor: 'rgba(0, 255, 68, 0.2)', color: '#066C21' }}>
-                            <HiOutlineCheckCircle />
-                            <span style={{marginLeft:'3px'}}>{tinhTrang}</span>
+                        <div className="book-item-thongtin">
+                            {tinhTrang === "Hoàn thành" && (
+                                <div className='trangthai' style={{backgroundColor: 'rgba(0, 255, 68, 0.2)', color: '#066C21'}}>
+                                    <HiOutlineCheckCircle />
+                                    <span style={{marginLeft:'3px'}}>{tinhTrang}</span>
+                                </div>
+                            )}
+                            {tinhTrang === "Đang viết" && (
+                                <div className='trangthai' style={{backgroundColor: 'rgba(38, 0, 255, 0.2)', color: '#140084' }}>
+                                    <HiOutlinePencilAlt />
+                                    <span style={{marginLeft:'3px'}}>{tinhTrang}</span>
+                                </div>
+                            )}
+                            {tinhTrang === "Tạm dừng" && (
+                                <div className='trangthai' style={{backgroundColor: 'rgba(255, 0, 0, 0.2)', color: '#7D0000' }}>
+                                    <HiOutlineMinusCircle />
+                                    <span style={{marginLeft:'3px'}}>{tinhTrang}</span>
+                                </div>
+                            )}
                         </div>
                         <div className="book-item-danhgia">
                             <HiStar />
@@ -70,7 +86,12 @@ function BookItem(props) {
                     <hr />
                     <div style={{display:'flex', justifyContent:'space-between'}}>
                         <div style={{display:'flex', alignItems:'center'}}><HiOutlineFire/> <p style={{marginLeft:'5px'}}>HẠNG: 50</p></div>
-                        <p>{trangThai}</p>
+                        {trangThai === "Công khai" && (
+                            <p style={{ textTransform: 'uppercase', color:'#066C21', fontWeight:'bold', fontSize:'20px'}}>{trangThai}</p>
+                        )}
+                        {trangThai === "Riêng tư" && (
+                            <p style={{ textTransform: 'uppercase', color:'#140084', fontWeight:'bold', fontSize:'20px'}}>{trangThai}</p>
+                        )}
                     </div>
                 </div>
                 <div className='book-item-thongtin'>

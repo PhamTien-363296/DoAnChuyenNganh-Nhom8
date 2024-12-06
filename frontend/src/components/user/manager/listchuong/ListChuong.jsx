@@ -13,7 +13,7 @@ function ListChuong({ idTruyen }) {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get(`/api/chuong/${idTruyen}`);
+                const response = await axios.get(`/api/chuong/lay/${idTruyen}`);
                 const chuongName = response.data.map(chuong => ({
                     id: chuong._id,
                     tenChuong: chuong.tenChuong,
@@ -34,6 +34,7 @@ function ListChuong({ idTruyen }) {
             {chuongs.map((chuong, index) => (
                 <ChuongItem 
                     key={index}
+                    stt={index+1}
                     idChuong={chuong.id}
                     tenChuong={chuong.tenChuong}
                     trangThai={chuong.trangThaiChuong}

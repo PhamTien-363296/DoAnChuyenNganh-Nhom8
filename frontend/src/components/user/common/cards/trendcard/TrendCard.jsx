@@ -24,7 +24,7 @@ function TrendCard(props) {
                     <div className="Trending">Trending</div>
                 </div>
                 <h1 className="trending-card-noidung-tieude">{tieuDe}</h1>
-                <p className="trending-card-noidung-tacgia">Tác giả : {tacGia}</p>
+                <p className="trending-card-noidung-tacgia">Tác giả: {tacGia}</p>
 
                 <div className="trending-card-noidung-thongtin">
                     <div className="view">
@@ -59,7 +59,7 @@ function TrendCard(props) {
                     </div>
                 </div>
                 <div className="trending-card-noidung-mota">
-                    <h2 className="tieude">Mô tả :</h2>
+                    <h2 className="tieude">Mô tả:</h2>
                     <p className="mota">
                         {moTa}
                     </p>

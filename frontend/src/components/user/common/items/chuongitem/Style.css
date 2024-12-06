@@ -2,10 +2,17 @@
     background-color: #EBD9BF;
     width: auto;
     height: auto;
-    padding: 10px;
-    margin-bottom: 7px;
+    padding: 7px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.chuong-book-item:hover{
+    background-color: #49372f;
+    color: white;
+    transform: scale(0.95); 
+}
 .chuong-book-item-tieude{
     margin: 0;
 }

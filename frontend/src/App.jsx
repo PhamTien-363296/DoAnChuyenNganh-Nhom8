@@ -16,13 +16,15 @@ import Danhmuc from './pages/user/danhmuc/Danhmuc';
 import Dangnhap from './pages/user/auth/Dangnhap/Dangnhap';
 import Dangky from './pages/user/auth/Dangky/Dangky';
 import Baiviet from './pages/user/taikhoan/baiviet/Baiviet';
-import Tacpham from './pages/user/taikhoan/tacpham/TacPham';
+import Tacpham from './pages/user/taikhoan/tacpham/Tacpham';
 import Lichsu from './pages/user/taikhoan/lichsu/LichSu';
 import Yeuthich from './pages/user/taikhoan/yeuthich/YeuThich';
 import Vitien from './pages/user/taikhoan/vitien/ViTien';
 import UserBaoCao from './pages/user/taikhoan/baocao/BaoCao';
 import Theloai from './pages/admin/theloai/Theloai';
 import AdminBaocao from './pages/admin/Baocao';
+import SuaTruyen from './pages/user/truyen/suatruyen/SuaTruyen';
+import SuaChuong from './pages/user/truyen/suachuong/SuaChuong';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -62,9 +64,11 @@ function App() {
       <Route path="/taikhoan/baocao" element={<UserBaoCao />} />
 
       {/* Các trang truyện */}
-      <Route path="/chitiettruyen" element={<Chitiettruyen />} />
+      <Route path="/chitiettruyen/:tieude" element={<Chitiettruyen />} />
       <Route path="/viettruyen" element={<Viettruyen />} />
       <Route path="/taotruyen" element={<Taotruyen authUser={authUser} />} />
+      <Route path="/suatruyen" element={<SuaTruyen />} />
+      <Route path="/suachuong" element={<SuaChuong />} />
 
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />
