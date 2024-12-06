@@ -57,7 +57,7 @@ const TextEditor = ({ setText }) => {
 
         quillInstance.on('text-change', () => {
             const content = quillInstance.root.innerHTML; 
-            console.log("Content changed: ", content); 
+            //console.log("Content changed: ", content); 
             setText(content); 
         });
 

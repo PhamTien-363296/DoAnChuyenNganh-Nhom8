@@ -1,5 +1,5 @@
 import '../viettruyen/Viettruyen.css';
-import TextEditor from "../viettruyen/TextEditor";
+import TextEditor from "./TextEditor";
 import { useState, useEffect } from "react";
 import axios from 'axios'; 
 import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
@@ -7,26 +7,19 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; 
 
 const SuaChuong = () => {
-    const [text, setText] = useState(""); 
-    const [chapterTitle, setChapterTitle] = useState("");
-    const [thongBao, setThongBao] = useState("");
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { idChuong } = location.state || {}; // Lấy id chương từ URL hoặc trạng thái
+
+    const [text, setText] = useState("");  // Lưu nội dung chương (HTML)
+    const [chapterTitle, setChapterTitle] = useState(""); // Tên chương
+    const [thongBao, setThongBao] = useState(""); // Thông báo
     const [formData, setFormData] = useState({
         tenChuong: '',
         noiDungChuong: '',
     });
-    
-    const navigate = useNavigate();
 
-    const location = useLocation();
-    const { idChuong } = location.state || {};
-
-    console.log('ID:', idChuong);
-
-    const replaceSpacesWithNbsp = (content) => {
-        if (!content) return content;
-        return content.replace(/ /g, '&nbsp;');
-    };
-
+    // Cập nhật nội dung khi người dùng thay đổi
     const handleTitleChange = (e) => {
         setChapterTitle(e.target.value); 
     };
@@ -35,28 +28,25 @@ const SuaChuong = () => {
         e.preventDefault();
 
         try {
-        const response = await axios.post('/api/chuong/them', {
-            tenChuong: chapterTitle,  
-            noiDungChuong: text,     
+            const response = await axios.post('/api/chuong/them', {
+                tenChuong: chapterTitle,  
+                noiDungChuong: text, // Dữ liệu chính thức sẽ lấy từ Quill (text)
+            });
 
-        });
-
-        setThongBao('Xuất bản thành công!');
-        navigate('/taikhoan/tacpham');
-        console.log(response.data);
+            setThongBao('Sửa chương thành công!');
+            navigate('/taikhoan/tacpham'); // Sau khi sửa, chuyển hướng
+            console.log(response.data);
         } catch (error) {
-        if (error.response) {
-            console.error('Lỗi từ server:', error.response.data);
-            setThongBao(error.response.data.message || 'Lỗi xuất bản. Vui lòng thử lại!');
-        } else {
-            console.error('Lỗi không xác định:', error.message);
-            setThongBao('Lỗi không xác định. Vui lòng thử lại sau!');
-        }
+            console.error('Lỗi khi gửi dữ liệu:', error);
+            setThongBao(error.response?.data?.message || 'Lỗi xuất bản. Vui lòng thử lại!');
         }
     };
 
+    // Lấy dữ liệu chương từ API
     useEffect(() => {
-        fetchChuong(idChuong)
+        if (idChuong) {
+            fetchChuong(idChuong);
+        }
     }, [idChuong]);
 
     const fetchChuong = async (idChuong) => {
@@ -67,43 +57,41 @@ const SuaChuong = () => {
                 tenChuong: chuong.tenChuong,
                 noiDungChuong: chuong.noiDungChuong,
             });
-            setText(chuong.noiDungChuong); 
+            setText(chuong.noiDungChuong);  // Cập nhật nội dung chương
         } catch (error) {
             console.error("Có lỗi xảy ra khi lấy chương:", error);
         }
     };
 
     return (
-        <>
         <MainLayout>
             <div className="all">
-            <div className="block">
-                <input
-                    type="text"
-                    value={formData.tenChuong}
-                    onChange={handleTitleChange}
-                    placeholder="Nhập tên chương"
-                    className="chapter-title-input"
-                />
-                <div className="block-1"
-                    style={{
-                        width: '100%',
-                        wordWrap: 'break-word',
-                        whiteSpace: 'pre-wrap',
-                    }}
-                    dangerouslySetInnerHTML={{ __html: replaceSpacesWithNbsp(text) || "<br />" }}
-                />
-                <div className="block-2">
-                <form>
-                    <TextEditor setText={setText} value={text} />
-                </form>
+                <div className="block">
+                    <input
+                        type="text"
+                        value={formData.tenChuong}
+                        onChange={handleTitleChange}
+                        placeholder="Nhập tên chương"
+                        className="chapter-title-input"
+                    />
+                    <div className="block-1"
+                        style={{
+                            width: '100%',
+                            wordWrap: 'break-word',
+                            whiteSpace: 'pre-wrap',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: text || "<br />" }}  // Hiển thị nội dung cũ từ Quill
+                    />
+                    <div className="block-2">
+                        <form>
+                            <TextEditor setText={setText} value={text} />
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <button className="create-story" onClick={handleViettruyen}>Xuất bản</button>
-            {thongBao && <div className="thong-bao">{thongBao}</div>}
+                <button className="create-story" onClick={handleViettruyen}>Xuất bản</button>
+                {thongBao && <div className="thong-bao">{thongBao}</div>}
             </div>
         </MainLayout>
-        </>
     );
 };
 

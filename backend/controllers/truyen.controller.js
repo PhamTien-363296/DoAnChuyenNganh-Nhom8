@@ -175,32 +175,13 @@ export const capNhatLuotXem = async (req, res) => {
     }
 };
 
-export const layTruyenTrangChu = async (req, res) => {
-    const { sort = "phobien", limit = 6 } = req.query;
+export const layTruyenTrending = async (req, res) => {
     try {
-        let sortQuery;
-        switch (sort) {
-            case 'phobien':
-                sortQuery = { luotXemTruyen: -1 }; // Sắp xếp theo lượt xem (giảm dần)
-                break;
-            case 'moinhat':
-                sortQuery = { createdAt: -1 }; // Sắp xếp theo ngày tạo (mới nhất)
-                break;
-            case 'nhieunguoidat':
-                sortQuery = { soLuongDonHang: -1 }; // Sắp xếp theo số lượng đơn hàng (giảm dần)
-                break;
-            case 'giatang':
-                sortQuery = { 'phanLoai.coban.giaLoai': 1 }; // Sắp xếp theo giá (tăng dần)
-                break;
-            case 'giagiam':
-                sortQuery = { 'phanLoai.coban.giaLoai': -1 }; // Sắp xếp theo giá (tăng dần)
-                break;
-        }
-
+        let limit = 6;
         const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
-        .populate("tacGiaIdTruyen")
-        .sort(sortQuery)
-        .limit(limit);
+            .populate("tacGiaIdTruyen")
+            .sort({ luotXemTruyen: -1 })
+            .limit(limit);
 
         if (truyen.length === 0) {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
@@ -209,6 +190,43 @@ export const layTruyenTrangChu = async (req, res) => {
         return res.status(200).json({truyen});
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
-        console.log("Lỗi lấy truyện trang chủ controller", error.message);
+        console.log("Lỗi lấy truyện treding controller", error.message);
+    }
+};
+
+export const layTruyenHoanThanh = async (req, res) => {
+    try {
+        let limit = 6;
+        const truyen = await Truyen.find({ trangThaiTruyen: "Công khai", tinhTrangTruyen: "Hoàn thành" })
+            .populate("tacGiaIdTruyen")
+            .limit(limit);
+
+        if (truyen.length === 0) {
+            return res.status(404).json({ message: 'Không có Truyện công khai' });
+        }
+
+        return res.status(200).json({truyen});
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi 500" });
+        console.log("Lỗi lấy truyện hoàn thành controller", error.message);
+    }
+};
+
+export const layTruyenHot = async (req, res) => {
+    try {
+        let limit = 6;
+        const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
+            .populate("tacGiaIdTruyen")
+            .sort({ luotXemTruyen: -1 })
+            .limit(limit);
+
+        if (truyen.length === 0) {
+            return res.status(404).json({ message: 'Không có Truyện công khai' });
+        }
+
+        return res.status(200).json({truyen});
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi 500" });
+        console.log("Lỗi lấy truyện hot controller", error.message);
     }
 };

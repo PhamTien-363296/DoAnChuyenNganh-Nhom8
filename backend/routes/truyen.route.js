@@ -1,5 +1,5 @@
 import express from "express"
-import { layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrangChu} from "../controllers/truyen.controller.js"
+import { layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrending, layTruyenHoanThanh, layTruyenHot} from "../controllers/truyen.controller.js"
 import { protectRoute } from "../middleware/protectRoute.js"
 
 const router = express.Router()
@@ -15,6 +15,10 @@ router.patch("/sua/:id",protectRoute,suaTruyen)
 router.delete("/:id", xoaTruyen)
 
 router.patch("/capnhat/luotxem/:id",capNhatLuotXem)
-router.get("/lay/trangchu",layTruyenTrangChu)
+
+router.get("/lay/trangchu/trending",layTruyenTrending)
+router.get("/lay/trangchu/hoanthanh",layTruyenHoanThanh)
+router.get("/lay/trangchu/hot",layTruyenHot)
+
 
 export default router

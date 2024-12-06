@@ -1,4 +1,3 @@
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 
 import { Link } from "react-router-dom";
 
@@ -27,11 +26,7 @@ export default function Trangchu() {
             </div>
 
             <div className="trending-list">
-                <div className="trending-button" style={{ marginRight: '10px' }}><HiOutlineChevronLeft /></div>
-                <div className="trending-listcard">
-                    <ListBookTrend/>
-                </div>
-                <div className="trending-button" style={{ marginLeft: '10px' }}><HiOutlineChevronRight /></div>
+                <ListBookTrend/>
             </div>
 
             <div className="hot-list">

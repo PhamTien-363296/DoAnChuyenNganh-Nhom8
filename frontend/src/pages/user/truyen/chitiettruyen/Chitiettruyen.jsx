@@ -109,7 +109,7 @@ function Chitiettruyen() {
 
                   <div className="title-color">
                     <FaBookOpen className="icon"/>
-                    <strong>{truyen.soChuong || 10} chương</strong>
+                    <strong>{truyen.idCacChuong.length || 10} chương</strong>
                   </div>
                 </div>
 
