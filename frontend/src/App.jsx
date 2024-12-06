@@ -25,6 +25,7 @@ import Theloai from './pages/admin/theloai/Theloai';
 import AdminBaocao from './pages/admin/Baocao';
 import SuaTruyen from './pages/user/truyen/suatruyen/SuaTruyen';
 import SuaChuong from './pages/user/truyen/suachuong/SuaChuong';
+import ChiTietChuong from './pages/user/truyen/chitietchuong/ChiTietChuong';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -69,6 +70,8 @@ function App() {
       <Route path="/taotruyen" element={<Taotruyen authUser={authUser} />} />
       <Route path="/suatruyen" element={<SuaTruyen />} />
       <Route path="/suachuong" element={<SuaChuong />} />
+      <Route path="/:tenTruyen/:tenChuong" element={<ChiTietChuong />} />
+
 
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />

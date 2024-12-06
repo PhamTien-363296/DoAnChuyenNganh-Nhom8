@@ -12,7 +12,7 @@ function TrendCard(props) {
         soSao: PropTypes.number.isRequired,
         chuong: PropTypes.number.isRequired,
         trangThai: PropTypes.string.isRequired,
-        luotXem: PropTypes.string.isRequired,
+        luotXem: PropTypes.number.isRequired,
         moTa: PropTypes.string.isRequired,
         imgSrc: PropTypes.string.isRequired,
     };

@@ -12,7 +12,7 @@ function BookCard(props) {
         tieuDe: PropTypes.string.isRequired,
         soSao: PropTypes.number.isRequired,
         trangThai: PropTypes.string.isRequired,
-        luotXem: PropTypes.string.isRequired,
+        luotXem: PropTypes.number.isRequired,
         imgSrc: PropTypes.string.isRequired,
     };
     

@@ -2,6 +2,7 @@ import Truyen from "../models/truyen.model.js";
 import {v2 as cloudinary} from 'cloudinary'
 import Nguoidung from "../models/nguoidung.model.js";
 import Theloai from "../models/theloai.model.js";
+import Danhgia from "../models/danhgia.model.js";
 
 export const layTatcaTruyen = async (req, res) => {
     try {
@@ -47,8 +48,33 @@ export const layTruyenTheoNguoidung = async (req, res) => {
 export const layTheoId = async (req, res) => {
     const { id } = req.params;
     try {
-        const truyen = await Truyen.findById(id).populate("tacGiaIdTruyen").populate("theLoaiIdTruyen");
-        res.status(200).json(truyen);
+        const truyen = await Truyen.findById(id)
+        .populate("tacGiaIdTruyen")
+        .populate("theLoaiIdTruyen")
+        .populate({
+            path: "idCacChuong",
+            match: { trangThaiChuong: "Công khai" },
+        });
+
+        const danhGia = await Danhgia.find({ truyenIdDG: id })
+
+        const soLuongDanhGia = danhGia.length;
+        const tongSoSao = danhGia.reduce((total, danhGia) => total + danhGia.soSaoDG, 0);
+        let trungBinhSao = 0;
+
+        if (soLuongDanhGia > 0) {
+            trungBinhSao = tongSoSao / soLuongDanhGia;
+            if (trungBinhSao % 1 !== 0) {
+                trungBinhSao = trungBinhSao.toFixed(2);
+            } else {
+                trungBinhSao = trungBinhSao.toString();
+            }
+        }
+        
+        res.status(200).json({
+            truyen,
+            trungBinhSao
+        });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
         console.error("Error in layTheoId controller", error);
@@ -180,6 +206,10 @@ export const layTruyenTrending = async (req, res) => {
         let limit = 6;
         const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
             .populate("tacGiaIdTruyen")
+            .populate({
+                path: "idCacChuong",
+                match: { trangThaiChuong: "Công khai" },
+            })
             .sort({ luotXemTruyen: -1 })
             .limit(limit);
 
