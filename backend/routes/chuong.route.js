@@ -7,7 +7,7 @@ const router = express.Router()
 router.post("/them",protectRoute,themChuong)
 router.patch("/sua/:id",protectRoute,suaChuong)
 router.delete("/:id",protectRoute,xoaChuong)
-router.get("/lay/:id",layChuong)
-router.get("/laytheoid/:id",layTheoId)
+router.get("/lay/:id",protectRoute,layChuong)
+router.get("/laytheoid/:id",protectRoute,layTheoId)
 
 export default router

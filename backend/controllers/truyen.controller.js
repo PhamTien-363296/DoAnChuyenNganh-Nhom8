@@ -106,6 +106,8 @@ export const layTruyenTheoNguoidung = async (req, res) => {
 
 export const layTheoId = async (req, res) => {
     const { id } = req.params;
+    const idND = req.nguoidung._id;
+
     try {
         const truyen = await Truyen.findById(id)
         .populate("tacGiaIdTruyen")
@@ -130,9 +132,17 @@ export const layTheoId = async (req, res) => {
             }
         }
         
+        const nguoiDung = await Nguoidung.findById(idND);
+        const lichSuDoc = nguoiDung ? nguoiDung.lichSuND : [];
+
+        const chaptersWithStatus = truyen.idCacChuong.map((chuong) => {
+            const isRead = lichSuDoc.some((history) => history.chuongId.toString() === chuong._id.toString());
+            return { ...chuong._doc, isRead };
+        });
+
         res.status(200).json({
-            truyen,
-            trungBinhSao
+            truyen: { ...truyen._doc, idCacChuong: chaptersWithStatus },
+            trungBinhSao,
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });

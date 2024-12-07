@@ -31,6 +31,7 @@ function ChiTietChuong() {
         }
     };
 
+
     if (isLoading) {
         return (
             <MainLayout>

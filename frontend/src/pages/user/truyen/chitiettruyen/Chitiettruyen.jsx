@@ -35,6 +35,7 @@ function Chitiettruyen() {
   const layTruyen = async (id) => {
       try {
           const response = await axios.get(`/api/truyen/laytheoid/${id}`);
+          console.log(response.data)
           const truyenData = response.data.truyen; 
           setTruyen(truyenData); 
           setTrungBinhSao(response.data.trungBinhSao);
@@ -59,13 +60,13 @@ function Chitiettruyen() {
     const tenTruyen = truyen.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
     const chuongDauTien = truyen.idCacChuong[0];
     const tenChuong = chuongDauTien.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
-    navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: chuongDauTien._id } });
+    navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: chuongDauTien._id} });
   };
 
   const DocChuong = (id, ten) => {
     const tenTruyen = truyen.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
     const tenChuong = ten.trim().replace(/\s+/g, '-').toLowerCase();
-    navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: id } });
+    navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: id} });
   };
 
   if (!truyen) return <div>Loading...</div>;
@@ -158,12 +159,15 @@ function Chitiettruyen() {
             <div className="section">
               <h2>Mục lục</h2>
               <div className="chapter">
-                {truyen.idCacChuong && truyen.idCacChuong.map((chuong, index) => (
-                  <div key={index} className="chapter-item" onClick={() => DocChuong(chuong._id, chuong.tenChuong)}>
-                    <p>{chuong.tenChuong}</p>
-                    <p>{moment(chuong.createdAt).format('DD/MM/YYYY')}</p>
-                  </div>
-                ))}
+                  {truyen.idCacChuong && truyen.idCacChuong.map((chuong, index) => (
+                      <div key={index} className={`chapter-item ${chuong.isRead ? 'read' : 'unread'}`} onClick={() => DocChuong(chuong._id, chuong.tenChuong)}>
+                          <div style={{display:'flex'}}>
+                            <p>{chuong.tenChuong}</p>
+                            <p style={{marginLeft:'10px'}}>( Ngày đăng: {moment(chuong.createdAt).format('DD/MM/YYYY')} )</p>
+                          </div>
+                          {chuong.isRead ? <p>Đã đọc</p> : <p>Chưa đọc</p>}
+                      </div>
+                  ))}
               </div>
             </div>
 

@@ -55,15 +55,23 @@ const nguoidungSchema = new mongoose.Schema(
 		],
         lichSuND: [
 			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "Lichsu",
-				default: [],
-			},
+				truyenId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Truyen",
+                },
+				chuongId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Chuong",
+                },
+				lastRead: {
+					type: Date,
+				},
+			}
 		],
         yeuThichND: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
-				ref: "Yeuthich",
+				ref: "Truyen",
 				default: [],
 			},
 		],

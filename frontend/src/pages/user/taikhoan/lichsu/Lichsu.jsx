@@ -1,9 +1,10 @@
 import TaiKhoanLayout from '../../../../layout/user/taikhoanlayout/TaiKhoanLayout';
+import ListLichSu from '../../../../components/user/manager/listlichsu/ListLichSu';
 
 export default function Lichsu() {
     return (
         <TaiKhoanLayout>
-            <p>Lịch sử</p>
+            <ListLichSu/>
         </TaiKhoanLayout>
     )
 }
