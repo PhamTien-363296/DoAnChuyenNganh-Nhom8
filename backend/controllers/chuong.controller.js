@@ -47,7 +47,7 @@ export const layTheoId = async (req, res) => {
     const idND = req.nguoidung._id;
 
     try {
-        const chuong = await Chuong.findById({ _id: id });
+        const chuong = await Chuong.findById(id).populate("truyenIdChuong");
 
         if (!chuong) {
             return res.status(404).json({ message: 'Chương không tồn tại' });
@@ -123,5 +123,50 @@ export const xoaChuong = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.log("Lỗi xoaChuong controller", error.message);
+    }
+};
+
+export const themBinhLuan = async (req, res) => {
+    const { chuongId, noiDungBinhLuanChuong } = req.body;
+    const nguoiDungIdChuong = req.nguoidung._id;
+
+    try {
+        const chuong = await Chuong.findById(chuongId);
+        if (!chuong) {
+            return res.status(404).json({ error: "Không tìm thấy chương!" });
+        }
+
+        const newComment = {
+            noiDungBinhLuanChuong,
+            nguoiDungIdChuong,
+        };
+
+        chuong.binhLuanChuong.push(newComment);
+        await chuong.save();
+
+        res.status(201).json({ message: "Bình luận đã được thêm thành công!" });
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi server!" });
+        console.error("Error in themBinhLuan controller:", error);
+    }
+};
+
+
+export const layBinhLuan = async (req, res) => {
+    const { chuongId } = req.params;
+
+    try {
+        const chuong = await Chuong.findById(chuongId)
+            .populate("binhLuanChuong.nguoiDungIdChuong", "username anhDaiDienND")
+            .select("binhLuanChuong");
+
+        if (!chuong) {
+            return res.status(404).json({ error: "Không tìm thấy chương!" });
+        }
+
+        res.status(200).json(chuong.binhLuanChuong);
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi server!" });
+        console.error("Error in layBinhLuan controller:", error);
     }
 };
