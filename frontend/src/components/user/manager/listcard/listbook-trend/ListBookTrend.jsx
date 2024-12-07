@@ -7,19 +7,29 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 function ListBookTrend() {
     const [dsTruyen, setdsTruyen] = useState([]);
     const [batDau, setBatDau] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     const soLuongTruyen = 2;
 
     useEffect(() => {
         const layTruyen = async () => {
             try {
                 const response = await axios.get('/api/truyen/lay/trangchu/trending');
-                console.log(response.data);
-                setdsTruyen(response.data.truyen);
+                
+                const truyenData = response.data.truyenWithRatings.map(item => ({
+                    ...item.truyen,
+                    trungBinhSao: item.trungBinhSao
+                }));
+                
+                setdsTruyen(truyenData);
+                setLoading(false);
             } catch (error) {
                 console.error("Có lỗi khi lấy truyện:", error);
+                setLoading(false);
             }
         };
-    
+
         layTruyen();
     }, []);
 
@@ -34,6 +44,14 @@ function ListBookTrend() {
             setBatDau(batDau - 1);
         }
     };
+
+    if (loading) {
+        return <div>Đang tải dữ liệu...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     const soLuongTruyenGiam = dsTruyen.slice(batDau, batDau + soLuongTruyen);
 
@@ -50,14 +68,16 @@ function ListBookTrend() {
                 {soLuongTruyenGiam.map((book, index) => (
                     <TrendCard 
                         key={index}
+                        idTruyen={book._id}
                         tieuDe={book.tenTruyen}
                         tacGia={book.tacGiaIdTruyen.username}
-                        soSao={book.soSao}
+                        soSao={book.trungBinhSao}
                         chuong={book.idCacChuong.length}
                         trangThai={book.tinhTrangTruyen}
                         luotXem={book.luotXemTruyen}
                         moTa={book.moTaTruyen}
                         imgSrc={book.anhTruyen}
+                        idCacChuong={book.idCacChuong}
                     />
                 ))}
             </div>

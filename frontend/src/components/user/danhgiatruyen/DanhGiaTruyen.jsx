@@ -9,15 +9,19 @@ function DanhGiaTruyen({ idTruyen }) {
     const [comment, setComment] = useState('');
     const [ratingsList, setRatingsList] = useState([]);
     const [hasRated, setHasRated] = useState(false);
-    console.log("Truyện nè:",idTruyen);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const kiemTraDanhGia = async () => {
             try {
                 const resKT = await axios.get(`/api/danhgia/kiemtra/${idTruyen}`);
                 setHasRated(resKT.data.hasRated);
+                setLoading(false);
             } catch (error) {
-                console.error("Có lỗi khi kiểm tra đánh giá:", error);
+                setError("Có lỗi khi kiểm tra.", error);
+
+                setLoading(false);
             }
         };
 
@@ -29,8 +33,10 @@ function DanhGiaTruyen({ idTruyen }) {
             try {
                 const resLay = await axios.get(`/api/danhgia/lay/${idTruyen}`);
                 setRatingsList(resLay.data);
+                setLoading(false);
             } catch (error) {
-                console.error("Có lỗi khi lấy đánh giá:", error);
+                setError("Có lỗi khi lấy đánh giá.", error);
+                setLoading(false);
             }
         };
 
@@ -54,13 +60,22 @@ function DanhGiaTruyen({ idTruyen }) {
             setComment('');
             window.location.reload();
         } catch (error) {
-            console.error("Có lỗi khi thêm đánh giá:", error);
+            setError("Có lỗi khi thêm đánh giá.", error);
+            setLoading(false);
         }
     };
 
     DanhGiaTruyen.propTypes = {
         idTruyen: PropTypes.string.isRequired,
     };
+
+    if (loading) {
+        return <div>Đang tải dữ liệu...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className="rating">

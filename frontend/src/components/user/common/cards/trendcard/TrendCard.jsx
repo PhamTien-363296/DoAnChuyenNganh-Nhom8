@@ -2,23 +2,39 @@ import { HiOutlineHeart, HiOutlineBookOpen, HiStar, HiOutlineEye } from "react-i
 import { HiOutlineCheckCircle, HiOutlinePencilAlt, HiOutlineMinusCircle } from "react-icons/hi";
 import PropTypes from 'prop-types';
 import './style.css'
+import { useNavigate } from 'react-router-dom'; 
 
 function TrendCard(props) {
-    const { tieuDe,tacGia, soSao, chuong, trangThai, luotXem, moTa, imgSrc } = props;
+    const {idTruyen, tieuDe,tacGia, soSao, chuong, trangThai, luotXem, moTa, imgSrc, idCacChuong } = props;
 
     TrendCard.propTypes = {
+        idTruyen: PropTypes.string.isRequired,
         tieuDe: PropTypes.string.isRequired,
         tacGia: PropTypes.string.isRequired,
-        soSao: PropTypes.number.isRequired,
+        soSao: PropTypes.string.isRequired,
         chuong: PropTypes.number.isRequired,
         trangThai: PropTypes.string.isRequired,
         luotXem: PropTypes.number.isRequired,
         moTa: PropTypes.string.isRequired,
         imgSrc: PropTypes.string.isRequired,
+        idCacChuong: PropTypes.array.isRequired,
     };
-    
+    const navigate = useNavigate();
+    const ChiTietTruyen = (e) => {
+        e.stopPropagation();
+        const tenTruyen = tieuDe.trim().replace(/\s+/g, '-').toLowerCase();
+        navigate(`/chitiettruyen/${tenTruyen}`, { state: { idTruyen: idTruyen } });
+    };
+    const DocNgay = (e) => {
+        e.stopPropagation();
+        const tenTruyen = tieuDe.trim().replace(/\s+/g, '-').toLowerCase();
+        const chuongDauTien = idCacChuong[0];
+        const tenChuong = chuongDauTien.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
+        navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: chuongDauTien._id } });
+    };
+
     return (
-        <div className="trending-card">
+        <div className="trending-card" onClick={ChiTietTruyen}>
             <div className="trending-card-noidung">
                 <div className="trending-card-noidung-Trending">
                     <div className="Trending">Trending</div>
@@ -65,7 +81,7 @@ function TrendCard(props) {
                     </p>
                 </div>
                 <div className="trending-card-noidung-docngay">
-                    <button className="docngay">ĐỌC NGAY</button>
+                    <button className="docngay" onClick={DocNgay}>ĐỌC NGAY</button>
                     <div className="yeuthich"><HiOutlineHeart /></div>
                 </div>
             </div>

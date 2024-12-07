@@ -7,7 +7,35 @@ import Danhgia from "../models/danhgia.model.js";
 export const layTatcaTruyen = async (req, res) => {
     try {
         const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" });
-        res.status(200).json(truyen);
+        const truyenWithRatings = [];
+
+        for (let i = 0; i < truyen.length; i++) {
+            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
+
+            const soLuongDanhGia = danhGia.length;
+            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
+            let trungBinhSao = 0;
+
+            if (soLuongDanhGia > 0) {
+                trungBinhSao = tongSoSao / soLuongDanhGia;
+                if (trungBinhSao % 1 !== 0) {
+                    trungBinhSao = trungBinhSao.toFixed(1);
+                } else {
+                    trungBinhSao = trungBinhSao.toString();
+                }
+            }
+
+            truyen[i].trungBinhSao = trungBinhSao;
+
+            truyenWithRatings.push({
+                truyen: truyen[i],
+                trungBinhSao: trungBinhSao || '0'
+            });
+        }
+
+        res.status(200).json({
+            truyenWithRatings
+        });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
         console.error("Error in layTatcaTruyen controller", error);
@@ -18,7 +46,38 @@ export const layTruyenTheoTheloai = async (req, res) => {
     const { id } = req.params;
     try {
         const truyen = await Truyen.find({ theLoaiIdTruyen: id, trangThaiTruyen: "Công khai" });
-        res.status(200).json(truyen);
+        if (!truyen.length) {
+            return res.status(404).json({ message: "No stories found in this category." });
+        }
+        const truyenWithRatings = [];
+
+        for (let i = 0; i < truyen.length; i++) {
+            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
+
+            const soLuongDanhGia = danhGia.length;
+            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
+            let trungBinhSao = 0;
+
+            if (soLuongDanhGia > 0) {
+                trungBinhSao = tongSoSao / soLuongDanhGia;
+                if (trungBinhSao % 1 !== 0) {
+                    trungBinhSao = trungBinhSao.toFixed(1);
+                } else {
+                    trungBinhSao = trungBinhSao.toString();
+                }
+            }
+
+            truyen[i].trungBinhSao = trungBinhSao;
+
+            truyenWithRatings.push({
+                truyen: truyen[i],
+                trungBinhSao: trungBinhSao || '0'
+            });
+        }
+
+        res.status(200).json({
+            truyenWithRatings
+        });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
         console.error("Error in layTruyenTheoTheloai controller", error);
@@ -65,7 +124,7 @@ export const layTheoId = async (req, res) => {
         if (soLuongDanhGia > 0) {
             trungBinhSao = tongSoSao / soLuongDanhGia;
             if (trungBinhSao % 1 !== 0) {
-                trungBinhSao = trungBinhSao.toFixed(2);
+                trungBinhSao = trungBinhSao.toFixed(1);
             } else {
                 trungBinhSao = trungBinhSao.toString();
             }
@@ -217,7 +276,35 @@ export const layTruyenTrending = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        return res.status(200).json({truyen});
+        const truyenWithRatings = [];
+
+        for (let i = 0; i < truyen.length; i++) {
+            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
+
+            const soLuongDanhGia = danhGia.length;
+            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
+            let trungBinhSao = 0;
+
+            if (soLuongDanhGia > 0) {
+                trungBinhSao = tongSoSao / soLuongDanhGia;
+                if (trungBinhSao % 1 !== 0) {
+                    trungBinhSao = trungBinhSao.toFixed(1);
+                } else {
+                    trungBinhSao = trungBinhSao.toString();
+                }
+            }
+
+            truyen[i].trungBinhSao = trungBinhSao;
+
+            truyenWithRatings.push({
+                truyen: truyen[i],
+                trungBinhSao: trungBinhSao || '0'
+            });
+        }
+
+        res.status(200).json({
+            truyenWithRatings
+        });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.log("Lỗi lấy truyện treding controller", error.message);
@@ -235,7 +322,35 @@ export const layTruyenHoanThanh = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        return res.status(200).json({truyen});
+        const truyenWithRatings = [];
+
+        for (let i = 0; i < truyen.length; i++) {
+            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
+
+            const soLuongDanhGia = danhGia.length;
+            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
+            let trungBinhSao = 0;
+
+            if (soLuongDanhGia > 0) {
+                trungBinhSao = tongSoSao / soLuongDanhGia;
+                if (trungBinhSao % 1 !== 0) {
+                    trungBinhSao = trungBinhSao.toFixed(1);
+                } else {
+                    trungBinhSao = trungBinhSao.toString();
+                }
+            }
+
+            truyen[i].trungBinhSao = trungBinhSao;
+
+            truyenWithRatings.push({
+                truyen: truyen[i],
+                trungBinhSao: trungBinhSao || '0'
+            });
+        }
+
+        res.status(200).json({
+            truyenWithRatings
+        });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.log("Lỗi lấy truyện hoàn thành controller", error.message);
@@ -254,7 +369,35 @@ export const layTruyenHot = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        return res.status(200).json({truyen});
+        const truyenWithRatings = [];
+
+        for (let i = 0; i < truyen.length; i++) {
+            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
+
+            const soLuongDanhGia = danhGia.length;
+            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
+            let trungBinhSao = 0;
+
+            if (soLuongDanhGia > 0) {
+                trungBinhSao = tongSoSao / soLuongDanhGia;
+                if (trungBinhSao % 1 !== 0) {
+                    trungBinhSao = trungBinhSao.toFixed(1);
+                } else {
+                    trungBinhSao = trungBinhSao.toString();
+                }
+            }
+
+            truyen[i].trungBinhSao = trungBinhSao;
+
+            truyenWithRatings.push({
+                truyen: truyen[i],
+                trungBinhSao: trungBinhSao || '0'
+            });
+        }
+
+        res.status(200).json({
+            truyenWithRatings
+        });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.log("Lỗi lấy truyện hot controller", error.message);
