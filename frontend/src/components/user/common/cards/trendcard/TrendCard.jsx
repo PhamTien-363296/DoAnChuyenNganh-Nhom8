@@ -5,7 +5,7 @@ import './style.css'
 import { useNavigate } from 'react-router-dom'; 
 
 function TrendCard(props) {
-    const {idTruyen, tieuDe,tacGia, soSao, chuong, trangThai, luotXem, moTa, imgSrc, idCacChuong } = props;
+    const {idTruyen, tieuDe,tacGia, soSao, chuong, trangThai, luotXem, moTa, imgSrc, idCacChuong, isFavorite, toggleFavorite  } = props;
 
     TrendCard.propTypes = {
         idTruyen: PropTypes.string.isRequired,
@@ -18,6 +18,8 @@ function TrendCard(props) {
         moTa: PropTypes.string.isRequired,
         imgSrc: PropTypes.string.isRequired,
         idCacChuong: PropTypes.array.isRequired,
+        isFavorite: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+        toggleFavorite: PropTypes.func.isRequired,
     };
     const navigate = useNavigate();
     const ChiTietTruyen = (e) => {
@@ -82,7 +84,9 @@ function TrendCard(props) {
                 </div>
                 <div className="trending-card-noidung-docngay">
                     <button className="docngay" onClick={DocNgay}>ĐỌC NGAY</button>
-                    <div className="yeuthich"><HiOutlineHeart /></div>
+                    <div className={`yeuthich ${isFavorite ? 'favorite' : ''}`} onClick={(e) => { e.stopPropagation(); toggleFavorite(idTruyen); }}>
+                        <HiOutlineHeart />
+                    </div>
                 </div>
             </div>
 

@@ -146,6 +146,26 @@
     border-radius: 15px;
 }
 
+.yeuthich {
+    background-color: #FFF3E2 ;
+    color: #D7B98E;
+    border: 1px solid #D7B98E;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    padding: 3px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 20px;
+}
+
+.yeuthich:hover,
+.yeuthich.favorite {
+    background-color: #D7B98E;
+    color: #fefefe;
+    border: 2px solid #aa9373;
+}
 
 @media (max-width: 550px) {
     .trending-card {

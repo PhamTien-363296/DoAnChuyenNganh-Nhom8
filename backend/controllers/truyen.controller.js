@@ -140,9 +140,18 @@ export const layTheoId = async (req, res) => {
             return { ...chuong._doc, isRead };
         });
 
+        let isFavorite = false;
+        if (idND) {
+            isFavorite = await Nguoidung.exists({
+                _id: idND,
+                yeuThichND: id,
+            });
+        }
+
         res.status(200).json({
             truyen: { ...truyen._doc, idCacChuong: chaptersWithStatus },
             trungBinhSao,
+            isFavorite
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -271,6 +280,8 @@ export const capNhatLuotXem = async (req, res) => {
 };
 
 export const layTruyenTrending = async (req, res) => {
+    const idND = req.nguoidung._id; 
+
     try {
         let limit = 6;
         const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
@@ -306,9 +317,18 @@ export const layTruyenTrending = async (req, res) => {
 
             truyen[i].trungBinhSao = trungBinhSao;
 
+            let isFavorite = false;
+            if (idND) {
+                isFavorite = await Nguoidung.exists({
+                    _id: idND,
+                    yeuThichND: truyen[i]._id,
+                });
+            }
+
             truyenWithRatings.push({
                 truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
+                trungBinhSao: trungBinhSao || '0',
+                isFavorite
             });
         }
 

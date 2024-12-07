@@ -9,6 +9,7 @@ function ListBookTrend() {
     const [batDau, setBatDau] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isFavorite, setIsFavorite] = useState(false);
 
     const soLuongTruyen = 2;
 
@@ -16,13 +17,11 @@ function ListBookTrend() {
         const layTruyen = async () => {
             try {
                 const response = await axios.get('/api/truyen/lay/trangchu/trending');
+
+                console.log(response.data);
                 
-                const truyenData = response.data.truyenWithRatings.map(item => ({
-                    ...item.truyen,
-                    trungBinhSao: item.trungBinhSao
-                }));
-                
-                setdsTruyen(truyenData);
+                setdsTruyen(response.data.truyenWithRatings);
+                setIsFavorite(response.data.truyenWithRatings.isFavorite);
                 setLoading(false);
             } catch (error) {
                 console.error("Có lỗi khi lấy truyện:", error);
@@ -42,6 +41,16 @@ function ListBookTrend() {
     const handlePrev = () => {
         if (batDau > 0) {
             setBatDau(batDau - 1);
+        }
+    };
+
+    const toggleFavorite = async () => {
+        try {
+            const response = await axios.patch(`/api/nguoidung/capnhat/yeuthich/${idTruyen}`);
+            setIsFavorite(!isFavorite);
+            console.log(response.data.message);
+        } catch (error) {
+            console.error("Lỗi khi cập nhật yêu thích:", error.message);
         }
     };
 
@@ -68,16 +77,18 @@ function ListBookTrend() {
                 {soLuongTruyenGiam.map((book, index) => (
                     <TrendCard 
                         key={index}
-                        idTruyen={book._id}
-                        tieuDe={book.tenTruyen}
-                        tacGia={book.tacGiaIdTruyen.username}
+                        idTruyen={book.truyen._id}
+                        tieuDe={book.truyen.tenTruyen}
+                        tacGia={book.truyen.tacGiaIdTruyen.username}
                         soSao={book.trungBinhSao}
-                        chuong={book.idCacChuong.length}
-                        trangThai={book.tinhTrangTruyen}
-                        luotXem={book.luotXemTruyen}
-                        moTa={book.moTaTruyen}
-                        imgSrc={book.anhTruyen}
-                        idCacChuong={book.idCacChuong}
+                        chuong={book.truyen.idCacChuong.length}
+                        trangThai={book.truyen.tinhTrangTruyen}
+                        luotXem={book.truyen.luotXemTruyen}
+                        moTa={book.truyen.moTaTruyen}
+                        imgSrc={book.truyen.anhTruyen}
+                        idCacChuong={book.truyen.idCacChuong}
+                        isFavorite={book.isFavorite}
+                        toggleFavorite={toggleFavorite}
                     />
                 ))}
             </div>

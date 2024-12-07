@@ -24,7 +24,7 @@ function Chitiettruyen() {
 
   const [truyen, setTruyen] = useState(null);
   const [trungBinhSao, setTrungBinhSao] = useState(null);
-
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     if (idTruyen) {
@@ -39,6 +39,7 @@ function Chitiettruyen() {
           const truyenData = response.data.truyen; 
           setTruyen(truyenData); 
           setTrungBinhSao(response.data.trungBinhSao);
+          setIsFavorite(response.data.isFavorite);
       } catch (error) {
           console.error("Lỗi:", error);
       }
@@ -67,6 +68,16 @@ function Chitiettruyen() {
     const tenTruyen = truyen.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
     const tenChuong = ten.trim().replace(/\s+/g, '-').toLowerCase();
     navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: id} });
+  };
+
+  const toggleFavorite = async () => {
+    try {
+        const response = await axios.patch(`/api/nguoidung/capnhat/yeuthich/${idTruyen}`);
+        setIsFavorite(!isFavorite);
+        console.log(response.data.message);
+    } catch (error) {
+        console.error("Lỗi khi cập nhật yêu thích:", error.message);
+    }
   };
 
   if (!truyen) return <div>Loading...</div>;
@@ -146,7 +157,12 @@ function Chitiettruyen() {
 
                 <div className="button-boxes">
                   <button className="read-button" onClick={DocNgay}><strong>Đọc ngay</strong></button>
-                  <button className="favorite-button"><IoIosHeartEmpty /></button>
+                  <button
+                    className={`favorite-icon ${isFavorite ? "favorite" : ""}`}
+                    onClick={toggleFavorite}
+                  >
+                      <IoIosHeartEmpty />
+                  </button>
                 </div>
               </div>
             </div>

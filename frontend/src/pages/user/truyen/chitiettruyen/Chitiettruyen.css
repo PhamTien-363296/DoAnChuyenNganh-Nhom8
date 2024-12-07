@@ -105,29 +105,6 @@ body {
     display: flex;
   }
   
-  
-  
-  .favorite-button {
-    background-color: #FFF3E2 ;
-    color: #D7B98E;
-    border: 1px solid #D7B98E;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    padding: 6px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-left: 20px;
-  }
-  
-  .favorite-button:hover {
-    background-color: #D7B98E;
-    color: #fefefe;
-    border: 2px solid #aa9373;
-  }
-  
-  
   .read-button {
     margin-top: 47px;
     background-color: #D7B98E;
@@ -229,4 +206,30 @@ body {
   
 .read {
     background-color: #dfcdb9d3;
+}
+
+.favorite-icon {
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.favorite-icon {
+  background-color: #FFF3E2 ;
+  color: #D7B98E;
+  border: 1px solid #D7B98E;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  padding: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 20px;
+}
+
+.favorite-icon:hover,
+.favorite-icon.favorite {
+    background-color: #D7B98E;
+    color: #fefefe;
+    border: 2px solid #aa9373;
 }
