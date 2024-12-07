@@ -36,16 +36,16 @@ function ChiTietChuong() {
 
     const quaChuong = async () => {
         if (chuong) {
-            const chuongHienTai = chuong.truyenIdChuong.idCacChuong.indexOf(chuong._id);
+            const chuongHienTai = chuong.idCacChuongIds.indexOf(chuong.chuong._id);
 
-            if (chuongHienTai !== -1 && chuongHienTai < chuong.truyenIdChuong.idCacChuong.length - 1) {
-                const nextChuongId = chuong.truyenIdChuong.idCacChuong[chuongHienTai + 1];
+            if (chuongHienTai !== -1 && chuongHienTai < chuong.idCacChuongIds.length - 1) {
+                const nextChuongId = chuong.idCacChuongIds[chuongHienTai + 1];
                 try {
                     const response = await axios.get(`/api/chuong/laytheoid/${nextChuongId}`);
                     const chuongTiepTheo = response.data;
 
-                    const tenTruyen = chuongTiepTheo.truyenIdChuong.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
-                    const tenChuong = chuongTiepTheo.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
+                    const tenTruyen = chuongTiepTheo.chuong.truyenIdChuong.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
+                    const tenChuong = chuongTiepTheo.chuong.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
                     navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: nextChuongId } });
 
                     setChuong(chuongTiepTheo);
@@ -61,15 +61,15 @@ function ChiTietChuong() {
 
     const quayLai = async () => {
         if (chuong) {
-            const chuongHienTai = chuong.truyenIdChuong.idCacChuong.indexOf(chuong._id);
+            const chuongHienTai = chuong.idCacChuongIds.indexOf(chuong.chuong._id);
             if (chuongHienTai !== -1 && chuongHienTai > 0) {
-                const previousChuongId = chuong.truyenIdChuong.idCacChuong[chuongHienTai - 1];
+                const previousChuongId = chuong.idCacChuongIds[chuongHienTai - 1];
                 try {
                     const response = await axios.get(`/api/chuong/laytheoid/${previousChuongId}`);
                     const chuongTruoc = response.data;
 
-                    const tenTruyen = chuongTruoc.truyenIdChuong.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
-                    const tenChuong = chuongTruoc.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
+                    const tenTruyen = chuongTruoc.chuong.truyenIdChuong.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
+                    const tenChuong = chuongTruoc.chuong.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
                     navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: previousChuongId } });
 
                     setChuong(chuongTruoc);
@@ -108,9 +108,9 @@ function ChiTietChuong() {
         <MainLayout>
             <div className='chitietchuong-content'>
                 <div className='ct-chuong-tieude'>
-                    <h2>{chuong.tenChuong}</h2>
+                    <h2>{chuong.chuong.tenChuong}</h2>
                 </div>
-                <div className='ct-chuong-noidung' dangerouslySetInnerHTML={{ __html: chuong.noiDungChuong }} />
+                <div className='ct-chuong-noidung' dangerouslySetInnerHTML={{ __html: chuong.chuong.noiDungChuong }} />
                 <div className='ct-chuong'>
                     <button onClick={quayLai} className='chuong-btn' style={{marginRight:'10px'}}>
                         Chương trước

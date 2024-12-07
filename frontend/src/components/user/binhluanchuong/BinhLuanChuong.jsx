@@ -20,7 +20,6 @@ function BinhLuanChuong({idChuong}) {
         const layDanhGia = async () => {
             try {
                 const resLay = await axios.get(`/api/chuong/lay/binhluan/${idChuong}`);
-                console.log(resLay.data);
                 setRatingsList(resLay.data);
                 setLoading(false);
             } catch (error) {

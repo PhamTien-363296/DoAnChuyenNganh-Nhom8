@@ -47,13 +47,21 @@ export const layTheoId = async (req, res) => {
     const idND = req.nguoidung._id;
 
     try {
-        const chuong = await Chuong.findById(id).populate("truyenIdChuong");
+        const chuong = await Chuong.findById(id).populate({
+            path: "truyenIdChuong",
+            populate: {
+                path: "idCacChuong",
+                match: { trangThaiChuong: 'Công khai' },
+            }
+        });
 
         if (!chuong) {
             return res.status(404).json({ message: 'Chương không tồn tại' });
         }
 
         const truyenId = chuong.truyenIdChuong;
+
+        const idCacChuongIds = chuong.truyenIdChuong.idCacChuong.map(ch => ch._id.toString());
 
         const nguoiDung = await Nguoidung.findById(idND);
         if (!nguoiDung) {
@@ -75,8 +83,11 @@ export const layTheoId = async (req, res) => {
         }
 
         await nguoiDung.save();
-        res.status(200).json(chuong);
-    } catch (error) {
+        res.status(200).json({
+            chuong: chuong,
+            idCacChuongIds: idCacChuongIds
+        });
+        } catch (error) {
         res.status(500).json({ error: "Internal server error" });
         console.error("Error in layTheoId controller", error);
     }
