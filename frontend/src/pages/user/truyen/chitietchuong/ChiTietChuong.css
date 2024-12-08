@@ -1,0 +1,40 @@
+.ct-chuong-tieude{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    color: #49372F;
+}
+
+.ct-chuong-noidung{
+    margin: 10px 50px;
+    border-top: 1px solid #49372f4b;
+    padding: 30px 0;
+    color: #49372F;
+}
+
+.ct-chuong{
+    display: flex;
+    justify-content: center;
+}
+
+.chuong-btn{
+    background-color: #D7B98E;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 30px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.chuong-btn:hover{
+    background-color: #C7A57E;
+    transform: scale(1.1);
+}
+
+.ct-chuong-binhluan{
+    margin: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

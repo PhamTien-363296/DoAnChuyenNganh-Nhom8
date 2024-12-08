@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 import MainLayout from '../../../layout/user/mainLayout/MainLayout'
 import ListBookHot from "../../../components/user/manager/listcard/listbook-hot/ListBookHot";
 import ListBookTrend from "../../../components/user/manager/listcard/listbook-trend/ListBookTrend";
-import ListBookTheloai from "../../../components/user/manager/listcard/listbook-theloai/ListBookTheloai";
+//import ListBookTheloai from "../../../components/user/manager/listcard/listbook-theloai/ListBookTheloai";
 import ListBookHoanthanh from "../../../components/user/manager/listcard/listbook-hoanthanh/ListBookHoanthanh";
 import ListTheloaiHome from "../../../components/user/manager/listtheloaihome/ListTheloaiHome";
 
-
 //Css
 import './Trangchu.css'
-import ListTacgia from "../../../components/user/manager/listcard/listtacgia/ListTacgia";
+//import ListTacgia from "../../../components/user/manager/listcard/listtacgia/ListTacgia";
 
 export default function Trangchu() {
     return (
@@ -36,7 +35,7 @@ export default function Trangchu() {
                 </div>
 
                 <div className="hot-listcard">
-                    <ListBookHot />
+                    <ListBookHot/>
                 </div>
             </div>
 
@@ -51,7 +50,6 @@ export default function Trangchu() {
                 </div>
 
                 <div className="theloai-listcard">
-                    <ListBookTheloai/>
                 </div>
             </div>
 
@@ -62,7 +60,6 @@ export default function Trangchu() {
                 </div>
 
                 <div className="tacgia-listcard">
-                    <ListTacgia/>
                 </div>
             </div>
 

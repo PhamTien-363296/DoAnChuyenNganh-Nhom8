@@ -22,8 +22,12 @@ function ListBookDanhMuc() {
                 } else {
                     response = await axios.get(`/api/truyen/`);
                 }
-                console.log("Dữ liệu trả về từ API:", response.data);
-                setBookList(response.data);
+                //console.log("Dữ liệu trả về từ API:", response.data);
+                const truyenData = response.data.truyenWithRatings.map(item => ({
+                    ...item.truyen,
+                    trungBinhSao: item.trungBinhSao
+                }));
+                setBookList(truyenData);
                 setLoading(false);
             } catch (error) {
                 setError("Có lỗi khi lấy danh sách sách.", error);
@@ -52,7 +56,7 @@ function ListBookDanhMuc() {
                         key={index}
                         id={book._id}
                         tieuDe={book.tenTruyen}
-                        soSao={5}
+                        soSao={book.trungBinhSao}
                         trangThai={book.tinhTrangTruyen}
                         luotXem={book.luotXemTruyen}
                         imgSrc={book.anhTruyen}

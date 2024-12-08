@@ -7,6 +7,9 @@ import authRoutes from "./routes/auth.route.js"
 import theloaiRoutes from "./routes/theloai.route.js"
 import truyenRoutes from "./routes/truyen.route.js"
 import chuongRoutes from "./routes/chuong.route.js"
+import danhgiaRoutes from "./routes/danhgia.route.js"
+import nguoidungRoutes from "./routes/nguoidung.route.js"
+
 import {v2 as cloudinary} from "cloudinary"
 
 dotenv.config()
@@ -29,6 +32,10 @@ app.use("/api/auth",authRoutes )
 app.use("/api/theloai", theloaiRoutes)
 app.use("/api/truyen", truyenRoutes)
 app.use("/api/chuong", chuongRoutes)
+app.use("/api/danhgia", danhgiaRoutes)
+app.use("/api/nguoidung", nguoidungRoutes)
+
+
 
 app.get("/", (req, res) => {
     res.send("Welcome to the Home Page");

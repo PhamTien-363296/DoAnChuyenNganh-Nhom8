@@ -10,9 +10,9 @@ function BookCard(props) {
     BookCard.propTypes = {
         id: PropTypes.string,
         tieuDe: PropTypes.string.isRequired,
-        soSao: PropTypes.number.isRequired,
+        soSao: PropTypes.string.isRequired,
         trangThai: PropTypes.string.isRequired,
-        luotXem: PropTypes.string.isRequired,
+        luotXem: PropTypes.number.isRequired,
         imgSrc: PropTypes.string.isRequired,
     };
     

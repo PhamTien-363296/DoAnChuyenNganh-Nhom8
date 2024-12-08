@@ -35,6 +35,10 @@ const chuongSchema = new mongoose.Schema(
                     ref: "Nguoidung",
                     required: true,
                 },
+                ngayBinhLuan: {
+					type: Date,
+                    default: Date.now, 
+				},
             },
         ],
         truyenIdChuong: {

@@ -1,24 +1,30 @@
 import './Chitiettruyen.css'
 
-import { FaEye, FaStar } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+
 import { IoMdPerson } from "react-icons/io";
 import { FaChartSimple } from "react-icons/fa6";
 import { FaTag } from "react-icons/fa6";
 import { FaBookOpen } from "react-icons/fa";
 import { IoIosHeartEmpty } from "react-icons/io";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { HiOutlineCheckCircle, HiOutlinePencilAlt, HiOutlineMinusCircle } from "react-icons/hi";
+import moment from 'moment';
 
 import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
+import DanhGiaTruyen from '../../../../components/user/danhgiatruyen/DanhGiaTruyen';
 
 function Chitiettruyen() {
+  const navigate = useNavigate();
   const location = useLocation();
   const { idTruyen } = location.state || {};
 
-  console.log("id", idTruyen)
-  const [truyen, setTruyen] = useState(null); // set default to null instead of array
+  const [truyen, setTruyen] = useState(null);
+  const [trungBinhSao, setTrungBinhSao] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     if (idTruyen) {
@@ -29,8 +35,11 @@ function Chitiettruyen() {
   const layTruyen = async (id) => {
       try {
           const response = await axios.get(`/api/truyen/laytheoid/${id}`);
-          const truyenData = response.data; 
+          console.log(response.data)
+          const truyenData = response.data.truyen; 
           setTruyen(truyenData); 
+          setTrungBinhSao(response.data.trungBinhSao);
+          setIsFavorite(response.data.isFavorite);
       } catch (error) {
           console.error("Lỗi:", error);
       }
@@ -48,13 +57,36 @@ function Chitiettruyen() {
     updateLuotXem();
   }, [idTruyen]);
 
+  const DocNgay = () => {
+    const tenTruyen = truyen.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
+    const chuongDauTien = truyen.idCacChuong[0];
+    const tenChuong = chuongDauTien.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
+    navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: chuongDauTien._id} });
+  };
+
+  const DocChuong = (id, ten) => {
+    const tenTruyen = truyen.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
+    const tenChuong = ten.trim().replace(/\s+/g, '-').toLowerCase();
+    navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: id} });
+  };
+
+  const toggleFavorite = async () => {
+    try {
+        const response = await axios.patch(`/api/nguoidung/capnhat/yeuthich/${idTruyen}`);
+        setIsFavorite(!isFavorite);
+        console.log(response.data.message);
+    } catch (error) {
+        console.error("Lỗi khi cập nhật yêu thích:", error.message);
+    }
+  };
+
   if (!truyen) return <div>Loading...</div>;
 
   return (
     <>
       <MainLayout>
         <div className="main-content">
-          <div className="padding-left">
+          <div>
             <div className="content-wrapper">
               <div className="left">
                 <div className="image-container">
@@ -104,18 +136,33 @@ function Chitiettruyen() {
                     <FaEye className="icon" />
                     <strong>Lượt xem</strong> {truyen.luotXemTruyen || 0}
                     <strong style={{ marginLeft: '20px'}}>Đánh giá</strong>
-                    <span className="rating"><FaStar style={{ fontSize:'12px'}} />{truyen.danhGia || 4.1}</span>
+                    <span className="rating-ct">
+                      {[1,2,3,4,5].map((star) => {
+                        if (star <= Math.floor(trungBinhSao)) {
+                          return <FaStar key={star} size={30} className="sao" />;
+                        } else if (star <= Math.ceil(trungBinhSao) && trungBinhSao % 1 !== 0) {
+                          return <FaStarHalfAlt key={star} size={30} className="sao" />;
+                        } else {
+                          return <FaRegStar key={star} size={30} className="noSao" />;
+                        }
+                      })}
+                    </span>
                   </div>
 
                   <div className="title-color">
                     <FaBookOpen className="icon"/>
-                    <strong>{truyen.idCacChuong.length || 10} chương</strong>
+                    <strong>{truyen.idCacChuong.length || 'Không có '} chương</strong>
                   </div>
                 </div>
 
                 <div className="button-boxes">
-                  <button className="read-button"><strong>Đọc ngay</strong></button>
-                  <button className="favorite-button"><IoIosHeartEmpty /></button>
+                  <button className="read-button" onClick={DocNgay}><strong>Đọc ngay</strong></button>
+                  <button
+                    className={`favorite-icon ${isFavorite ? "favorite" : ""}`}
+                    onClick={toggleFavorite}
+                  >
+                      <IoIosHeartEmpty />
+                  </button>
                 </div>
               </div>
             </div>
@@ -128,27 +175,21 @@ function Chitiettruyen() {
             <div className="section">
               <h2>Mục lục</h2>
               <div className="chapter">
-                {truyen.chuong && truyen.chuong.map((chuong, index) => (
-                  <div key={index} className="chapter-item">{chuong.tenChuong}</div>
-                ))}
+                  {truyen.idCacChuong && truyen.idCacChuong.map((chuong, index) => (
+                      <div key={index} className={`chapter-item ${chuong.isRead ? 'read' : 'unread'}`} onClick={() => DocChuong(chuong._id, chuong.tenChuong)}>
+                          <div style={{display:'flex'}}>
+                            <p>{chuong.tenChuong}</p>
+                            <p style={{marginLeft:'10px'}}>( Ngày đăng: {moment(chuong.createdAt).format('DD/MM/YYYY')} )</p>
+                          </div>
+                          {chuong.isRead ? <p>Đã đọc</p> : <p>Chưa đọc</p>}
+                      </div>
+                  ))}
               </div>
             </div>
 
             <div className="section">
               <h2>Đánh giá</h2>
-              {truyen.danhGia && truyen.danhGia.map((danhGia, index) => (
-                <div key={index} className="review">
-                  <img className="review-avatar" src={danhGia.avatar || "https://placehold.co/50"} alt="User avatar"/>
-                  <div className="review-content">
-                    <div className="review-header">
-                      <span className="review-user">{danhGia.tenNguoiDung || "Người dùng"}</span>
-                      <span className="review-rating"><FaStar /> {danhGia.danhGia}</span>
-                      <span className="review-date">{danhGia.ngay || "Chưa có ngày"}</span>
-                    </div>
-                    <p>{danhGia.noiDung || "Chưa có đánh giá."}</p>
-                  </div>
-                </div>
-              ))}
+              <DanhGiaTruyen idTruyen={idTruyen}/>
             </div>
           </div>
         </div>

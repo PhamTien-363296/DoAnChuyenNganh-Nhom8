@@ -5,7 +5,7 @@ import { protectRoute } from "../middleware/protectRoute.js"
 const router = express.Router()
 
 router.get("/", layTatcaTruyen)
-router.get("/laytheoid/:id", layTheoId)
+router.get("/laytheoid/:id",protectRoute, layTheoId)
 router.get("/laytheotheloai/:id", layTruyenTheoTheloai)
 router.get("/laytheonguoidung", protectRoute, layTruyenTheoNguoidung)
 
@@ -16,7 +16,7 @@ router.delete("/:id", xoaTruyen)
 
 router.patch("/capnhat/luotxem/:id",capNhatLuotXem)
 
-router.get("/lay/trangchu/trending",layTruyenTrending)
+router.get("/lay/trangchu/trending",protectRoute,layTruyenTrending)
 router.get("/lay/trangchu/hoanthanh",layTruyenHoanThanh)
 router.get("/lay/trangchu/hot",layTruyenHot)
 

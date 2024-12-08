@@ -22,6 +22,6 @@ const danhgiaSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-const Danhgia = mongoose.model("Danhgia", danhgiaSchema);
+const Danhgia = mongoose.model("Danhgia", danhgiaSchema, "Danhgia");
 
 export default Danhgia;
