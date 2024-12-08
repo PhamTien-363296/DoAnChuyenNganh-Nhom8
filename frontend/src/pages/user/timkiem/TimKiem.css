@@ -1,0 +1,107 @@
+.timkiem {
+    color: #49372F;
+}
+
+.timkiem-tieude {
+    display: flex;
+    font-size: 15px;
+}
+
+.timkiem-loc{
+    width: 100%;
+    display: flex;
+    justify-content:space-around;
+    border-bottom: 2px solid #DBC8AD;
+}
+
+.timkiem-loc-button {
+    background-color: #FFF3E2;
+    width: 100%;
+    color: #49372F;
+    padding: 10px 0;
+    cursor: pointer;
+    border: none;
+    font-size: 17px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.timkiem-loc-button:hover {
+    color: #49372F;
+    font-weight: bold;
+    border-bottom: 2px solid #49372F;
+}
+
+.timkiem-loc-button:active {
+    color: #49372F;
+    font-weight: bold;
+    border-bottom: 2px solid #49372F;
+}
+
+.timkiem-loc-button.chon {
+    color: #49372F;
+    font-weight: bold;
+    border-bottom: 2px solid #49372F;
+}
+
+.timkiem-list {
+    margin-top: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    padding: 10px 25px;
+    border-radius: 15px;
+}
+
+.timkiem-list-noidung{
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(6,170px);
+    column-gap: 18px;
+    row-gap: 18px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+};
+
+
+@media (max-width: 550px) {
+    .timkiem-list {
+        grid-template-columns: repeat(2,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+
+    .timkiem-list-noidung{
+        grid-template-columns: repeat(2,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+}
+
+@media (min-width: 550px) and (max-width: 720px) { 
+    .timkiem-list {
+        grid-template-columns: repeat(3,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+
+    .timkiem-list-noidung{
+        grid-template-columns: repeat(3,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+}
+@media (min-width: 720px)  and (max-width: 1024px) {
+    .timkiem-list {
+        grid-template-columns: repeat(4,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+
+    .timkiem-list-noidung{
+        grid-template-columns: repeat(4,170px);
+        column-gap: 18px;
+        row-gap: 18px;
+    }
+
+}

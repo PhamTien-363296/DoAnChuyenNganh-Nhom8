@@ -43,10 +43,12 @@ function BookCard(props) {
                             <span style={{marginLeft:'3px'}}>{trangThai}</span>
                         </div>
                     )}
-                    <div className="danhgia">
-                        <HiStar/>
-                        <span>{soSao}</span>
-                    </div>
+                    {soSao != "null" && (
+                        <div className="danhgia">
+                            <HiStar/>
+                            <span>{soSao}</span>
+                        </div>
+                    )}
                 </div>
             
                 <div className="book-card-image-container">
