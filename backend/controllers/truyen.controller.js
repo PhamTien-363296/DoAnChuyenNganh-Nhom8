@@ -5,8 +5,41 @@ import Theloai from "../models/theloai.model.js";
 import Danhgia from "../models/danhgia.model.js";
 
 export const layTatcaTruyen = async (req, res) => {
+    const { sort = "phobien", page = 1, limit = 18, sao, tinhtrang } = req.query;
+
+    const pageSize = parseInt(limit);
+    const skip = (page - 1) * pageSize;
     try {
-        const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" });
+        let sortQuery;
+        switch (sort) {
+            case 'phobien':
+                sortQuery = { luotXemTruyen: -1 };
+                break;
+            case 'moinhat':
+                sortQuery = { updatedAt: -1 };
+                break;
+        }
+
+        let dkLoc = { trangThaiTruyen: "Công khai" };
+
+        if (tinhtrang && tinhtrang !== "tatca") {
+            if(tinhtrang=='hoanthanh'){
+                dkLoc.tinhTrangTruyen = 'Hoàn thành';
+            } else if(tinhtrang=='dangviet'){
+                dkLoc.tinhTrangTruyen = 'Đang viết';
+            } else if(tinhtrang=='tamdung'){
+                dkLoc.tinhTrangTruyen = 'Tạm dừng';
+            }
+        }
+
+        const tong = await Truyen.countDocuments(dkLoc);
+        const tongPage = Math.ceil(tong / pageSize);
+
+        const truyen = await Truyen.find(dkLoc)
+        .sort(sortQuery)
+        .skip(skip)
+        .limit(pageSize);
+
         const truyenWithRatings = [];
 
         for (let i = 0; i < truyen.length; i++) {
@@ -27,6 +60,15 @@ export const layTatcaTruyen = async (req, res) => {
 
             truyen[i].trungBinhSao = trungBinhSao;
 
+            if (sao && sao !== "tatca") {
+                const saoRange = sao.split('-');
+                const minSao = parseInt(saoRange[0]);
+                const maxSao = parseInt(saoRange[1]);
+                if (trungBinhSao < minSao || trungBinhSao > maxSao) {
+                    continue;
+                }
+            }
+
             truyenWithRatings.push({
                 truyen: truyen[i],
                 trungBinhSao: trungBinhSao || '0'
@@ -34,7 +76,9 @@ export const layTatcaTruyen = async (req, res) => {
         }
 
         res.status(200).json({
-            truyenWithRatings
+            truyenWithRatings,
+            tongPage,
+            tong
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -44,8 +88,42 @@ export const layTatcaTruyen = async (req, res) => {
 
 export const layTruyenTheoTheloai = async (req, res) => {
     const { id } = req.params;
+    const { sort = "phobien", page = 1, limit = 18, sao, tinhtrang } = req.query;
+
+    const pageSize = parseInt(limit);
+    const skip = (page - 1) * pageSize;
+
     try {
-        const truyen = await Truyen.find({ theLoaiIdTruyen: id, trangThaiTruyen: "Công khai" });
+        let sortQuery;
+        switch (sort) {
+            case 'phobien':
+                sortQuery = { luotXemTruyen: -1 };
+                break;
+            case 'moinhat':
+                sortQuery = { updatedAt: -1 };
+                break;
+        }
+
+        let dkLoc = { theLoaiIdTruyen: id, trangThaiTruyen: "Công khai" };
+
+        if (tinhtrang && tinhtrang !== "tatca") {
+            if(tinhtrang=='hoanthanh'){
+                dkLoc.tinhTrangTruyen = 'Hoàn thành';
+            } else if(tinhtrang=='dangviet'){
+                dkLoc.tinhTrangTruyen = 'Đang viết';
+            } else if(tinhtrang=='tamdung'){
+                dkLoc.tinhTrangTruyen = 'Tạm dừng';
+            }
+        }
+
+        const tong = await Truyen.countDocuments(dkLoc);
+        const tongPage = Math.ceil(tong / pageSize);
+
+        const truyen = await Truyen.find(dkLoc)
+        .sort(sortQuery)
+        .skip(skip)
+        .limit(pageSize);
+
         if (!truyen.length) {
             return res.status(404).json({ message: "No stories found in this category." });
         }
@@ -69,6 +147,15 @@ export const layTruyenTheoTheloai = async (req, res) => {
 
             truyen[i].trungBinhSao = trungBinhSao;
 
+            if (sao && sao !== "tatca") {
+                const saoRange = sao.split('-');
+                const minSao = parseInt(saoRange[0]);
+                const maxSao = parseInt(saoRange[1]);
+                if (trungBinhSao < minSao || trungBinhSao > maxSao) {
+                    continue;
+                }
+            }
+
             truyenWithRatings.push({
                 truyen: truyen[i],
                 trungBinhSao: trungBinhSao || '0'
@@ -76,7 +163,9 @@ export const layTruyenTheoTheloai = async (req, res) => {
         }
 
         res.status(200).json({
-            truyenWithRatings
+            truyenWithRatings,
+            tongPage,
+            tong
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -431,5 +520,53 @@ export const layTruyenHot = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.log("Lỗi lấy truyện hot controller", error.message);
+    }
+};
+
+
+export const goiYTimKiem = async (req, res) => {
+    const search = req.query.search;
+    if (!search) {
+        return res.status(400).send({ message: 'Vui lòng nhập từ tìm kiếm' });
+    }
+    try {
+        const goiYTruyen = await Truyen.find({
+            tenTruyen: { $regex: search, $options: 'i' },
+            trangThaiTruyen: 'Công khai'})
+            .limit(5)
+            
+        const goiYTacGia = await Nguoidung.find({
+            username: { $regex: search, $options: 'i' }
+        }).limit(3);
+
+        res.json({ goiYTruyen, goiYTacGia });
+        } catch (err) {
+        console.error('Lỗi trả về gợi ý:', err);
+        res.status(500).send({ message: 'Server error' });
+    }
+};
+
+export const timKiem = async (req, res) => {
+    const { search, loc } = req.query;
+
+    try {
+        let ketqua=[];
+
+        if(loc === 'truyen'){
+            ketqua = await Truyen.find({
+                tenTruyen: { $regex: search, $options: 'i' }, 
+                trangThaiTruyen: 'Công khai'
+            })
+            .populate("tacGiaIdTruyen");
+        } else if(loc === 'tacGia'){
+            ketqua = await Nguoidung.find({
+                username: { $regex: search, $options: 'i' }
+            });
+        }
+
+        return res.status(200).json(ketqua);
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi 500" });
+        console.log("Lỗi tim kiem controller", error.message);
     }
 };

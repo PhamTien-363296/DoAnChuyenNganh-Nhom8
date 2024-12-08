@@ -1,19 +1,20 @@
-import BookCard from "../../../common/cards/bookcard/BookCard";
-import PropTypes from 'prop-types';
 
-function ListBookDanhMuc({bookList}) {
+import PropTypes from 'prop-types';
+import BookCard from '../../common/cards/bookcard/BookCard';
+
+function ListTruyen({ketQua}) {
 
     return (
         <>
-            {bookList.length === 0 ? (
-                <div>Không có sách nào trong danh mục này.</div>
+            {ketQua.length === 0 ? (
+                <div>Không có kết quả nào.</div>
             ) : (
-                bookList.map((book, index) => (
+                ketQua.map((book, index) => (
                     <BookCard 
                         key={index}
                         id={book._id}
                         tieuDe={book.tenTruyen}
-                        soSao={book.trungBinhSao}
+                        soSao='null'
                         trangThai={book.tinhTrangTruyen}
                         luotXem={book.luotXemTruyen}
                         imgSrc={book.anhTruyen}
@@ -24,8 +25,8 @@ function ListBookDanhMuc({bookList}) {
     );
 }
 
-ListBookDanhMuc.propTypes = {
-    bookList: PropTypes.array,
+ListTruyen.propTypes = {
+    ketQua: PropTypes.array,
 };
 
-export default ListBookDanhMuc;
+export default ListTruyen;

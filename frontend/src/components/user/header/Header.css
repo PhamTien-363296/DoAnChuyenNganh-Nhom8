@@ -8,12 +8,37 @@
     padding: 15px;  
 }
 
+
+.header-loi {
+    color: #ef4444;
+    text-align: center;
+    margin-top: 16px;
+}
+
+.header-tai {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.loader {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ddd;
+    border-top-color: #007bff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
 .search-container {
     width: 100%;
     display: flex;
     align-items: center;
     background: #EBD9BF;
     border-radius: 10px;
+    position: relative;
 }
 
 .search-container input{
@@ -24,6 +49,7 @@
     background: #EBD9BF;
     outline: none;
     border-radius: 15px;
+    font-size: 14px;
 }
 
 .search-icon {
@@ -38,4 +64,7 @@
     height: 50px;
     border-radius: 15px;
     margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

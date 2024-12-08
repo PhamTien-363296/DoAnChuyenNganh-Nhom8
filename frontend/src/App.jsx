@@ -26,6 +26,7 @@ import AdminBaocao from './pages/admin/Baocao';
 import SuaTruyen from './pages/user/truyen/suatruyen/SuaTruyen';
 import SuaChuong from './pages/user/truyen/suachuong/SuaChuong';
 import ChiTietChuong from './pages/user/truyen/chitietchuong/ChiTietChuong';
+import TimKiem from './pages/user/timkiem/TimKiem';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -63,6 +64,7 @@ function App() {
       <Route path="/taikhoan/yeuthich" element={<Yeuthich />} />
       <Route path="/taikhoan/vitien" element={<Vitien />} />
       <Route path="/taikhoan/baocao" element={<UserBaoCao />} />
+      <Route path="/search" element={<TimKiem/>} />
 
       {/* Các trang truyện */}
       <Route path="/chitiettruyen/:tieude" element={<Chitiettruyen />} />

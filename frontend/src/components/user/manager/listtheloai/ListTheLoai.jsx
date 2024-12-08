@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-function ListTheloaiHome() {
+function ListTheloai({theloaiId}) {
     const [theloais, setTheloai] = useState([]);
-    const navigate = useNavigate(); // Hook để điều hướng
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
                 const response = await axios.get('/api/theloai');
-                // Thêm phần tử 'Tất cả' vào đầu mảng
                 const theloaiName = [{ id: 'all', name: 'Tất cả' }, ...response.data.map(theloai => ({
                     id: theloai._id,
                     name: theloai.tieuDeTheLoai,
@@ -25,7 +25,7 @@ function ListTheloaiHome() {
     }, []);
 
     const handleCategoryClick = (theloaiId, theloaiName) => {
-        navigate(`/theloai/${theloaiName.replace(/\s+/g, '-').toLowerCase()}`, { state: { theloaiId } });
+        navigate(`/theloai/${theloaiName.replace(/\s+/g, '-').toLowerCase()}?loc=phobien&trang=1&sao=tatca&tinhtrang=tatca`, { state: { theloaiId } });
     };
 
     return (
@@ -33,7 +33,8 @@ function ListTheloaiHome() {
             {theloais.map((theloai, index) => (
                 <button 
                     key={index} 
-                    onClick={() => handleCategoryClick(theloai.id, theloai.name)} // Điều hướng khi bấm vào thể loại
+                    className={`theloai-button ${theloai.id === theloaiId ? 'chon' : ''}`}
+                    onClick={() => handleCategoryClick(theloai.id, theloai.name)}
                 >
                     {theloai.name}
                 </button>
@@ -42,4 +43,8 @@ function ListTheloaiHome() {
     );
 }
 
-export default ListTheloaiHome;
+ListTheloai.propTypes = {
+    theloaiId: PropTypes.string,
+};
+
+export default ListTheloai;

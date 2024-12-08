@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function ListTheloaiHome() {
     const [theloais, setTheloai] = useState([]);
-    const navigate = useNavigate(); // Hook để điều hướng
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -25,7 +25,7 @@ function ListTheloaiHome() {
 
     const handleCategoryClick = (theloaiId, theloaiName) => {
         const formattedName = theloaiName.replace(/\s+/g, '-').toLowerCase();
-        navigate(`/theloai/${formattedName}`, { state: { theloaiId } });
+        navigate(`/theloai/${formattedName}?loc=phobien&trang=1&sao=tatca&tinhtrang=tatca`, { state: { theloaiId } });
     };
 
     return (

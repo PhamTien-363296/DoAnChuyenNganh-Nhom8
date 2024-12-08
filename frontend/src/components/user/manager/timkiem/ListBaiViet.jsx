@@ -1,15 +1,15 @@
-import BookCard from "../../../common/cards/bookcard/BookCard";
 import PropTypes from 'prop-types';
+import TacGiaItem from '../../common/items/tacgiaitem/TacGiaItem';
 
-function ListBookDanhMuc({bookList}) {
+function ListBaiViet({ketQua}) {
 
     return (
         <>
-            {bookList.length === 0 ? (
-                <div>Không có sách nào trong danh mục này.</div>
+            {ketQua.length === 0 ? (
+                <div>Không có kết quả nào.</div>
             ) : (
-                bookList.map((book, index) => (
-                    <BookCard 
+                ketQua.map((book, index) => (
+                    <TacGiaItem 
                         key={index}
                         id={book._id}
                         tieuDe={book.tenTruyen}
@@ -24,8 +24,8 @@ function ListBookDanhMuc({bookList}) {
     );
 }
 
-ListBookDanhMuc.propTypes = {
-    bookList: PropTypes.array,
+ListBaiViet.propTypes = {
+    ketQua: PropTypes.array,
 };
 
-export default ListBookDanhMuc;
+export default ListBaiViet;
