@@ -74,6 +74,8 @@ export const danhNhap = async (req,res)=>{
  
      res.status(200).json({
          email: nguoidung.email,
+         username: nguoidung.username,
+         _id: nguoidung._id
      })
  
     } catch (error) {

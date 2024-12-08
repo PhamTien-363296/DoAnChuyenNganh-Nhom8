@@ -87,3 +87,18 @@ export const layYeuThich = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server' });
     }
 };
+
+
+
+export const layNguoiDungTN = async (req, res) => {
+	try {
+		const nguoidung = req.nguoidung._id;
+
+		const nguoidungdaloc = await Nguoidung.find({ _id: { $ne: nguoidung } }).select("-matKhau");
+
+		res.status(200).json(nguoidungdaloc);
+	} catch (error) {
+		console.error("Lỗi layNguoiDungTN controller: ", error.message);
+		res.status(500).json({ error: "Lỗi 500" });
+	}
+};

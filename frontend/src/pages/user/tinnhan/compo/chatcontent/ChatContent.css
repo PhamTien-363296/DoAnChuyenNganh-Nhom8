@@ -1,0 +1,79 @@
+.chat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff3e2;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.chat-body {
+    flex: 1; 
+    padding: 20px;
+    overflow-y: auto;
+    scrollbar-width:thin ;  /* Firefox: make scrollbar thinner */
+    scrollbar-color: #6f4f28a0 #fff3e2;  /* Firefox: brown scrollbar thumb, with a light background */
+}
+
+.chat-body::-webkit-scrollbar {
+    width: 3px; /* Slim scroll bar */
+}
+
+.chat-footer {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chat-header {
+    padding: 1.1rem; 
+    background-color: #ebd9bf;
+    border-bottom: 2px solid #b28f44;
+}
+
+.chat-header .label-text {
+    font-size: 0.875rem;
+    color: #64748b; 
+}
+
+.chat-header .recipient-name {
+    font-weight: bold; 
+    color: #1e293b; 
+}
+
+
+.chua-chon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    background-color: #fff3e2;
+    color: #555; 
+  }
+  
+  .chua-chon-content {
+    max-width: 400px;
+    padding: 20px;
+    background-color: #fee6c4; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+  }
+  
+  .chua-chon-content p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .chua-chon-content p:first-child {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .chua-chon-content .welcome-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  

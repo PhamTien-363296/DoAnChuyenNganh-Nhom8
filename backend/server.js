@@ -2,6 +2,7 @@ import express from "express"
 import morgan from 'morgan'
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
+import { app, server } from './socket/socket.js'
 import connectMongoDB from "./db/connectMongoDB.js"
 import authRoutes from "./routes/auth.route.js"
 import theloaiRoutes from "./routes/theloai.route.js"
@@ -9,8 +10,10 @@ import truyenRoutes from "./routes/truyen.route.js"
 import chuongRoutes from "./routes/chuong.route.js"
 import danhgiaRoutes from "./routes/danhgia.route.js"
 import nguoidungRoutes from "./routes/nguoidung.route.js"
-
+import tinnhanRoutes from "./routes/tinnhan.route.js"
+import baivietRoutes from "./routes/baiviet.route.js"
 import {v2 as cloudinary} from "cloudinary"
+
 
 dotenv.config()
 
@@ -20,7 +23,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-const app = express()
+
 const PORT = process.env.PORT || 5000
 
 app.use(express.json({limit:"5mb"}))
@@ -34,6 +37,8 @@ app.use("/api/truyen", truyenRoutes)
 app.use("/api/chuong", chuongRoutes)
 app.use("/api/danhgia", danhgiaRoutes)
 app.use("/api/nguoidung", nguoidungRoutes)
+app.use("/api/tinnhan", tinnhanRoutes)
+app.use("/api/baiviet",baivietRoutes)
 
 
 
@@ -41,7 +46,7 @@ app.get("/", (req, res) => {
     res.send("Welcome to the Home Page");
 });
 
-app.listen(5000, ()=>{
+server.listen(5000, ()=>{
     console.log(`Server is running on port ${PORT}`)
     connectMongoDB()
 })

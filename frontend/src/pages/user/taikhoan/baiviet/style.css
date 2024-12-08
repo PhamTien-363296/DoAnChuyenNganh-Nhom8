@@ -3,27 +3,28 @@
     grid-template-columns: 5fr 2fr;
     column-gap: 20px;
     grid-template-areas: 
-    "bv-noidung bv-thongtin";
+        "bv-noidung bv-thongtin";
     margin-bottom: 20px;
 }
 
 .bv-noidung {
     grid-area: bv-noidung;
     display: grid;
-    grid-template-rows: 90px 40px auto;
+    grid-template-rows: auto 40px auto;
     row-gap: 10px;
 }
 
 .bv-noidung .bv-thembaiviet {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     background-color: #FFF3E2;
     border: 2px solid #DBC8AD;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-radius: 10px;
     padding: 15px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    gap: 15px;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative;
 }
 
 .bv-noidung .bv-thembaiviet .bv-avata {
@@ -46,9 +47,11 @@
 }
 
 .bv-noidung .bv-thembaiviet .bv-camnghi {
+    flex-grow: 1;
     font-size: 14px;
     color: #6D5F50;
-    flex-grow: 1;
+    position: relative;
+    max-width: calc(100% - 120px);
 }
 
 .bv-noidung .bv-thembaiviet .bv-camnghi .text-input {
@@ -56,7 +59,7 @@
     border: none;
     outline: none;
     width: 100%;
-    resize: none; 
+    resize: none;
     padding: 10px;
     font-size: 13px;
     box-sizing: border-box;
@@ -66,39 +69,56 @@
     font-family: 'Arial', sans-serif;
 }
 
-.bv-noidung .bv-thembaiviet .bv-camnghi .text-input::-webkit-scrollbar {
-    width: 5px;
+.bv-noidung .bv-thembaiviet .img-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+    position: relative;
 }
 
-.bv-noidung .bv-thembaiviet .bv-camnghi .text-input::-webkit-scrollbar-thumb {
-    background: #BFAF99;
-    border-radius: 10px; 
+
+.bv-noidung .bv-thembaiviet .img-container img {
+    max-width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
-.bv-noidung .bv-thembaiviet .bv-camnghi .text-input::-webkit-scrollbar-thumb:hover {
-    background: #A68D7B; 
+.bv-noidung .bv-thembaiviet .img-container .close-icon {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 14px; 
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
-.bv-noidung .bv-thembaiviet .bv-camnghi .text-input::-webkit-scrollbar-track {
-    background: #F5F5F5;
-    border-radius: 10px; 
-}
+
 
 
 .bv-noidung .bv-thembaiviet .bv-themanh-icon {
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     background-color: #EFE2D0;
-    padding: 5px;
     border-radius: 50%;
     color: #49372F;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 1px solid #DBC8AD;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-left: 5px;
 }
 
 .bv-noidung .bv-thembaiviet .bv-themanh-icon:hover {
@@ -115,12 +135,16 @@
     justify-content: center;
     align-items: center;
     border: 1px solid #DBC8AD;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.bv-noidung .bv-thembaiviet .bv-dang:hover {
+.bv-dang button {
+    border: none;
+    background-color: #EFE2D0;
+}
+
+.bv-dang button:hover {
     background-color: #EBD9BF;
 }
 
@@ -134,8 +158,7 @@
     align-items: center;
     padding: 20px;
     font-size: 20px;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+    border-radius: 10px;
 }
 
 .bv-thongtin {
@@ -148,40 +171,37 @@
 
 .bv-thongtin .bv-gioithieu {
     background-color: #FFF3E2;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
     border: 2px solid #DBC8AD;
-    width: 100%;
 }
 
 .bv-thongtin .bv-gioithieu .bv-tieude {
     font-size: 20px;
-    margin: 13px 13px;
+    margin: 13px;
     font-weight: bold;
 }
 
 .bv-thongtin .bv-gioithieu .bv-noidung {
     font-size: 15px;
-    margin: 13px 13px;
+    margin: 13px;
 }
 
 .bv-thongtin .bv-list-nguoitheodoi {
     background-color: #FFF3E2;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
     border: 2px solid #DBC8AD;
 }
 
 .bv-thongtin .bv-list-nguoitheodoi .bv-tieude {
     font-size: 20px;
-    margin: 13px 13px;
+    margin: 13px;
     font-weight: bold;
 }
 
 .bv-thongtin .bv-list-nguoitheodoi .bv-list {
-    margin: 13px 13px;
+    margin: 13px;
 }
 
 @media (max-width: 750px) {
@@ -201,13 +221,9 @@
     }
 
     .bv-noidung .bv-tieude {
-        border-radius: 8px;
-    }
-
-    .bv-noidung .bv-list {
         border-radius: 10px;
     }
-    
+
     .bv-thongtin .bv-gioithieu {
         border-radius: 10px;
     }

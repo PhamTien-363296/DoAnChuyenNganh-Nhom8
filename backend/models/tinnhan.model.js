@@ -11,13 +11,13 @@ const tinnhanSchema = new mongoose.Schema(
             ref: "Nguoidung",
 		},
         noiDungTN: {
-			type: Number,
+			type: String,
             required: true,
 		},
 	},
 	{ timestamps: true }
 );
 
-const Tinnhan = mongoose.model("Tinnhan", tinnhanSchema);
+const Tinnhan = mongoose.model("Tinnhan", tinnhanSchema,"Tinnhan");
 
 export default Tinnhan;

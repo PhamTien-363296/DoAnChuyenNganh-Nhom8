@@ -1,0 +1,47 @@
+/* General styles for both chat-end and chat-start */
+.chat-end, .chat-start {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.7rem; /* Optional, to give space between messages */
+  }
+  
+  .chat-end .chat-bubble {
+    background-color: #785e54; /* Blue color for the sender */
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 15px;
+    max-width: 70%;
+    position: relative;
+    margin-left: auto;
+  }
+  
+  .chat-start .chat-bubble {
+    background-color: #fff8db; 
+    color: black;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    max-width: 70%;
+    position: relative;
+    margin-right: auto; 
+  }
+  
+  /* Adjust chat images */
+  .chat-image.avatar {
+    margin-right: 0.5rem;
+  }
+  
+  .chat-image img {
+    width: 2.5rem;
+    border-radius: 9999px;
+  }
+  
+  
+  .chat-end {
+    justify-content: flex-end; /* Align the sender's bubble to the right */
+  }
+  
+  /* Adjust alignment for chat-start */
+  .chat-start {
+    justify-content: flex-start; /* Align the receiver's bubble to the left */
+  }
+  

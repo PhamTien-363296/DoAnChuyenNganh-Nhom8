@@ -6,37 +6,43 @@ import { useQueryClient } from '@tanstack/react-query';
 import './Sidebar.css';
 
 import { 
-    HiOutlineHome, 
-    HiOutlineUserGroup, 
-    HiOutlineChatBubbleOvalLeftEllipsis,
-    HiOutlineBell
+  HiOutlineHome, 
+  HiOutlineUserGroup, 
+  HiOutlineChatBubbleOvalLeftEllipsis,
+  HiOutlineBell
 } from "react-icons/hi2";
 import { HiOutlineLogout } from "react-icons/hi";
+import { useAuthContext } from "../../../context/AuthContext";
 
 export default function Sidebar() {
     const [thongBao, setThongBao] = useState('');
     const [hienThiThongBao, setHienThiThongBao] = useState(false);
+    const {setAuthUser} = useAuthContext()
     const location = useLocation();
     const queryClient = useQueryClient(); 
 
     const handleDangXuat = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/auth/logout');
-            setThongBao('Đăng xuất thành công');
-            console.log(response.data);
+          const response = await axios.post('/api/auth/logout');
+          setThongBao('Đăng xuất thành công');
+          console.log(response.data);
 
-            // Gọi invalidateQueries sau khi đăng xuất thành công để cập nhật dữ liệu
-            queryClient.invalidateQueries('authUser'); // Hoặc tên truy vấn bạn đang sử dụng để lưu thông tin người dùng
+        
+          queryClient.invalidateQueries('authUser');
 
-            } catch (error) {
-            if (error.response) {
-                console.error('Lỗi từ server:', error.response.data);
-                setThongBao(error.response.data.message || 'Lỗi đăng xuất. Vui lòng thử lại!');
-            } else {
-                console.error('Lỗi không xác định:', error.message);
-                setThongBao('Lỗi không xác định. Vui lòng thử lại sau!');
-            }
+          const data = response.data; 
+          localStorage.removeItem("chat-user")
+          setAuthUser(data);
+
+        } catch (error) {
+          if (error.response) {
+            console.error('Lỗi từ server:', error.response.data);
+            setThongBao(error.response.data.message || 'Lỗi đăng xuất. Vui lòng thử lại!');
+          } else {
+            console.error('Lỗi không xác định:', error.message);
+            setThongBao('Lỗi không xác định. Vui lòng thử lại sau!');
+          }
         }
     };
 

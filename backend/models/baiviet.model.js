@@ -31,11 +31,17 @@ const baivietSchema = new mongoose.Schema(
         nguoiDungIdBV:{
             type: mongoose.Schema.Types.ObjectId,
 			ref: "Nguoidung",
-        }
+        },
+        cacluotThich: [
+			{
+				type: mongoose.Schema.Types.ObjectId,  // them nay
+				ref: "Nguoidung",
+			},
+		],
     },
     { timestamps: true } 
 );
 
-const Baiviet = mongoose.model("Baiviet", baivietSchema);
+const Baiviet = mongoose.model("Baiviet", baivietSchema,"Baiviet");
 
 export default Baiviet;

@@ -2,11 +2,13 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query'; 
 import './Dangnhap.css';
+import { useAuthContext } from '../../../../context/AuthContext';
 
 function Dangnhap() {
   const [email, setEmail] = useState('');
   const [matKhau, setMatKhau] = useState('');
   const [thongBao, setThongBao] = useState('');
+  const {setAuthUser} = useAuthContext()
 
   const queryClient = useQueryClient(); 
 
@@ -21,6 +23,10 @@ function Dangnhap() {
   
       setThongBao('Đăng nhập thành công');
       console.log(response.data);
+
+      const data = response.data; 
+      localStorage.setItem('chat-user', JSON.stringify(data));
+      setAuthUser(data);
 
   
       queryClient.invalidateQueries({ queryKey: ['authUser'] });

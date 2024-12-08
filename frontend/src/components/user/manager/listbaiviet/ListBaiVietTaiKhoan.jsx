@@ -1,68 +1,63 @@
-
-import BaiVietItem from '../../common/items/baivietitem/BaiVietItem'
+import { useEffect, useState } from 'react';
+import BaiVietItem from '../../common/items/baivietitem/BaiVietItem';
 import { Link } from 'react-router-dom';
-
-const baiviets = [
-    {
-        tenCongDong: "null",
-        tenNguoiDung: "Người dùng 1",
-        noiDungBV: "Đây là nội dung bài viết 1. Câu chuyện hấp dẫn về hành động.",
-        luotThich: 120,
-        binhLuan: 30,
-    },
-    {
-        tenCongDong: "null",
-        tenNguoiDung: "Người dùng 2",
-        noiDungBV: "Bài viết này kể về một cuộc phiêu lưu kịch tính đầy thử thách.",
-        luotThich: 200,
-        binhLuan: 50,
-    },
-    {
-        tenCongDong: "null",
-        tenNguoiDung: "Người dùng 3",
-        noiDungBV: "Một câu chuyện tình yêu đầy cảm động giữa hai người trẻ.",
-        luotThich: 180,
-        binhLuan: 45,
-    },
-    {
-        tenCongDong: "null",
-        tenNguoiDung: "Người dùng 4",
-        noiDungBV: "Chuyện ma quái trong một ngôi nhà cổ đã bị bỏ hoang lâu năm.",
-        luotThich: 150,
-        binhLuan: 40,
-    },
-    {
-        tenCongDong: "null",
-        tenNguoiDung: "Người dùng 5",
-        noiDungBV: "Một câu chuyện về thế giới khác và những bí ẩn chưa được giải mã.",
-        luotThich: 130,
-        binhLuan: 35,
-    },
-    {
-        tenCongDong: "null",
-        tenNguoiDung: "Người dùng 6",
-        noiDungBV: "Bài viết khám phá sâu về tâm lý con người trong những tình huống căng thẳng.",
-        luotThich: 160,
-        binhLuan: 60,
-    },
-];
+import Axios from 'axios';
 
 function ListBaiVietTaiKhoan() {
+    const [baiviets, setBaiviets] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const baiVietCuaToi = async () => {
+        try {
+            const response = await Axios.get('/api/baiviet/cuatoi');
+            if (response.data) {
+                setBaiviets(response.data);
+                setLoading(false);
+            } else {
+                alert("Có lỗi xảy ra, vui lòng thử lại.");
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error("Lỗi khi đổ dữ liệu bài viết:", error);
+            alert("Lỗi khi đổ dữ liệu bài viết: " + (error.response?.data?.message || error.message));
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        baiVietCuaToi();
+    }, []);
+
+    if (loading) {
+        return <p>Đang tải...</p>;
+    }
+
+    if (baiviets.length === 0) {
+        return <p>Không có bài viết nào.</p>;
+    }
+
     return (
         <>
             {baiviets.map((baiviet, index) => (
-                <Link to={baiviet.path} key={index} style={{ textDecoration: 'none', color:'black'}}>
+                <Link
+                    to={baiviet.path}
+                    key={index}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                >
                     <BaiVietItem
-                        tenCongDong={baiviet.tenCongDong}
-                        tenNguoiDung={baiviet.tenNguoiDung}
                         noiDungBV={baiviet.noiDungBV}
-                        luotThich={baiviet.luotThich}
-                        binhLuan={baiviet.binhLuan}
+                        luotThichBV={baiviet.luotThichBV}
+                        binhLuanBV={baiviet.binhLuanBV}
+                        IdNguoiDung={baiviet.nguoiDungIdBV}  // Truyền IdNguoiDung
+                        username={baiviet.nguoiDungIdBV.username}  // Truyền username
+                        hinhAnh={baiviet.hinhAnhBV}
+                        baiVietId={baiviet._id}
+                        baiviet={baiviet}
                     />
                 </Link>
             ))}
         </>
-    )
+    );
 }
 
-export default ListBaiVietTaiKhoan
+export default ListBaiVietTaiKhoan;
