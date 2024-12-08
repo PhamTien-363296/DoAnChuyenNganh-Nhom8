@@ -43,7 +43,7 @@ const SuaTruyen = () => {
     const fetchTruyen = async (idTruyen) => {
         try {
             const response = await axios.get(`/api/truyen/laytheoid/${idTruyen}`);
-            const truyen = response.data;
+            const truyen = response.data.truyen;
             setFormData({
                 tenTruyen: truyen.tenTruyen,
                 moTaTruyen: truyen.moTaTruyen,
@@ -51,6 +51,7 @@ const SuaTruyen = () => {
                 theLoaiIdTruyen: truyen.theLoaiIdTruyen,
                 tinhTrangTruyen: truyen.tinhTrangTruyen,
                 trangThaiTruyen: truyen.trangThaiTruyen,
+
             });
             setCoverImage(truyen.anhTruyen); 
         } catch (error) {
@@ -171,7 +172,7 @@ const SuaTruyen = () => {
                             <label>Loại</label>
                             <select
                                 name="theLoaiIdTruyen"
-                                value={formData.theLoaiIdTruyen}
+                                value={formData.theLoaiIdTruyen._id}
                                 onChange={handleChange}
                             >
                                 <option value="">Chọn danh mục</option>

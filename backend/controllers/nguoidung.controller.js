@@ -20,12 +20,15 @@ export const layLichSuDoc = async (req, res) => {
                 return {
                     truyen: truyen,    
                     chuong: chuong,
+                    lastRead: item.lastRead,
                 };
             }
         }).filter(item => item !== undefined);
 
-        const uniqueResult = [...new Map(result.sort((a, b) => new Date(b.ngayCapNhat) - new Date(a.ngayCapNhat))
-            .map(item => [item.truyen._id, item])).values()];
+        const sortedResult = result.sort((a, b) => new Date(b.lastRead) - new Date(a.lastRead));
+
+        const uniqueResult = [...new Map(sortedResult.map(item => [item.truyen._id, item])).values()];
+
 
         res.status(200).json(uniqueResult);
 
@@ -59,5 +62,28 @@ export const yeuThich = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.log("Lỗi yêu thích controller", error.message);
+    }
+};
+
+export const layYeuThich = async (req, res) => {
+    const idND = req.nguoidung._id;
+
+    try {
+        const nguoiDung = await Nguoidung.findById(idND).populate("yeuThichND");
+
+        if (!nguoiDung) {
+            return res.status(404).json({ message: 'Người dùng không tồn tại' });
+        }
+
+        let yeuThichND = nguoiDung.yeuThichND;
+
+        yeuThichND = yeuThichND.reverse();
+
+        return res.status(200).json({
+            yeuThichND,
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy yêu thích:', error);
+        res.status(500).json({ message: 'Lỗi server' });
     }
 };

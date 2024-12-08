@@ -24,6 +24,7 @@ const truyenSchema = new mongoose.Schema(
     },
     trangThaiTruyen: {
       type: String,
+      default: "Riêng tư",  
     },
     tacGiaIdTruyen: {
       type: mongoose.Schema.Types.ObjectId,

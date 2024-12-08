@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import LichSuItem from "../../common/items/lichsuitem/LichSuItem";
+import TaiKhoanItem from "../../common/items/lichsuitem/LichSuItem";
 
 function ListLichSu() {
     const [truyen, setTruyen] = useState([]);
@@ -20,7 +20,7 @@ function ListLichSu() {
     return (
         <>
             {truyen.map((book) => (
-                <LichSuItem
+                <TaiKhoanItem
                     key={book.truyen._id} 
                     idTruyen={book.truyen._id}
                     tenTruyen={book.truyen.tenTruyen} 
