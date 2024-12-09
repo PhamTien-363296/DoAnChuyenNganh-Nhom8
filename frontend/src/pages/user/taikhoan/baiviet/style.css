@@ -232,3 +232,43 @@
         border-radius: 10px;
     }
 }
+
+/* 
+cho div theo doi */
+
+/* CSS cho container của người theo dõi */
+.bv-list-nguoitheodoi {
+    margin-top: 20px;
+}
+
+.bv-list {
+    margin-top: 10px;
+}
+
+/* CSS cho mỗi người theo dõi */
+/* CSS cho mỗi phần tử người theo dõi */
+.follower-item {
+    display: flex;                   /* Dùng Flexbox để căn chỉnh ngang */
+    align-items: center;             /* Căn giữa theo chiều dọc */
+    margin-bottom: 10px;             /* Khoảng cách giữa các người theo dõi */
+    background-color: #EBD9BF;
+    padding: 7px;
+    border-radius: 15px;
+}
+
+/* CSS cho ảnh đại diện */
+.follower-avatar {
+    width: 50px;                    
+    height: 50px;                    
+    border-radius: 50%;           
+    object-fit: cover;             
+    margin-right: 10px;              
+}
+
+/* CSS cho tên người theo dõi */
+.follower-name {
+    font-size: 18px;                
+    font-weight: bold;             
+    color: #333;      
+    margin-left: 20px;             
+}

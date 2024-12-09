@@ -9,8 +9,13 @@ import Nguoidung from "../models/nguoidung.model.js";
 export const layBaiViet = async (req, res) => {
     try {
         const nguoidung = req.nguoidung._id; 
-        const baiviet = await Baiviet.find({ nguoiDungIdBV: nguoidung }).populate('nguoiDungIdBV', 'username');
-        res.status(200).json(baiviet);
+        
+        // Lấy tất cả bài viết của người dùng và populate các thông tin liên quan
+        const baiviet = await Baiviet.find({ nguoiDungIdBV: nguoidung })
+            .populate('nguoiDungIdBV', 'username') // Lấy thông tin người dùng (username)
+            .populate('thuocCD', 'tenCD'); // Lấy thông tin cộng đồng (tenCD)
+
+        res.status(200).json(baiviet); // Trả về danh sách bài viết
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.error("Các bài viết", error);
@@ -159,6 +164,7 @@ export const layHetBaiViet = async (req, res) => {
     try {
         const baiviet = await Baiviet.find()
             .populate('nguoiDungIdBV', 'username') // Lấy thông tin người dùng (username)
+            .populate('thuocCD', 'tenCD')
             .sort({ createdAt: -1 }); // Sắp xếp theo ngày tạo mới nhất
 
         if (!baiviet || baiviet.length === 0) {
@@ -247,6 +253,7 @@ export const layBaiVietCongDong = async (req, res) => {
        
         const baivietcongdong = await Baiviet.find({ thuocCD: idcongdong })
             .populate("nguoiDungIdBV", "username ") 
+            .populate('thuocCD', 'tenCD')
             .sort({ createdAt: -1 }); 
 
         

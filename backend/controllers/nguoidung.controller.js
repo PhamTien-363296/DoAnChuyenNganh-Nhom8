@@ -1,5 +1,6 @@
 import Nguoidung from "../models/nguoidung.model.js";
 import Congdong from "../models/congdong.model.js";
+import Thongbao from "../models/thongbao.model.js";
 import {v2 as cloudinary} from 'cloudinary'
 import moment from 'moment';
 
@@ -218,5 +219,92 @@ export const layNguoiDungMoi = async (req, res) => {
     } catch (error) {
         console.error("Lỗi khi lấy số lượng người dùng mới:", error);
         return res.status(500).json({ message: "Có lỗi xảy ra khi lấy số lượng người dùng mới" });
+    }
+};
+
+
+export const followNguoiDung = async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const nguoidungcapnhat = await Nguoidung.findById(id);
+		const nguoidunghientai = await Nguoidung.findById(req.nguoidung._id);
+
+		if (id === req.nguoidung._id.toString()) {
+			return res.status(400).json({ error: "Bạn không thể follow chính mình" });
+		}
+
+		if (!nguoidungcapnhat || !nguoidunghientai) return res.status(400).json({ error: "Không tìm thấy người dùng" });
+
+		const dangtheodoi = nguoidunghientai.theoDoiND.includes(id);
+
+		if (dangtheodoi) {
+			await Nguoidung.findByIdAndUpdate(id, { $pull: { nguoiTheoDoiND: req.nguoidung._id } });
+			await Nguoidung.findByIdAndUpdate(req.nguoidung._id, { $pull: { theoDoiND: id } });
+
+			res.status(200).json({ message: "Bỏ follow người dùng thành công" });
+		} else {
+			await Nguoidung.findByIdAndUpdate(id, { $push: { nguoiTheoDoiND: req.nguoidung._id } });
+			await Nguoidung.findByIdAndUpdate(req.nguoidung._id, { $push: { theoDoiND: id } });
+
+            const thongBaoMoi = new Thongbao({
+				loaiThongBao: "follow",
+				tuNguoiDung: req.nguoidung._id,
+				denNguoiDung: nguoidungcapnhat._id,
+                noiDungTB: `${nguoidunghientai.username} vừa follow bạn`,
+			});
+
+			await thongBaoMoi.save();
+
+			res.status(200).json({ message: "Follow người dùng thành công" });
+		}
+	} catch (error) {
+		console.log("Lỗi followNguoiDung controller ", error.message);
+		res.status(500).json({ error: error.message });
+	}
+}
+
+export const layFollower = async (req, res) => {
+    try {
+        
+        const idnguoidung = req.nguoidung._id;
+
+        
+        const nguoidung = await Nguoidung.findById(idnguoidung).populate('theoDoiND', 'username email');
+
+        if (!nguoidung) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+        }
+
+
+        const followers = nguoidung.theoDoiND;
+
+        return res.status(200).json({
+            followers
+        });
+    } catch (error) {
+        console.error("Lỗi layFollower controller:", error);
+        return res.status(500).json({ message: "Lỗi 500" });
+    }
+};
+
+
+export const layThongBao = async (req, res) => {
+    try {
+        const idnguoidung = req.nguoidung._id;
+
+       
+        const thongBao = await Thongbao.find({ denNguoiDung: idnguoidung })
+            .populate('tuNguoiDung', 'username')  
+            .sort({ createdAt: -1 });  
+
+        if (!thongBao || thongBao.length === 0) {
+            return res.status(404).json({ message: 'Không có thông báo mới' });
+        }
+
+        return res.status(200).json({ thongBao });
+    } catch (error) {
+        console.error("Lỗi layThongBao controller:", error.message);
+        return res.status(500).json({ error: "Lỗi 500" });
     }
 };

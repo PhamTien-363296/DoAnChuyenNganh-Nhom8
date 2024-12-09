@@ -1,6 +1,6 @@
 import express from "express"
 
-import { layLichSuDoc, layYeuThich, yeuThich,layNguoiDungTN,taoCongDong,thamGiaCongDong, layCongDongDaThamGia,layNguoiDungMoi } from "../controllers/nguoidung.controller.js"
+import { layLichSuDoc, layYeuThich, yeuThich,layNguoiDungTN,taoCongDong,thamGiaCongDong, layCongDongDaThamGia,layNguoiDungMoi ,followNguoiDung,layFollower,layThongBao} from "../controllers/nguoidung.controller.js"
 import { protectRoute } from "../middleware/protectRoute.js"
 
 const router = express.Router()
@@ -16,4 +16,7 @@ router.post("/thamgia/congdong/:idcongdong",protectRoute,thamGiaCongDong);
 router.get("/lay/congdong/dathamgia", protectRoute, layCongDongDaThamGia);
 
 router.get("/lay/moi", protectRoute, layNguoiDungMoi);
+router.post("/follow/:id",protectRoute,followNguoiDung)
+router.get("/lay/follower",protectRoute,layFollower)
+router.get("/lay/thongbao",protectRoute,layThongBao)
 export default router

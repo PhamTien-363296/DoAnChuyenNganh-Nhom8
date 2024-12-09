@@ -3,6 +3,7 @@ import {v2 as cloudinary} from 'cloudinary'
 import Nguoidung from "../models/nguoidung.model.js";
 import Theloai from "../models/theloai.model.js";
 import Danhgia from "../models/danhgia.model.js";
+import Thongbao from "../models/thongbao.model.js";
 import moment from 'moment';
 
 export const layTatcaTruyen = async (req, res) => {
@@ -165,19 +166,22 @@ export const themTruyen = async (req, res) => {
         const { tenTruyen, moTaTruyen, anhTruyen, theLoaiIdTruyen } = req.body;
         const tacGiaIdTruyen = req.nguoidung._id.toString();
 
+        // Tìm tác giả
         const nguoidung = await Nguoidung.findById(tacGiaIdTruyen);
         if (!nguoidung) return res.status(404).json({ message: "Không tìm thấy người dùng" });
 
-        if (!tenTruyen ) {
+        if (!tenTruyen) {
             return res.status(400).json({ error: "Truyện cần có tên" });
         }
 
+        // Upload ảnh truyện nếu có
         let anhTruyenUrl = anhTruyen;
         if (anhTruyen) {
             const uploadResult = await cloudinary.uploader.upload(anhTruyen);
             anhTruyenUrl = uploadResult.secure_url;
         }
 
+        // Tạo truyện mới
         const truyenMoi = new Truyen({
             tenTruyen,
             moTaTruyen,
@@ -186,23 +190,40 @@ export const themTruyen = async (req, res) => {
             tacGiaIdTruyen,
         });
 
+        // Gắn truyện vào thể loại
         const theLoai = await Theloai.findById(theLoaiIdTruyen);
         if (!theLoai) {
             console.log("Không tìm thấy thể loại với ID:", theLoaiIdTruyen);
             return res.status(404).json({ message: "Không tìm thấy thể loại" });
         }
 
-        theLoai.idTruyen.push(truyenMoi._id); 
+        theLoai.idTruyen.push(truyenMoi._id);
         await theLoai.save();
 
+        // Lưu truyện mới vào cơ sở dữ liệu
         await truyenMoi.save();
         res.status(201).json(truyenMoi);
+
+        // Tạo thông báo cho những người theo dõi
+        const nguoiTheoDoi = nguoidung.nguoiTheoDoiND || [];
+        if (nguoiTheoDoi.length > 0) {
+            const thongBaoArray = nguoiTheoDoi.map((nguoiDungId) => ({
+                loaiThongBao: "truyenmoi",
+                tuNguoiDung: tacGiaIdTruyen,
+                denNguoiDung: nguoiDungId,
+                noiDungTB: `${nguoidung.username} vừa đăng truyện mới: ${tenTruyen}`,
+            }));
+
+            // Lưu tất cả thông báo
+            await Thongbao.insertMany(thongBaoArray);
+        }
 
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
         console.log("Error in themTruyen controller", error);
     }
 };
+
 
 export const suaTruyen = async (req, res) => {
     const { tenTruyen, moTaTruyen, anhTruyen, theLoaiIdTruyen, tinhTrangTruyen, trangThaiTruyen } = req.body;
