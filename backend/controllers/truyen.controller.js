@@ -3,6 +3,7 @@ import {v2 as cloudinary} from 'cloudinary'
 import Nguoidung from "../models/nguoidung.model.js";
 import Theloai from "../models/theloai.model.js";
 import Danhgia from "../models/danhgia.model.js";
+import moment from 'moment';
 
 export const layTatcaTruyen = async (req, res) => {
     try {
@@ -431,5 +432,38 @@ export const layTruyenHot = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.log("Lỗi lấy truyện hot controller", error.message);
+    }
+};
+
+
+
+
+export const layLuotXemTheoTheLoai = async (req, res) => {
+    try {
+        // Tìm tất cả các truyện công khai
+        const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
+        .populate('theLoaiIdTruyen'); // Liên kết với thể loại
+
+        const luotXemTheoTheLoai = {};
+
+        // Lặp qua các truyện và cộng dồn lượt xem theo thể loại
+        truyen.forEach(truyen => {
+            const theLoai = truyen.theLoaiIdTruyen.tieuDeTheLoai; // Lấy tên thể loại
+            if (!luotXemTheoTheLoai[theLoai]) {
+                luotXemTheoTheLoai[theLoai] = 0;
+            }
+            luotXemTheoTheLoai[theLoai] += truyen.luotXemTruyen; // Cộng dồn lượt xem theo thể loại
+        });
+
+        // Chuyển đổi object thành mảng cho dễ hiển thị
+        const data = Object.keys(luotXemTheoTheLoai).map(theLoai => ({
+            name: theLoai,
+            luotXem: luotXemTheoTheLoai[theLoai]
+        }));
+
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Lỗi khi lấy lượt xem theo thể loại", error.message);
+        res.status(500).json({ error: "Lỗi 500" });
     }
 };

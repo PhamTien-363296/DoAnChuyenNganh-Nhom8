@@ -26,6 +26,7 @@ import AdminBaocao from './pages/admin/Baocao';
 import SuaTruyen from './pages/user/truyen/suatruyen/SuaTruyen';
 import SuaChuong from './pages/user/truyen/suachuong/SuaChuong';
 import ChiTietChuong from './pages/user/truyen/chitietchuong/ChiTietChuong';
+import ListBaiVietCongDong from './components/user/manager/listbaiviet/ListBaiVietCongDong';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -55,6 +56,7 @@ function App() {
     <Routes>
       <Route path="/" element={authUser ? <Trangchu /> : <Navigate to="/dangky" />} />
       <Route path="/tintuc" element={<Tintuc />} />
+      <Route path="/congdong/:id" element={<ListBaiVietCongDong/>} />
       <Route path="/tinnhan" element={<Tinnhan />} />
       <Route path="/theloai/:tenTheLoai" element={<Danhmuc />} />
       <Route path="/taikhoan/baiviet" element={<Baiviet />} />

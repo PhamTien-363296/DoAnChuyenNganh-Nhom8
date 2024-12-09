@@ -8,17 +8,26 @@ const congdongSchema = new mongoose.Schema(
         moTaCD:{
             type:String,
         },
-        thanhVienCD:{
+        thanhVienCD: [{
             type: mongoose.Schema.Types.ObjectId,
-			ref: "Nguoidung",
-        },
+            ref: "Nguoidung",
+        }],
         nguoiDungIdCD:{
             type: mongoose.Schema.Types.ObjectId,
 			ref: "Nguoidung",
-        }
+        },
+        anhCD:{
+            type: String,
+        },
+        cacBaiViet: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Baiviet",
+            },
+        ],
     },{ timestamps: true }
 )
 
-const Congdong = mongoose.model("Congdong", congdongSchema);
+const Congdong = mongoose.model("Congdong", congdongSchema,"Congdong");
 
 export default Congdong;

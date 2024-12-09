@@ -75,7 +75,7 @@ const nguoidungSchema = new mongoose.Schema(
 				default: [],
 			},
 		],
-    }
+    },{ timestamps: true }
 )
 
 const Nguoidung = mongoose.model("Nguoidung", nguoidungSchema,"Nguoidung");

@@ -1,68 +1,72 @@
-
-import BaiVietItem from '../../common/items/baivietitem/BaiVietItem'
-import { Link } from 'react-router-dom';
-
-const baiviets = [
-    {
-        tenCongDong: "Tất cả",
-        tenNguoiDung: "Người dùng 1",
-        noiDungBV: "Đây là nội dung bài viết 1. Câu chuyện hấp dẫn về hành động.",
-        luotThich: 120,
-        binhLuan: 30,
-    },
-    {
-        tenCongDong: "Hành động",
-        tenNguoiDung: "Người dùng 2",
-        noiDungBV: "Bài viết này kể về một cuộc phiêu lưu kịch tính đầy thử thách.",
-        luotThich: 200,
-        binhLuan: 50,
-    },
-    {
-        tenCongDong: "Lãng mạn",
-        tenNguoiDung: "Người dùng 3",
-        noiDungBV: "Một câu chuyện tình yêu đầy cảm động giữa hai người trẻ.",
-        luotThich: 180,
-        binhLuan: 45,
-    },
-    {
-        tenCongDong: "Kinh dị",
-        tenNguoiDung: "Người dùng 4",
-        noiDungBV: "Chuyện ma quái trong một ngôi nhà cổ đã bị bỏ hoang lâu năm.",
-        luotThich: 150,
-        binhLuan: 40,
-    },
-    {
-        tenCongDong: "Huyền bí",
-        tenNguoiDung: "Người dùng 5",
-        noiDungBV: "Một câu chuyện về thế giới khác và những bí ẩn chưa được giải mã.",
-        luotThich: 130,
-        binhLuan: 35,
-    },
-    {
-        tenCongDong: "Tâm lý",
-        tenNguoiDung: "Người dùng 6",
-        noiDungBV: "Bài viết khám phá sâu về tâm lý con người trong những tình huống căng thẳng.",
-        luotThich: 160,
-        binhLuan: 60,
-    },
-];
+import { useEffect, useState } from 'react';
+import BaiVietItem from '../../common/items/baivietitem/BaiVietItem';
+import { Link, useParams } from 'react-router-dom';
+import Axios from 'axios';
+import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
 
 function ListBaiVietCongDong() {
+    const { id } = useParams(); // Lấy id từ URL params
+    const [baiviets, setBaiviets] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const baiVietTatCa = async () => {
+        try {
+            const response = await Axios.get(`/api/baiviet/lay/congdong/${id}`);
+            console.log(response.data);
+            if (Array.isArray(response.data)) {
+                setBaiviets(response.data);
+            } else {
+                setBaiviets([]);  
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error("Lỗi khi đổ dữ liệu bài viết:", error);
+            alert("Lỗi khi đổ dữ liệu bài viết: " + (error.response?.data?.message || error.message));
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        baiVietTatCa();
+
+        const interval = setInterval(() => {
+            baiVietTatCa();
+        }, 7000);
+
+        return () => clearInterval(interval);
+    }, [id]);
+
+    if (loading) {
+        return <p>Đang tải...</p>;
+    }
+
     return (
-        <>
-            {baiviets.map((baiviet, index) => (
-                <Link to={baiviet.path} key={index} style={{ textDecoration: 'none', color:'black'}}>
-                    <BaiVietItem
-                        tenCongDong={baiviet.tenCongDong}
-                        tenNguoiDung={baiviet.tenNguoiDung}
-                        noiDungBV={baiviet.noiDungBV}
-                        luotThich={baiviet.luotThich}
-                        binhLuan={baiviet.binhLuan}
-                    />
-                </Link>
-            ))}
-        </>
-    )
+        <MainLayout>
+            {/* Display the message if there are no posts */}
+            {baiviets.length === 0 ? (
+                <p>Cộng đồng này chưa có bài viết nào.</p>
+            ) : (
+                baiviets.map((baiviet, index) => (
+                    <Link
+                        to={baiviet.path}
+                        key={index}
+                        style={{ textDecoration: 'none', color: 'black' }}
+                    >
+                        <BaiVietItem
+                            noiDungBV={baiviet.noiDungBV}
+                            luotThichBV={baiviet.luotThichBV}
+                            binhLuanBV={baiviet.binhLuanBV}
+                            IdNguoiDung={baiviet.nguoiDungIdBV}  // Truyền IdNguoiDung
+                            username={baiviet.nguoiDungIdBV.username}  // Truyền username
+                            hinhAnh={baiviet.hinhAnhBV}
+                            baiVietId={baiviet._id}
+                            baiviet={baiviet}
+                        />
+                    </Link>
+                ))
+            )}
+        </MainLayout>
+    );
 }
 
-export default ListBaiVietCongDong
+export default ListBaiVietCongDong;

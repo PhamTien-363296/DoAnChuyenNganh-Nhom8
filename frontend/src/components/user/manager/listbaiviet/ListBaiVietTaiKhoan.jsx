@@ -26,6 +26,14 @@ function ListBaiVietTaiKhoan() {
 
     useEffect(() => {
         baiVietCuaToi();
+
+
+        const interval = setInterval(() => {
+            baiVietCuaToi();
+        }, 7000);  
+
+
+        return () => clearInterval(interval);
     }, []);
 
     if (loading) {

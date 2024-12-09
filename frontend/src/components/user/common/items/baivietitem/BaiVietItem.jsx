@@ -121,9 +121,9 @@ function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelet
 BaiVietItem.propTypes = {
     noiDungBV: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    hinhAnh: PropTypes.string.isRequired,
+    hinhAnh: PropTypes.string,
     baiVietId: PropTypes.string.isRequired,
-    baiviet: PropTypes.object.isRequired,
+    baiviet: PropTypes.object,
     onDelete: PropTypes.func,  // Hàm callback để gọi khi xóa bài viết
 };
 
