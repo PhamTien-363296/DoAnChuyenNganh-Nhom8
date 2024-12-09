@@ -38,7 +38,7 @@ function Chitiettruyen() {
           console.log(response.data)
           const truyenData = response.data.truyen; 
           setTruyen(truyenData); 
-          setTrungBinhSao(response.data.trungBinhSao);
+          setTrungBinhSao(truyenData.danhGia.trungBinhSao);
           setIsFavorite(response.data.isFavorite);
       } catch (error) {
           console.error("Lỗi:", error);

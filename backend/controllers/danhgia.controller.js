@@ -1,4 +1,5 @@
 import Danhgia from "../models/danhgia.model.js";
+import Truyen from "../models/truyen.model.js";
 
 export const kiemTraDanhGia = async (req, res) => {
     const { truyenId } = req.params;
@@ -26,6 +27,18 @@ export const themDanhGia = async (req, res) => {
             truyenIdDG,
         });
         await newRating.save();
+
+        const truyen = await Truyen.findById(truyenIdDG);
+        if (!truyen) {
+            return res.status(404).json({ error: "Không tìm thấy truyện!" });
+        }
+
+        truyen.danhGia.tongSao += parseInt(soSaoDG, 10);
+        truyen.danhGia.tongDanhGia += 1;
+        truyen.danhGia.trungBinhSao = (truyen.danhGia.tongSao / truyen.danhGia.tongDanhGia);
+
+        await truyen.save();
+
         res.status(201).json({ message: "Đánh giá của bạn đã được gửi thành công!" });
     } catch (error) {
         res.status(500).json({ error: "Lỗi server!" });
