@@ -4,6 +4,70 @@ import Giaodich from "../models/giaodich.model.js"
 import Congdong from "../models/congdong.model.js";
 import Thongbao from "../models/thongbao.model.js";
 import {v2 as cloudinary} from 'cloudinary'
+import Truyen from '../models/truyen.model.js';
+import Chuong from '../models/chuong.model.js';
+
+export const themLichSu = async (req, res) => {
+    const idND = req.nguoidung._id;
+    const { idTruyen, idChuong } = req.body;
+
+    try {
+        const truyen = await Truyen.findById(idTruyen);
+        if (!truyen) {
+            return res.status(404).json({ message: 'Truyện không tồn tại' });
+        }
+
+        const chuong = await Chuong.findById(idChuong);
+        if (!chuong) {
+            return res.status(404).json({ message: 'Chương không tồn tại' });
+        }
+
+        const nguoiDung = await Nguoidung.findById(idND);
+        if (!nguoiDung) {
+            return res.status(404).json({ message: 'Người dùng không tồn tại' });
+        }
+
+        const lichSuND = nguoiDung.lichSuND || [];
+
+        const truyenIndex = lichSuND.findIndex(item => item.truyenId.toString() === idTruyen);
+
+        if (truyenIndex !== -1) {
+            const danhSachChuong = lichSuND[truyenIndex].danhSachChuong || [];
+            const chuongIndex = danhSachChuong.findIndex(item => item.chuongId.toString() === idChuong);
+
+            if (chuongIndex !== -1) {
+                danhSachChuong[chuongIndex].thoiGianDocChuong = new Date();
+            } else {
+                danhSachChuong.push({
+                    chuongId: idChuong,
+                    thoiGianDocChuong: new Date(),
+                });
+            }
+
+            lichSuND[truyenIndex].danhSachChuong = danhSachChuong;
+            lichSuND[truyenIndex].thoiGianDoc = new Date();
+        } else {
+            lichSuND.push({
+                truyenId: idTruyen,
+                danhSachChuong: [
+                    {
+                        chuongId: idChuong,
+                        thoiGianDocChuong: new Date(),
+                    },
+                ],
+                thoiGianDoc: new Date(),
+            });
+        }
+
+        nguoiDung.lichSuND = lichSuND;
+        await nguoiDung.save();
+
+        res.status(200).json({ message: 'Cập nhật lịch sử đọc thành công', lichSuND });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Đã xảy ra lỗi', error });
+    }
+};
 
 export const layLichSuDoc = async (req, res) => {
     const idND = req.nguoidung._id;
@@ -11,7 +75,7 @@ export const layLichSuDoc = async (req, res) => {
     try {
         const nguoiDung = await Nguoidung.findById(idND)
             .populate('lichSuND.truyenId')
-            .populate('lichSuND.chuongId');
+            .populate('lichSuND.danhSachChuong.chuongId');
 
         if (!nguoiDung) {
             return res.status(404).json({ message: 'Không tìm thấy người dùng' });
@@ -19,24 +83,22 @@ export const layLichSuDoc = async (req, res) => {
 
         const result = nguoiDung.lichSuND.map(item => {
             const truyen = item.truyenId;
-            const chuong = item.chuongId;
+            return item.danhSachChuong.map(chuongItem => {
+                const chuong = chuongItem.chuongId;
 
-            if (truyen && chuong) {
-                return {
-                    truyen: truyen,    
-                    chuong: chuong,
-                    lastRead: item.lastRead,
-                };
-            }
-        }).filter(item => item !== undefined);
+                if (truyen && chuong) {
+                    return {
+                        truyen: truyen,
+                        chuong: chuong,
+                        thoiGianDoc: chuongItem.thoiGianDocChuong,
+                    };
+                }
+            });
+        }).flat();
 
-        const sortedResult = result.sort((a, b) => new Date(b.lastRead) - new Date(a.lastRead));
+        const sapXep = result.sort((a, b) => new Date(b.thoiGianDoc) - new Date(a.thoiGianDoc));
 
-        const uniqueResult = [...new Map(sortedResult.map(item => [item.truyen._id, item])).values()];
-
-
-        res.status(200).json(uniqueResult);
-
+        res.status(200).json(sapXep);
     } catch (error) {
         console.error('Lỗi khi lấy lịch sử đọc:', error);
         res.status(500).json({ message: 'Lỗi server' });
@@ -143,8 +205,6 @@ export const diemDanh = async (req, res) => {
                 xu = 0;
         }
 
-        nguoidung.xuConLaiND += xu;
-        nguoidung.xuTongND += xu;
         nguoidung.diemDanh = today.toDate();
 
         await nguoidung.save();

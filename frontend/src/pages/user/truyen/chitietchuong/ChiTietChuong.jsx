@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import BinhLuanChuong from '../../../../components/user/binhluanchuong/BinhLuanChuong';
 import './ChiTietChuong.css'
+import { FaLock  } from "react-icons/fa";
+import { TbCoin } from "react-icons/tb";
 function ChiTietChuong() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -12,6 +14,9 @@ function ChiTietChuong() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [thongBao, setThongBao] = useState(null);
+    const [hienThiMuaChuong, setHienThiMuaChuong] = useState(false);
+    const [xuChuong, setXuChuong] = useState(0);
 
     useEffect(() => {
         if (idChuong) {
@@ -24,8 +29,26 @@ function ChiTietChuong() {
 
     const layChuong = async (id) => {
         try {
-            const response = await axios.get(`/api/chuong/laytheoid/${id}`);
-            setChuong(response.data);
+            const responseKT = await axios.get(`/api/chuong/kiemtra/truycap/${id}`);
+            if (responseKT.status === 200 && responseKT.data.truyCap) {
+                const response = await axios.get(`/api/chuong/laytheoid/${id}`);
+                if (response.status === 200) {                        
+                    const chuongData = response.data?.chuong;
+                    if (chuongData && chuongData.truyenIdChuong) {
+                        setChuong(response.data);
+                        await axios.post(`/api/nguoidung/them/lichsu`, {
+                            idTruyen: chuongData.truyenIdChuong._id,
+                            idChuong: chuongData._id
+                        });
+                    } else {
+                        setError("Thông tin truyện không đầy đủ.");
+                    }
+                }
+            } else if (responseKT.status === 200) {
+                setThongBao(responseKT.data.message || "Bạn chưa mở khóa chương này.");
+                setHienThiMuaChuong(true);
+                setXuChuong(responseKT.data.xuChuong);
+            }
         } catch (error) {
             console.error("Lỗi:", error);
             setError("Không thể tải thông tin chương. Vui lòng thử lại sau!");
@@ -83,6 +106,24 @@ function ChiTietChuong() {
         }
     };
 
+    const muaChuong = async (id) => {
+        try {
+            const responseMua = await axios.post(`/api/chuong/mua/${id}`);
+            if (responseMua.status === 200) {
+                alert(responseMua.data.message);
+                window.location.reload();
+            } else {
+                console.error("Lỗi mua chương:", responseMua.data);
+                alert(responseMua.data.message);
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+            setError("Không thể tải thông tin chương. Vui lòng thử lại sau!");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     if (isLoading) {
         return (
             <MainLayout>
@@ -102,8 +143,36 @@ function ChiTietChuong() {
             </MainLayout>
         );
     }
-    
 
+    if (thongBao) {
+        return (
+            <MainLayout>
+                <div className='thongbao-chuong'>
+                    {hienThiMuaChuong && (
+                        <>
+                            <p>{thongBao}</p>
+                            <div className='thongbao-chuong-khoa'><p>{thongBao && <FaLock style={{color: '#f44336' }} />}</p></div>
+                            <div className='thongbao-chuong-text'>
+                                <p style={{fontWeight:'bold', fontSize:'20px'}}>Hãy thể hiện sự ủng hộ của bạn đối với tác giả và tiếp tục đọc câu chuyện này</p>
+                                <p>Mua chương truyện này. Tiền của bạn giúp các tác giả kiếm tiền cho những câu chuyện bạn yêu thích.</p>
+                            </div>
+                            <div 
+                                className='thongbao-chuong-mua'
+                                onClick={() => {
+                                    muaChuong(idChuong);
+                                }}
+                            >
+                                <TbCoin/>
+                                <p style={{marginLeft:'3px', fontWeight:'bold', fontSize:'27px'}}>{xuChuong}</p>
+                                <p style={{marginLeft:'10px',fontWeight:'bold', fontSize:'20px'}}>Mua Chương</p>
+                            </div>
+                        </>
+                    )}
+                </div>
+            </MainLayout>
+        );
+    }
+    
     return (
         <MainLayout>
             <div className='chitietchuong-content'>

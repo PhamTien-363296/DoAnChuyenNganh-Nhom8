@@ -61,10 +61,15 @@ const nguoidungSchema = new mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Truyen",
                 },
-				chuongId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Chuong",
-                },
+				danhSachChuong: [
+					{
+						chuongId: {
+							type: mongoose.Schema.Types.ObjectId,
+							ref: "Chuong",
+						},
+						thoiGianDocChuong:{ type: Date }
+					}
+				],
 				thoiGianDoc: {
 					type: Date,
 				},

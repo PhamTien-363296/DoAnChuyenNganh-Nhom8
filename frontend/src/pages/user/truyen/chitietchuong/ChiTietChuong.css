@@ -38,3 +38,54 @@
     justify-content: center;
     align-items: center;
 }
+
+
+.thongbao-chuong {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    justify-content: center; 
+    color: #49372F;
+    height: 100%;
+}
+
+.thongbao-chuong-khoa{
+    border: 2px solid #f44336;
+    padding: 0 23px;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.thongbao-chuong-text {
+    margin-top: 10px;
+    color: #49372F;
+}
+
+.thongbao-chuong-text p:first-child {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.thongbao-chuong-mua{
+    background-color: #49372F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f0bb29;
+    font-size: 30px;
+    border-radius: 50px;
+    padding: 10px 20px;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+}
+
+.thongbao-chuong-mua p{
+    margin: 0;
+}
+
+.thongbao-chuong-mua:hover {
+    transform: scale(1.05);
+}
