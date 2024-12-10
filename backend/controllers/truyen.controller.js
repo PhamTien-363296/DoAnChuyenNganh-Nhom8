@@ -175,8 +175,20 @@ export const layTheoId = async (req, res) => {
         const lichSuDoc = nguoiDung ? nguoiDung.lichSuND : [];
 
         const chaptersWithStatus = truyen.idCacChuong.map((chuong) => {
-            const isRead = lichSuDoc.some((history) => history.chuongId.toString() === chuong._id.toString());
-            return { ...chuong._doc, isRead };
+            const isRead = lichSuDoc.some((history) => 
+                history.truyenId.toString() === truyen._id.toString() && 
+                history.danhSachChuong.some(
+                    (historyChuong) => historyChuong.chuongId.toString() === chuong._id.toString()
+                )
+            );
+            
+            const isLocked = chuong.xuDeMoChuong > 0 && !isRead;
+
+            return { 
+                ...chuong._doc, 
+                isRead, 
+                isLocked 
+            };
         });
 
         let isFavorite = false;

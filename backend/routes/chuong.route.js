@@ -1,6 +1,6 @@
 import express from "express"
 import { protectRoute } from "../middleware/protectRoute.js"
-import { themChuong, suaChuong, xoaChuong, layChuong, layTheoId, themBinhLuan, layBinhLuan } from "../controllers/chuong.controller.js"
+import { themChuong, suaChuong, xoaChuong, layChuong, layTheoId, themBinhLuan, layBinhLuan, kiemTraTruyCapChuong, moKhoaChuong } from "../controllers/chuong.controller.js"
 const router = express.Router()
 
 
@@ -13,5 +13,7 @@ router.get("/laytheoid/:id",protectRoute,layTheoId)
 router.post("/them/binhluan",protectRoute,themBinhLuan)
 router.get("/lay/binhluan/:chuongId",layBinhLuan)
 
+router.get("/kiemtra/truycap/:chuongId",protectRoute,kiemTraTruyCapChuong)
+router.post("/mua/:chuongId",protectRoute,moKhoaChuong)
 
 export default router

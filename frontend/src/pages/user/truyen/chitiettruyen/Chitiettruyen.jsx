@@ -2,6 +2,7 @@ import './Chitiettruyen.css'
 
 import { FaEye } from "react-icons/fa";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { FaLock  } from "react-icons/fa";
 
 import { IoMdPerson } from "react-icons/io";
 import { FaChartSimple } from "react-icons/fa6";
@@ -180,6 +181,7 @@ function Chitiettruyen() {
                           <div style={{display:'flex'}}>
                             <p>{chuong.tenChuong}</p>
                             <p style={{marginLeft:'10px'}}>( Ngày đăng: {moment(chuong.createdAt).format('DD/MM/YYYY')} )</p>
+                            <p>{chuong.isLocked && <FaLock style={{ marginLeft: '10px', color: '#f44336' }} />}</p>
                           </div>
                           {chuong.isRead ? <p>Đã đọc</p> : <p>Chưa đọc</p>}
                       </div>

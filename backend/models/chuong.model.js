@@ -9,19 +9,20 @@ const chuongSchema = new mongoose.Schema(
         noiDungChuong: {
 			type: String,
 		},
-        soThuTuChuong: {
+        xuDeMoChuong: {
 			type: Number,
+            default: 0,
 		},
-        luotThichChuong: {
-			type: Number,
-		},
-        anhHienChuong: {
-			type: String,
-		},
-        nguoiDungDaMoChuong: [
+        nguoiDungDaMoChuong:  [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Nguoidung",
+                nguoiDungId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Nguoidung",
+                },
+                ngayMo: {
+                    type: Date,
+                    default: Date.now,
+                },
             },
         ],
         binhLuanChuong: [
