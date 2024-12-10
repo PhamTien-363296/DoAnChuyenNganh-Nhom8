@@ -24,6 +24,7 @@ function ListBaiVietTinTuc() {
         }
     };
 
+   
     useEffect(() => {
         baiVietTatCa();
 
@@ -58,7 +59,8 @@ function ListBaiVietTinTuc() {
                         luotThichBV={baiviet.luotThichBV}
                         binhLuanBV={baiviet.binhLuanBV}
                         IdNguoiDung={baiviet.nguoiDungIdBV}  // Truyền IdNguoiDung
-                        username={baiviet.nguoiDungIdBV.username}  // Truyền username
+                        username={baiviet.nguoiDungIdBV.username} 
+                        anhDaiDienND={baiviet.nguoiDungIdBV.anhDaiDienND} 
                         tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
                         hinhAnh={baiviet.hinhAnhBV}
                         baiVietId={baiviet._id}

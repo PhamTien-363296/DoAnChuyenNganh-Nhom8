@@ -159,7 +159,10 @@ export const layNguoiDungTN = async (req, res) => {
 	try {
 		const nguoidung = req.nguoidung._id;
 
-		const nguoidungdaloc = await Nguoidung.find({ _id: { $ne: nguoidung } }).select("-matKhau");
+		const nguoidungdaloc = await Nguoidung.find({ _id: { $ne: nguoidung } })
+        .select("-matKhau")
+        .populate("anhDaiDienND")
+     
 
 		res.status(200).json(nguoidungdaloc);
 	} catch (error) {
@@ -392,7 +395,7 @@ export const layFollower = async (req, res) => {
         const idnguoidung = req.nguoidung._id;
 
         
-        const nguoidung = await Nguoidung.findById(idnguoidung).populate('theoDoiND', 'username email');
+        const nguoidung = await Nguoidung.findById(idnguoidung).populate('theoDoiND', 'username email anhDaiDienND');
 
         if (!nguoidung) {
             return res.status(404).json({ message: 'Không tìm thấy người dùng' });
@@ -428,5 +431,57 @@ export const layThongBao = async (req, res) => {
     } catch (error) {
         console.error("Lỗi layThongBao controller:", error.message);
         return res.status(500).json({ error: "Lỗi 500" });
+    }
+};
+
+
+export const capNhat = async (req, res) => {
+    const { username,  moTaND} = req.body;
+    let {  anhDaiDienND} = req.body; 
+
+    const id = req.nguoidung._id;
+    try {
+        let nguoidung = await Nguoidung.findById(id);
+        if (!nguoidung) return res.status(404).json({ message: "Không tìm thấy người dùng" });
+
+        if (anhDaiDienND) {
+        
+            if (nguoidung.anhDaiDienND) {
+                await cloudinary.uploader.destroy(nguoidung.anhDaiDienND.split("/").pop().split(".")[0]);
+            }
+        
+            const uploadedResponse = await cloudinary.uploader.upload(anhDaiDienND);
+            anhDaiDienND = uploadedResponse.secure_url;
+        }
+
+        nguoidung.username = username|| nguoidung.username;
+        nguoidung.moTaND = moTaND || nguoidung.moTaND;
+        nguoidung.anhDaiDienND = anhDaiDienND|| nguoidung.anhDaiDienND;
+
+        nguoidung = await nguoidung.save();
+
+        return res.status(200).json({ nguoidung });
+    } catch (error) {
+        console.log("Lỗi capNhat controller:", error.message);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+export const layNguoiDungQuaId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+     
+        const nguoidung = await Nguoidung.findById(id).select("-matKhau").populate('theoDoiND', 'username');
+
+        if (!nguoidung) {
+            return res.status(404).json({ message: "Không tìm thấy người dùng" });
+        }
+
+        return res.status(200).json({ nguoidung });
+    } catch (error) {
+        console.error("Lỗi layNguoiDungQuaId controller:", error.message);
+        return res.status(500).json({ message: "Lỗi 500" });
     }
 };

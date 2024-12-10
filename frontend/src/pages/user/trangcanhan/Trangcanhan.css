@@ -71,4 +71,64 @@
         width: 150px;
     }
 
+    .canhan-noidung{
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr auto;
+        column-gap: 30px;
+        grid-template-areas: 
+        "gioithieu"
+        "tacpham"
+        "theodoi"
+        "baiviet"
+    }
+
+}
+
+.canhan-noidung{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    column-gap: 30px;
+    grid-template-areas: 
+    "baiviet baiviet gioithieu"
+    "baiviet baiviet tacpham"
+    "baiviet baiviet theodoi"
+}
+
+.canhan-baiviet-text{
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px 0 0 15px;
+    padding: 0 25px;
+    color: #49372F;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.canhan-gioithieu, .canhan-tacpham, .canhan-theodoi{
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 0 15px 15px 0;
+    padding: 0 25px;
+    color: #49372F;
+    margin-top: 20px;
+}
+
+.canhan-gioithieu{
+    grid-area: gioithieu;
+    margin-top: 30px;
+}
+
+.canhan-baiviet{
+    grid-area: baiviet;
+}
+
+.canhan-tacpham{
+    grid-area: tacpham;
+}
+
+.canhan-theodoi{
+    grid-area: theodoi;
 }

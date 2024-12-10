@@ -26,6 +26,7 @@ const Cachoithoai = () => {
 					<Hoithoai 
 						key={ht._id} 
 						hoithoai={ht} 
+						anh={ht.anhDaiDienND}
 					/>
 				))
 			) : (

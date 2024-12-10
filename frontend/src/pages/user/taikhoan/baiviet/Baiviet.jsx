@@ -4,6 +4,8 @@ import { HiOutlinePhotograph } from "react-icons/hi";
 import { IoCloseSharp } from "react-icons/io5"; 
 import './style.css';
 import ListBaiVietTaiKhoan from '../../../../components/user/manager/listbaiviet/ListBaiVietTaiKhoan';
+import { useAuthContext } from '../../../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
 export default function Baiviet() {
@@ -16,7 +18,10 @@ export default function Baiviet() {
     const [followers, setFollowers] = useState([]); // Lưu danh sách người theo dõi
     const [loading, setLoading] = useState(true); // Loading state cho danh sách người theo dõi
 
+    const navigate = useNavigate();
+
     const imgRef = useRef(null); 
+    const { authUser } = useAuthContext();
 
     // Hàm xử lý thay đổi ảnh
     const handleImageChange = (event) => {
@@ -106,14 +111,14 @@ export default function Baiviet() {
     if (followers.length === 0) {
         return <p>Không có người theo dõi nào.</p>;
     }
-
+    
     return (
         <TaiKhoanLayout>
             <div className='bv-baiviet-container'>
                 <div className='bv-noidung'>
                     <div className='bv-thembaiviet'>
                         <div className='bv-avata'>
-                            <img src='https://placehold.co/129x203' alt="Avatar" />
+                            <img src={authUser.anhDaiDienND} alt="Avatar" />
                         </div>
                         <div className='bv-camnghi'>
                             <textarea 
@@ -160,14 +165,19 @@ export default function Baiviet() {
                         <p className='bv-tieude'>NGƯỜI THEO DÕI</p>
                         <div className='bv-list'>
                             {followers.map((follower) => (
-                                <div key={follower._id} className='follower-item'>
-                                <img
-                                    src={follower.avatar || 'https://via.placeholder.com/50x50'} // Sử dụng ảnh placeholder nếu không có avatar
-                                    alt={follower.username}
-                                    className="follower-avatar"
-                                />
-                                <span className="follower-name">{follower.username}</span> {/* Tên người theo dõi */}
-                            </div>
+                               <div 
+                               key={follower._id}
+                               className="follower-item"
+                               onClick={() => navigate(`/canhan/${follower._id}`)} // Điều hướng bằng navigate
+                               style={{ cursor: 'pointer' }}
+                           >
+                               <img
+                                   src={follower.anhDaiDienND || 'https://via.placeholder.com/50x50'} 
+                                   alt={follower.username}
+                                   className="follower-avatar"
+                               />
+                               <span className="follower-name">{follower.username}</span>
+                           </div>
                             ))}
                         </div>
                     </div>

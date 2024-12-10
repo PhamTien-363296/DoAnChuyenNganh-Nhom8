@@ -1,10 +1,11 @@
 import express from "express"
-import { layBaiViet,layHetBaiViet, taoBaiViet,thichBaiViet,binhLuanBaiViet,xoaBaiViet,taoBaiVietCongDong,layBaiVietCongDong} from "../controllers/baiviet.controller.js"
+import { layBaiViet,layHetBaiViet, taoBaiViet,thichBaiViet,binhLuanBaiViet,xoaBaiViet,taoBaiVietCongDong,layBaiVietCongDong,layBaiVietCaNhan} from "../controllers/baiviet.controller.js"
 import { protectRoute } from "../middleware/protectRoute.js"
 
 const router = express.Router()
 
 router.get("/cuatoi",protectRoute, layBaiViet)
+router.get("/canhan/:id",protectRoute, layBaiVietCaNhan)
 router.post("/taobaiviet",protectRoute,taoBaiViet)
 router.post("/like/:id",protectRoute,thichBaiViet)
 router.post("/binhluan/:id",protectRoute,binhLuanBaiViet)

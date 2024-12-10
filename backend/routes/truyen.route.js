@@ -1,5 +1,5 @@
 import express from "express"
-import {goiYTimKiem, timKiem, layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrending, layTruyenHoanThanh, layTruyenHot} from "../controllers/truyen.controller.js"
+import {goiYTimKiem, timKiem, layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrending, layTruyenHoanThanh, layTruyenHot,truyenTheoND} from "../controllers/truyen.controller.js"
 import { protectRoute } from "../middleware/protectRoute.js"
 
 const router = express.Router()
@@ -22,5 +22,5 @@ router.get("/lay/trangchu/hot",layTruyenHot)
 
 router.get("/search/goiy",goiYTimKiem)
 router.get("/search/timkiem",timKiem)
-
+router.get("/truyentheonguoidung/:id", protectRoute, truyenTheoND)
 export default router

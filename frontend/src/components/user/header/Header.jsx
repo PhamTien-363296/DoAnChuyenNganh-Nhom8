@@ -3,8 +3,11 @@ import './Header.css'
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useAuthContext } from '../../../context/AuthContext';
 
 export default function Searchmain({ setTimKiem, setdsGoiYTruyen,setdsGoiYTacGia, setLoading, setError, handleKeyPress }) {
+
+    const { authUser } = useAuthContext();
 
     const handleSearchChange = async (e) => {
         const value = e.target.value;
@@ -43,7 +46,9 @@ export default function Searchmain({ setTimKiem, setdsGoiYTruyen,setdsGoiYTacGia
 
             <div className="profile-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Link to="/taikhoan/baiviet">
-                    <img src="https://placehold.co/40x40/FF69B4/FFFFFF" style={{ borderRadius: '30px' }} />
+                    <div className='profile-container-img'>
+                        <img src={authUser.anhDaiDienND ||"https://placehold.co/20x10"} style={{ borderRadius: '30px' }} />
+                    </div>
                 </Link>
             </div>
         </header>

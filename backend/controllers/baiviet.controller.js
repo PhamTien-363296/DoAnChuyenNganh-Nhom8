@@ -8,7 +8,7 @@ import Nguoidung from "../models/nguoidung.model.js";
 export const layBaiViet = async (req, res) => {
     try {
         const nguoidung = req.nguoidung._id; 
-        const baiviet = await Baiviet.find({ nguoiDungIdBV: nguoidung }).populate('nguoiDungIdBV', 'username');
+        const baiviet = await Baiviet.find({ nguoiDungIdBV: nguoidung }).populate('nguoiDungIdBV', 'username anhDaiDienND');
         res.status(200).json(baiviet);
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
@@ -229,7 +229,7 @@ export const layBaiVietCongDong = async (req, res) => {
 
        
         const baivietcongdong = await Baiviet.find({ thuocCD: idcongdong })
-            .populate("nguoiDungIdBV", "username ") 
+            .populate("nguoiDungIdBV", "username anhDaiDienND") 
             .populate('thuocCD', 'tenCD')
             .sort({ createdAt: -1 }); 
 
@@ -249,7 +249,7 @@ export const layBaiVietCongDong = async (req, res) => {
 export const layHetBaiViet = async (req, res) => {
     try {
         const baiviet = await Baiviet.find()
-            .populate('nguoiDungIdBV', 'username') // Lấy thông tin người dùng (username)
+            .populate('nguoiDungIdBV', 'username anhDaiDienND') // Lấy thông tin người dùng (username)
             .populate('thuocCD', 'tenCD')
             .sort({ createdAt: -1 }); // Sắp xếp theo ngày tạo mới nhất
 
@@ -261,5 +261,27 @@ export const layHetBaiViet = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500: Không thể lấy danh sách bài viết." });
         console.error("Lỗi trong phương thức layHetBaiViet:", error);
+    }
+};
+
+export const layBaiVietCaNhan = async (req, res) => {
+    try {
+     
+        const { id } = req.params;
+
+        
+        const baiviet = await Baiviet.find({ nguoiDungIdBV: id })
+            .populate('nguoiDungIdBV', 'username anhDaiDienND')  
+            .sort({ createdAt: -1 });  
+
+        if (!baiviet || baiviet.length === 0) {
+            return res.status(404).json({ message: "Không có bài viết của người dùng này." });
+        }
+
+       
+        res.status(200).json(baiviet);
+    } catch (error) {
+        console.error("Lỗi trong phương thức layBaiVietCaNhan:", error);
+        res.status(500).json({ error: "Lỗi 500: Không thể lấy bài viết." });
     }
 };

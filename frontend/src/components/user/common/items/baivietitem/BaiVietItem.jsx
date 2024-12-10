@@ -6,13 +6,13 @@ import Axios from 'axios';
 import { IoTrashSharp } from "react-icons/io5";
 
 
-function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelete, tenCD }) {
+function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelete, tenCD,anhDaiDienND }) {
    
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(baiviet.cacluotThich.length);
     const [isDeleted, setIsDeleted] = useState(false);  
     const [isFollowed, setIsFollowed] = useState(false);  // Thêm state theo dõi
-
+    
     // Kiểm tra trạng thái theo dõi khi tải lại trang
     useEffect(() => {
         const followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
@@ -95,7 +95,7 @@ function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelet
             <div className="baiviet-item-container">
                 <div className="baiviet-item-tieude">
                     <div className="baiviet-item-tieude-avata">
-                        <img src='https://placehold.co/129x203' alt="Avatar" style={{ borderRadius: '30px' }} />
+                        <img src={anhDaiDienND} alt="Avatar" style={{ borderRadius: '30px' }} />
                     </div>
                     <div className="baiviet-item-tieude-noidung">
                         <div style={{ display: 'flex', alignItems: 'center', marginTop: '5px'}}>
@@ -151,7 +151,8 @@ BaiVietItem.propTypes = {
     IdNguoiDung: PropTypes.object,
     baiviet: PropTypes.object,
     onDelete: PropTypes.func,  // Hàm callback để gọi khi xóa bài viết
-    tenCD: PropTypes.string,   // Prop cho tên cộng đồng
+    tenCD: PropTypes.string,   
+    anhDaiDienND: PropTypes.string,   
 };
 
 export default BaiVietItem;

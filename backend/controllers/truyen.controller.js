@@ -462,3 +462,23 @@ export const timKiem = async (req, res) => {
         console.log("Lỗi tim kiem controller", error.message);
     }
 };
+
+
+export const truyenTheoND = async (req, res) => {
+    try {
+        const tacGiaIdTruyen = req.params.id;  
+
+        const nguoidung = await Nguoidung.findById(tacGiaIdTruyen);
+        if (!nguoidung) return res.status(404).json({ message: "Không tìm thấy người dùng" });
+
+        const truyen = await Truyen.find({ tacGiaIdTruyen: tacGiaIdTruyen });
+        if (!truyen || truyen.length === 0) {
+            return res.status(404).json({ message: "Không tìm thấy truyện của người dùng" });
+        }
+
+        res.status(200).json(truyen);
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+        console.error("Error in layTruyenTheoNguoidung controller", error);
+    }
+};

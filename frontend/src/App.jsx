@@ -84,7 +84,7 @@ function App() {
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />
       <Route path="/dangnhap"  element={!authUser ? <Dangnhap /> : <Navigate to="/" />} />
-      <Route path="/canhan" element={<Trangcanhan />} />
+      <Route path="/canhan/:id" element={<Trangcanhan />} />
 
       {/* Trang quản trị */}
       <Route path="/adminhome" element={<Home />} />
