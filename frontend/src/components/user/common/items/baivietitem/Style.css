@@ -80,3 +80,20 @@
     display: flex;
     align-items: center;
 }
+
+.btn-follow {
+    background-color: #69452dd1;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-left: 20px;
+}
+
+.btn-follow:hover {
+    background-color: #69452d;
+}

@@ -1,5 +1,5 @@
 import Baiviet from "../models/baiviet.model.js"
-
+import Congdong from "../models/congdong.model.js";
 import {v2 as cloudinary} from 'cloudinary'
 import Nguoidung from "../models/nguoidung.model.js";
 
@@ -153,3 +153,113 @@ export const xoaBaiViet =async(req,res)=>{
 
     }
 }
+
+
+export const taoBaiVietCongDong = async (req, res) => {
+    try {
+        const { noiDungBV, hinhAnhBV } = req.body; 
+        const { idcongdong } = req.params; 
+        const idnguoidung = req.nguoidung._id.toString(); 
+
+        const nguoidung = await Nguoidung.findById(idnguoidung);
+        if (!nguoidung) {
+            return res.status(404).json({ message: "Không tìm thấy người dùng" });
+        }
+
+        
+        const congdong = await Congdong.findById(idcongdong);
+        if (!congdong) {
+            return res.status(404).json({ message: "Không tìm thấy cộng đồng" });
+        }
+
+        
+        if (!congdong.thanhVienCD.includes(idnguoidung)) {
+            return res.status(403).json({ message: "Bạn không phải thành viên của cộng đồng này" });
+        }
+
+
+        if (!noiDungBV && !hinhAnhBV) {
+            return res.status(400).json({ error: "Bài viết phải có nội dung hoặc hình ảnh" });
+        }
+
+
+        let hinhAnhUrl = null;
+        if (hinhAnhBV) {
+            const uploadedResponse = await cloudinary.uploader.upload(hinhAnhBV);
+            hinhAnhUrl = uploadedResponse.secure_url;
+        }
+
+
+        const baiVietMoi = new Baiviet({
+            nguoiDungIdBV: idnguoidung,
+            thuocCD: idcongdong,
+            noiDungBV,
+            hinhAnhBV: hinhAnhUrl,
+        });
+
+        
+        const baivietdaluu = await baiVietMoi.save();
+
+      
+        congdong.cacBaiViet = congdong.cacBaiViet || [];
+        congdong.cacBaiViet.push(baivietdaluu._id);
+        await congdong.save();
+
+       
+        nguoidung.cacBaiVietND = nguoidung.cacBaiVietND || [];
+        nguoidung.cacBaiVietND.push(baivietdaluu._id);
+        await nguoidung.save();
+
+        res.status(201).json({ message: "Tạo bài viết cộng thành công!", baivietcongdong: baivietdaluu });
+    } catch (error) {
+        console.error("Lỗi taoBaiVietCongDong controller", error);
+        res.status(500).json({ error: "Lỗi 500" });
+    }
+};
+
+export const layBaiVietCongDong = async (req, res) => {
+    try {
+        const { idcongdong} = req.params; 
+
+        
+        const congdong = await Congdong.findById(idcongdong);
+        if (!congdong) {
+            return res.status(404).json({ message: "Không tìm thấy cộng đồng" });
+        }
+
+       
+        const baivietcongdong = await Baiviet.find({ thuocCD: idcongdong })
+            .populate("nguoiDungIdBV", "username ") 
+            .populate('thuocCD', 'tenCD')
+            .sort({ createdAt: -1 }); 
+
+        
+        if (!baivietcongdong || baivietcongdong.length === 0) {
+            return res.status(200).json({ message: "Cộng đồng này chưa có bài viết nào." });
+        }
+
+        res.status(200).json(baivietcongdong);
+    } catch (error) {
+        console.error("Lỗi layBaiVietCongDong controller", error);
+        res.status(500).json({ error: "Lỗi 500" });
+    }
+};
+
+
+export const layHetBaiViet = async (req, res) => {
+    try {
+        const baiviet = await Baiviet.find()
+            .populate('nguoiDungIdBV', 'username') // Lấy thông tin người dùng (username)
+            .populate('thuocCD', 'tenCD')
+            .sort({ createdAt: -1 }); // Sắp xếp theo ngày tạo mới nhất
+
+        if (!baiviet || baiviet.length === 0) {
+            return res.status(404).json({ message: "Không có bài viết nào." });
+        }
+
+        res.status(200).json(baiviet);
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi 500: Không thể lấy danh sách bài viết." });
+        console.error("Lỗi trong phương thức layHetBaiViet:", error);
+    }
+};

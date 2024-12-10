@@ -1,13 +1,15 @@
+
 .tt-tintuc-container {
     display: grid;
     grid-template-columns: 5fr 2fr;
     column-gap: 20px;
     grid-template-areas: 
-    "noidung congdong";
+        "noidung congdong";
     margin-bottom: 20px;
 }
 
-.tt-noidung{
+
+.tt-noidung {
     grid-area: noidung;
     display: grid;
     grid-template-rows: 60px auto;
@@ -28,7 +30,8 @@
     border-bottom-left-radius: 8px;
 }
 
-.tt-congdong{
+
+.tt-congdong {
     grid-area: congdong;
     display: grid;
     grid-template-rows: 60px auto;
@@ -36,7 +39,8 @@
     color: #49372F;
 }
 
-.tt-congdong .tt-tieude{
+
+.tt-congdong .tt-tieude {
     background-color: #FFF3E2;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
     border: 2px solid #DBC8AD;
@@ -44,11 +48,31 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    justify-content: space-between; 
     padding: 20px;
     font-size: 20px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
+
+
+.bt-taocongdong { 
+    background-color: #EBD9BF;
+    border: 2px solid #DBC8AD;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.bt-taocongdong:hover {
+    background-color: #DBC8AD;
+    transform: scale(1.05);
+}
+
 
 .tt-congdong .tt-list-congdong {
     border-top-right-radius: 10px;
@@ -58,4 +82,142 @@
     border: 2px solid #DBC8AD;
 }
 
+
+
+/* Backdrop /////////////////////////////////////////////////////////////////////////// */
+.form-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.form-contain {
+    display: flex;
+    flex-direction: row; 
+    gap: 20px; 
+    padding: 20px;
+    background-color: #FFF3E2;
+    border-radius: 8px;
+    width: 400px; 
+    max-width: 30%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    flex-wrap: wrap; 
+    justify-content: center;
+}
+
+.image-placeholder {
+    width: 170px;
+    height: 170px;
+    background-color: #ccc; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden; 
+}
+
+.image-placeholder img {
+    width: 100%; 
+    height: 100%;
+    object-fit: cover; 
+}
+
+.custom-placeholder {
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+}
+
+
+
+input, textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%; 
+    box-sizing: border-box;
+    margin-bottom: 10px; 
+}
+
+/* Button container */
+.button-container {
+    display: flex;
+    gap: 10px; 
+    width: 100%;
+}
+
+/* Button styling */
+.bt-create, .bt-close {
+    padding: 10px 15px;
+    border: none;
+    background-color: #6a4f3f;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 20%; 
+}
+
+.bt-create:hover, .bt-close:hover {
+    background-color: #8b6f55;
+}
+
+
+/* khuc cho cong dong da tham gia */
+.congdong-item {
+    display: flex;
+    justify-content: space-between; /* Đảm bảo các phần tử con được phân bố đều */
+    align-items: center; 
+    padding: 10px;
+    background-color: #f1e1ca;
+    border: 2px solid #e5d3ba;
+    border-radius: 2px;
+    margin-bottom: 5px; 
+    margin-top: 5px;
+}
+
+.congdong-item img {
+    width: 50px; 
+    height: 50px;
+    margin-right: 10px; 
+    border-radius: 10px; 
+    object-fit: cover; 
+}
+
+.congdong-item .congdong-info {
+    flex: 1; /* Chiếm toàn bộ không gian còn lại */
+}
+
+.congdong-item h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.congdong-item p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.btn-remove {
+    background-color: #81693abe;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; /* Tạo khoảng cách giữa nút và phần tử khác */
+}
+
+.btn-remove:hover {
+    background-color: #81693a;
+}
 

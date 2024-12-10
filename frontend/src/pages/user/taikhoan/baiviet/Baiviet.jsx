@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import TaiKhoanLayout from '../../../../layout/user/taikhoanlayout/TaiKhoanLayout';
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { IoCloseSharp } from "react-icons/io5"; 
@@ -13,8 +13,12 @@ export default function Baiviet() {
         hinhAnhBV: ''
     });
 
+    const [followers, setFollowers] = useState([]); // Lưu danh sách người theo dõi
+    const [loading, setLoading] = useState(true); // Loading state cho danh sách người theo dõi
+
     const imgRef = useRef(null); 
 
+    // Hàm xử lý thay đổi ảnh
     const handleImageChange = (event) => {
         const file = event.target.files[0];  
         if (file) {
@@ -30,6 +34,7 @@ export default function Baiviet() {
         }
     };
 
+    // Hàm xóa ảnh đã chọn
     const handleRemoveImage = () => {
         setCoverImage(null); 
         setFormData((prevData) => ({
@@ -39,6 +44,7 @@ export default function Baiviet() {
         if (imgRef.current) imgRef.current.value = null; 
     };
 
+    // Hàm gửi dữ liệu bài viết
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
@@ -57,9 +63,49 @@ export default function Baiviet() {
         }
     };
 
+    // Hàm mở chọn ảnh
     const handleIconClick = () => {
         if (imgRef.current) imgRef.current.click();
     };
+
+    // Hàm lấy danh sách người theo dõi
+    const nguoiTheoDoicuaToi = async () => {
+        try {
+            const response = await Axios.get('/api/nguoidung/lay/follower');
+            // Kiểm tra dữ liệu trả về có phải là mảng không
+            if (Array.isArray(response.data.followers)) {
+                setFollowers(response.data.followers); // Lưu danh sách người theo dõi
+                setLoading(false);
+            } else {
+                alert("Dữ liệu người theo dõi không hợp lệ.");
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error("Lỗi khi đổ dữ liệu bài viết:", error);
+            alert("Lỗi khi đổ dữ liệu bài viết: " + (error.response?.data?.message || error.message));
+            setLoading(false);
+        }
+    };
+
+    // Lấy danh sách người theo dõi khi component mount
+    useEffect(() => {
+        nguoiTheoDoicuaToi();
+
+        const interval = setInterval(() => {
+            nguoiTheoDoicuaToi();
+        }, 7000);  
+
+        return () => clearInterval(interval);
+    }, []);
+
+    // Hiển thị khi đang tải hoặc không có người theo dõi
+    if (loading) {
+        return <p>Đang tải...</p>;
+    }
+
+    if (followers.length === 0) {
+        return <p>Không có người theo dõi nào.</p>;
+    }
 
     return (
         <TaiKhoanLayout>
@@ -112,7 +158,18 @@ export default function Baiviet() {
                     </div>
                     <div className='bv-list-nguoitheodoi'>
                         <p className='bv-tieude'>NGƯỜI THEO DÕI</p>
-                        <div className='bv-list'>danh sách</div>
+                        <div className='bv-list'>
+                            {followers.map((follower) => (
+                                <div key={follower._id} className='follower-item'>
+                                <img
+                                    src={follower.avatar || 'https://via.placeholder.com/50x50'} // Sử dụng ảnh placeholder nếu không có avatar
+                                    alt={follower.username}
+                                    className="follower-avatar"
+                                />
+                                <span className="follower-name">{follower.username}</span> {/* Tên người theo dõi */}
+                            </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -29,6 +29,7 @@ import ChiTietChuong from './pages/user/truyen/chitietchuong/ChiTietChuong';
 import TimKiem from './pages/user/timkiem/TimKiem';
 import NapXu from './pages/user/taikhoan/napxu/NapXu';
 import NapXuThongBao from './pages/user/taikhoan/napxuthongbao/NapXuThongBao';
+import ListBaiVietCongDong from './components/user/manager/listbaiviet/ListBaiVietCongDong';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -62,6 +63,7 @@ function App() {
       <Route path="/theloai/:tenTheLoai" element={<Danhmuc />} />
       <Route path="/taikhoan/baiviet" element={<Baiviet />} />
       <Route path="/taikhoan/tacpham" element={<Tacpham />} />
+      <Route path="/congdong/:id" element={<ListBaiVietCongDong/>} />
       <Route path="/taikhoan/lichsu" element={<Lichsu />} />
       <Route path="/taikhoan/yeuthich" element={<Yeuthich />} />
       <Route path="/taikhoan/vitien" element={<Vitien />} />

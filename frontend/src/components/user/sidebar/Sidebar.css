@@ -63,3 +63,11 @@
     padding: 8px;
     border-radius: 15px;
 }
+
+.notification-item {
+    padding: 10px ; 
+   background-color: #d7b98e3c;
+   margin-top: 2px;
+   border-radius: 12px;
+}
+

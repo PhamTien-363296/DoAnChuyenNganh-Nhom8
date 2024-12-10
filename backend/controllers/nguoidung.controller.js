@@ -1,6 +1,9 @@
 import Nguoidung from "../models/nguoidung.model.js";
 import moment from "moment";
 import Giaodich from "../models/giaodich.model.js"
+import Congdong from "../models/congdong.model.js";
+import Thongbao from "../models/thongbao.model.js";
+import {v2 as cloudinary} from 'cloudinary'
 
 export const layLichSuDoc = async (req, res) => {
     const idND = req.nguoidung._id;
@@ -164,4 +167,206 @@ export const diemDanh = async (req, res) => {
 		console.error("Lỗi điểm danh controller: ", error.message);
 		res.status(500).json({ error: "Lỗi 500" });
 	}
+};
+
+
+
+
+
+export const taoCongDong = async (req, res) => {
+    try {
+        const { tenCD, moTaCD } = req.body;
+        let { anhCD }= req.body
+        const idnguoidung = req.nguoidung._id.toString()
+
+
+        if (!tenCD) {
+            return res.status(400).json({ message: "Cộng đồng cần được đặt tên" });
+        }
+
+
+        if(anhCD){
+            const uploadedResponse= await cloudinary.uploader.upload(anhCD)
+            anhCD = uploadedResponse.secure_url
+        }
+        
+
+        const nguoidung = await Nguoidung.findById(idnguoidung)
+        if(!nguoidung) return res.status(404).json({message: "Không tìm thấy người dùng"})
+
+
+        const congDongMoi = new Congdong({
+            tenCD,
+            moTaCD,
+            anhCD,
+            thanhVienCD: nguoidung._id,  
+            nguoiDungIdCD:idnguoidung,
+        });
+
+
+        await congDongMoi.save();
+
+        return res.status(201).json({ message: "Tạo cộng đồng thành công", congdong: congDongMoi });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Có lỗi xảy ra khi tạo cộng đồng" });
+    }
+};
+
+export const thamGiaCongDong = async (req, res) => {
+    try {
+        const { idcongdong } = req.params; 
+        const idnguoidung = req.nguoidung._id.toString(); 
+
+       
+        const congdong = await Congdong.findById(idcongdong);
+        if (!congdong) {
+            return res.status(404).json({ message: "Không tìm thấy cộng đồng" });
+        }
+
+
+        if (congdong.thanhVienCD.includes(idnguoidung)) {
+            congdong.thanhVienCD = congdong.thanhVienCD.filter(id => id.toString() !== idnguoidung);
+            await congdong.save();
+            return res.status(200).json({ message: "Đã bỏ tham gia cộng đồng", congdong: congdong });
+        } else {
+            congdong.thanhVienCD.push(idnguoidung);
+            await congdong.save();
+            return res.status(200).json({ message: "Tham gia cộng đồng thành công", congdong: congdong });
+        }
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Có lỗi xảy ra khi tham gia hoặc bỏ tham gia cộng đồng" });
+    }
+};
+
+export const layCongDongDaThamGia = async (req, res) => {
+    try {
+        const idnguoidung = req.nguoidung._id.toString();
+
+
+        const congdongthamgia = await Congdong.find({ thanhVienCD: idnguoidung })
+            .populate('thanhVienCD', 'username email') 
+            .populate('nguoiDungIdCD', 'username email'); 
+
+        if (congdongthamgia.length === 0) {
+            return res.status(404).json({ message: "Bạn chưa tham gia cộng đồng nào" });
+        }
+
+        return res.status(200).json({ message: "Lấy danh sách cộng đồng đã tham gia thành công", congdong: congdongthamgia });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Có lỗi xảy ra khi lấy danh sách cộng đồng đã tham gia" });
+    }
+};
+
+
+
+
+
+export const layNguoiDungMoi = async (req, res) => {
+    try {
+      
+        const startOfMonth = moment().startOf('month').toDate();
+        const endOfMonth = moment().endOf('month').toDate();
+
+      
+        const nguoiDungMoi = await Nguoidung.countDocuments({
+            createdAt: { $gte: startOfMonth, $lte: endOfMonth }
+        });
+
+     
+        return res.status(200).json({ nguoimoi: nguoiDungMoi });
+    } catch (error) {
+        console.error("Lỗi khi lấy số lượng người dùng mới:", error);
+        return res.status(500).json({ message: "Có lỗi xảy ra khi lấy số lượng người dùng mới" });
+    }
+};
+
+
+export const followNguoiDung = async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const nguoidungcapnhat = await Nguoidung.findById(id);
+		const nguoidunghientai = await Nguoidung.findById(req.nguoidung._id);
+
+		if (id === req.nguoidung._id.toString()) {
+			return res.status(400).json({ error: "Bạn không thể follow chính mình" });
+		}
+
+		if (!nguoidungcapnhat || !nguoidunghientai) return res.status(400).json({ error: "Không tìm thấy người dùng" });
+
+		const dangtheodoi = nguoidunghientai.theoDoiND.includes(id);
+
+		if (dangtheodoi) {
+			await Nguoidung.findByIdAndUpdate(id, { $pull: { nguoiTheoDoiND: req.nguoidung._id } });
+			await Nguoidung.findByIdAndUpdate(req.nguoidung._id, { $pull: { theoDoiND: id } });
+
+			res.status(200).json({ message: "Bỏ follow người dùng thành công" });
+		} else {
+			await Nguoidung.findByIdAndUpdate(id, { $push: { nguoiTheoDoiND: req.nguoidung._id } });
+			await Nguoidung.findByIdAndUpdate(req.nguoidung._id, { $push: { theoDoiND: id } });
+
+            const thongBaoMoi = new Thongbao({
+				loaiThongBao: "follow",
+				tuNguoiDung: req.nguoidung._id,
+				denNguoiDung: nguoidungcapnhat._id,
+                noiDungTB: `${nguoidunghientai.username} vừa follow bạn`,
+			});
+
+			await thongBaoMoi.save();
+
+			res.status(200).json({ message: "Follow người dùng thành công" });
+		}
+	} catch (error) {
+		console.log("Lỗi followNguoiDung controller ", error.message);
+		res.status(500).json({ error: error.message });
+	}
+}
+
+export const layFollower = async (req, res) => {
+    try {
+        
+        const idnguoidung = req.nguoidung._id;
+
+        
+        const nguoidung = await Nguoidung.findById(idnguoidung).populate('theoDoiND', 'username email');
+
+        if (!nguoidung) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+        }
+
+
+        const followers = nguoidung.theoDoiND;
+
+        return res.status(200).json({
+            followers
+        });
+    } catch (error) {
+        console.error("Lỗi layFollower controller:", error);
+        return res.status(500).json({ message: "Lỗi 500" });
+    }
+};
+
+
+export const layThongBao = async (req, res) => {
+    try {
+        const idnguoidung = req.nguoidung._id;
+
+       
+        const thongBao = await Thongbao.find({ denNguoiDung: idnguoidung })
+            .populate('tuNguoiDung', 'username')  
+            .sort({ createdAt: -1 });  
+
+        if (!thongBao || thongBao.length === 0) {
+            return res.status(404).json({ message: 'Không có thông báo mới' });
+        }
+
+        return res.status(200).json({ thongBao });
+    } catch (error) {
+        console.error("Lỗi layThongBao controller:", error.message);
+        return res.status(500).json({ error: "Lỗi 500" });
+    }
 };
