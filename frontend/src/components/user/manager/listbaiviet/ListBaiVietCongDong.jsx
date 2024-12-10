@@ -8,13 +8,13 @@ import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
 import "./ListBaiVietCongDong.css"; 
 
 function ListBaiVietCongDong() {
-  const { id } = useParams(); // Lấy id từ URL params
-  const [baiviets, setBaiviets] = useState([]); // Dữ liệu bài viết
-  const [loading, setLoading] = useState(true); // Trạng thái tải dữ liệu
-  const [coverImage, setCoverImage] = useState(null); // Hình ảnh bài viết
+  const { id } = useParams(); 
+  const [baiviets, setBaiviets] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [coverImage, setCoverImage] = useState(null); 
   const [formData, setFormData] = useState({
-    noiDungBV: '', // Nội dung bài viết
-    hinhAnhBV: '' // Hình ảnh bài viết
+    noiDungBV: '', 
+    hinhAnhBV: '' 
   });
 
   const imgRef = useRef(null); // Dùng ref cho input file hình ảnh
@@ -157,6 +157,7 @@ function ListBaiVietCongDong() {
               binhLuanBV={baiviet.binhLuanBV}
               IdNguoiDung={baiviet.nguoiDungIdBV}
               username={baiviet.nguoiDungIdBV.username}
+              anhDaiDienND={baiviet.nguoiDungIdBV.anhDaiDienND} 
               tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
               hinhAnh={baiviet.hinhAnhBV}
               baiVietId={baiviet._id}

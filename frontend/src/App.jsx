@@ -26,7 +26,11 @@ import AdminBaocao from './pages/admin/Baocao';
 import SuaTruyen from './pages/user/truyen/suatruyen/SuaTruyen';
 import SuaChuong from './pages/user/truyen/suachuong/SuaChuong';
 import ChiTietChuong from './pages/user/truyen/chitietchuong/ChiTietChuong';
+import TimKiem from './pages/user/timkiem/TimKiem';
+import NapXu from './pages/user/taikhoan/napxu/NapXu';
+import NapXuThongBao from './pages/user/taikhoan/napxuthongbao/NapXuThongBao';
 import ListBaiVietCongDong from './components/user/manager/listbaiviet/ListBaiVietCongDong';
+import Trangcanhan from './pages/user/trangcanhan/TrangCaNhan';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -61,10 +65,14 @@ function App() {
       <Route path="/theloai/:tenTheLoai" element={<Danhmuc />} />
       <Route path="/taikhoan/baiviet" element={<Baiviet />} />
       <Route path="/taikhoan/tacpham" element={<Tacpham />} />
+      <Route path="/congdong/:id" element={<ListBaiVietCongDong/>} />
       <Route path="/taikhoan/lichsu" element={<Lichsu />} />
       <Route path="/taikhoan/yeuthich" element={<Yeuthich />} />
       <Route path="/taikhoan/vitien" element={<Vitien />} />
       <Route path="/taikhoan/baocao" element={<UserBaoCao />} />
+      <Route path="/search" element={<TimKiem/>} />
+      <Route path="/:tenNguoiDung/napxu" element={<NapXu/>} />
+      <Route path="/payment-result" element={<NapXuThongBao />} />
 
       {/* Các trang truyện */}
       <Route path="/chitiettruyen/:tieude" element={<Chitiettruyen />} />
@@ -74,10 +82,10 @@ function App() {
       <Route path="/suachuong" element={<SuaChuong />} />
       <Route path="/:tenTruyen/:tenChuong" element={<ChiTietChuong />} />
 
-
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />
       <Route path="/dangnhap"  element={!authUser ? <Dangnhap /> : <Navigate to="/" />} />
+      <Route path="/canhan/:id" element={<Trangcanhan />} />
 
       {/* Trang quản trị */}
       <Route path="/adminhome" element={<Home />} />

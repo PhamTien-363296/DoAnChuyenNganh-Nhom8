@@ -11,11 +11,7 @@ function ListBookHoanthanh() {
         const layTruyen = async () => {
             try {
                 const response = await axios.get('/api/truyen/lay/trangchu/hoanthanh');
-                const truyenData = response.data.truyenWithRatings.map(item => ({
-                    ...item.truyen,
-                    trungBinhSao: item.trungBinhSao
-                }));
-                setdsTruyen(truyenData);
+                setdsTruyen(response.data.truyen);
                 setLoading(false);
             } catch (error) {
                 setError("Có lỗi khi lấy danh sách sách.", error);
@@ -41,7 +37,7 @@ function ListBookHoanthanh() {
                     key={index}
                     id={book._id}
                     tieuDe={book.tenTruyen}
-                    soSao={book.trungBinhSao}
+                    soSao={book.danhGia.trungBinhSao}
                     trangThai={book.tinhTrangTruyen}
                     luotXem={book.luotXemTruyen}
                     imgSrc={book.anhTruyen}

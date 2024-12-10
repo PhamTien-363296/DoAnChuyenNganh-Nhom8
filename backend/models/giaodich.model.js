@@ -1,23 +1,40 @@
 import mongoose from "mongoose";
+import { updateXuWhenSavingGiaoDich } from "../middleware/giaodich.middleware.js";
 
 const giaodichSchema = new mongoose.Schema(
 	{
-		soLuongGD: {
+		soLuongXuGD: {
 			type: Number,
-            required: true,
+		},
+		dongTien: {
+			type: String,
 		},
 		noiDungGD: {
 			type: String,
-            required: true,
+		},
+		loaiGiaoDich: {
+			type: String,
+			enum: ["NapXu", "MuaChuong", "HoaHong", "DiemDanh"],
 		},
 		nguoiDungIdGD: {
 			type: mongoose.Schema.Types.ObjectId,
             ref: "Nguoidung",
 		},
+		thongTinGiaoDich: {
+			maGiaoDich: { type: Number, required: false },
+			trangThaiThanhToan: { type: String, required: false },
+			loaiThanhToan: { type: String, required: false },
+			loaiThe: { type: String, required: false },
+			loaiGiaoDich: { type: String, required: false },
+			amount: { type: Number, required: false },
+			createdAt: { type: Date, required: false },
+		},
 	},
 	{ timestamps: true }
 );
 
-const Giaodich = mongoose.model("Giaodich", giaodichSchema);
+giaodichSchema.pre('save', updateXuWhenSavingGiaoDich);
+
+const Giaodich = mongoose.model("Giaodich", giaodichSchema, "Giaodich");
 
 export default Giaodich;

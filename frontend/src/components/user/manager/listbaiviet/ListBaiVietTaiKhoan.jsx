@@ -58,6 +58,7 @@ function ListBaiVietTaiKhoan() {
                         binhLuanBV={baiviet.binhLuanBV}
                         nguoiDungIdBV={baiviet.nguoiDungIdBV}  // Truyền IdNguoiDung
                         username={baiviet.nguoiDungIdBV.username}  // Truyền username
+                        anhDaiDienND={baiviet.nguoiDungIdBV.anhDaiDienND} 
                         tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
                         hinhAnh={baiviet.hinhAnhBV}
                         baiVietId={baiviet._id}

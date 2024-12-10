@@ -7,36 +7,64 @@ import Thongbao from "../models/thongbao.model.js";
 import moment from 'moment';
 
 export const layTatcaTruyen = async (req, res) => {
+    const { sort = "phobien", page = 1, limit = 18, sao, tinhtrang } = req.query;
+
+    const pageSize = parseInt(limit);
+    const skip = (page - 1) * pageSize;
+
     try {
-        const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" });
-        const truyenWithRatings = [];
-
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
+        let sortQuery;
+        switch (sort) {
+            case "phobien":
+                sortQuery = { luotXemTruyen: -1 };
+                break;
+            case "moinhat":
+                sortQuery = { updatedAt: -1 };
+                break;
+            case "danhgia":
+                sortQuery = { "danhGia.trungBinhSao": -1 };
+                break;
+            default:
+                sortQuery = {};
         }
 
+        let dkLoc = { trangThaiTruyen: "Công khai" };
+
+        if (tinhtrang && tinhtrang !== "tatca") {
+            if (tinhtrang === "hoanthanh") {
+                dkLoc.tinhTrangTruyen = "Hoàn thành";
+            } else if (tinhtrang === "dangviet") {
+                dkLoc.tinhTrangTruyen = "Đang viết";
+            } else if (tinhtrang === "tamdung") {
+                dkLoc.tinhTrangTruyen = "Tạm dừng";
+            }
+        }
+
+        if (sao && sao !== "tatca") {
+            const saoRange = sao.split("-");
+            const minSao = parseFloat(saoRange[0]);
+            const maxSao = parseFloat(saoRange[1]);
+
+            if (!isNaN(minSao) && !isNaN(maxSao)) {
+                dkLoc["danhGia.trungBinhSao"] = { $gte: minSao, $lte: maxSao };
+            }
+        }
+
+        const tong = await Truyen.countDocuments(dkLoc);
+
+        const tongPage = Math.ceil(tong / pageSize);
+
+        const truyen = await Truyen.find(dkLoc)
+            .sort(sortQuery)
+            .skip(skip)
+            .limit(pageSize)
+            .populate("tacGiaIdTruyen", "tenNguoiDung")
+            .populate("theLoaiIdTruyen", "tenTheLoai");
+
         res.status(200).json({
-            truyenWithRatings
+            truyen,
+            tongPage,
+            tong,
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -44,41 +72,67 @@ export const layTatcaTruyen = async (req, res) => {
     }
 };
 
+
 export const layTruyenTheoTheloai = async (req, res) => {
     const { id } = req.params;
+    const { sort = "phobien", page = 1, limit = 18, sao, tinhtrang } = req.query;
+
+    const pageSize = parseInt(limit);
+    const skip = (page - 1) * pageSize;
+
     try {
-        const truyen = await Truyen.find({ theLoaiIdTruyen: id, trangThaiTruyen: "Công khai" });
-        if (!truyen.length) {
-            return res.status(404).json({ message: "No stories found in this category." });
+        let sortQuery;
+        switch (sort) {
+            case "phobien":
+                sortQuery = { luotXemTruyen: -1 };
+                break;
+            case "moinhat":
+                sortQuery = { updatedAt: -1 };
+                break;
+            case "danhgia":
+                sortQuery = { "danhGia.trungBinhSao": -1 };
+                break;
+            default:
+                sortQuery = {};
         }
-        const truyenWithRatings = [];
 
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
+        let dkLoc = { theLoaiIdTruyen: id, trangThaiTruyen: "Công khai" };
 
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
+        if (tinhtrang && tinhtrang !== "tatca") {
+            if (tinhtrang === "hoanthanh") {
+                dkLoc.tinhTrangTruyen = "Hoàn thành";
+            } else if (tinhtrang === "dangviet") {
+                dkLoc.tinhTrangTruyen = "Đang viết";
+            } else if (tinhtrang === "tamdung") {
+                dkLoc.tinhTrangTruyen = "Tạm dừng";
             }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
         }
+
+        if (sao && sao !== "tatca") {
+            const saoRange = sao.split("-");
+            const minSao = parseFloat(saoRange[0]);
+            const maxSao = parseFloat(saoRange[1]);
+
+            if (!isNaN(minSao) && !isNaN(maxSao)) {
+                dkLoc["danhGia.trungBinhSao"] = { $gte: minSao, $lte: maxSao };
+            }
+        }
+
+        const tong = await Truyen.countDocuments(dkLoc);
+
+        const tongPage = Math.ceil(tong / pageSize);
+
+        const truyen = await Truyen.find(dkLoc)
+            .sort(sortQuery)
+            .skip(skip)
+            .limit(pageSize)
+            .populate("tacGiaIdTruyen", "tenNguoiDung")
+            .populate("theLoaiIdTruyen", "tenTheLoai");
 
         res.status(200).json({
-            truyenWithRatings
+            truyen,
+            tongPage,
+            tong,
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -118,28 +172,25 @@ export const layTheoId = async (req, res) => {
             path: "idCacChuong",
             match: { trangThaiChuong: "Công khai" },
         });
-
-        const danhGia = await Danhgia.find({ truyenIdDG: id })
-
-        const soLuongDanhGia = danhGia.length;
-        const tongSoSao = danhGia.reduce((total, danhGia) => total + danhGia.soSaoDG, 0);
-        let trungBinhSao = 0;
-
-        if (soLuongDanhGia > 0) {
-            trungBinhSao = tongSoSao / soLuongDanhGia;
-            if (trungBinhSao % 1 !== 0) {
-                trungBinhSao = trungBinhSao.toFixed(1);
-            } else {
-                trungBinhSao = trungBinhSao.toString();
-            }
-        }
         
         const nguoiDung = await Nguoidung.findById(idND);
         const lichSuDoc = nguoiDung ? nguoiDung.lichSuND : [];
 
         const chaptersWithStatus = truyen.idCacChuong.map((chuong) => {
-            const isRead = lichSuDoc.some((history) => history.chuongId.toString() === chuong._id.toString());
-            return { ...chuong._doc, isRead };
+            const isRead = lichSuDoc.some((history) => 
+                history.truyenId.toString() === truyen._id.toString() && 
+                history.danhSachChuong.some(
+                    (historyChuong) => historyChuong.chuongId.toString() === chuong._id.toString()
+                )
+            );
+            
+            const isLocked = chuong.xuDeMoChuong > 0 && !isRead;
+
+            return { 
+                ...chuong._doc, 
+                isRead, 
+                isLocked 
+            };
         });
 
         let isFavorite = false;
@@ -152,7 +203,6 @@ export const layTheoId = async (req, res) => {
 
         res.status(200).json({
             truyen: { ...truyen._doc, idCacChuong: chaptersWithStatus },
-            trungBinhSao,
             isFavorite
         });
     } catch (error) {
@@ -319,26 +369,9 @@ export const layTruyenTrending = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        const truyenWithRatings = [];
+        const truyenLike = [];
 
         for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
             let isFavorite = false;
             if (idND) {
                 isFavorite = await Nguoidung.exists({
@@ -347,15 +380,15 @@ export const layTruyenTrending = async (req, res) => {
                 });
             }
 
-            truyenWithRatings.push({
+            truyenLike.push({
                 truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0',
                 isFavorite
             });
         }
 
+
         res.status(200).json({
-            truyenWithRatings
+            truyenLike
         });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
@@ -374,34 +407,8 @@ export const layTruyenHoanThanh = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        const truyenWithRatings = [];
-
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
-        }
-
         res.status(200).json({
-            truyenWithRatings
+            truyen
         });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
@@ -421,34 +428,8 @@ export const layTruyenHot = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        const truyenWithRatings = [];
-
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
-        }
-
         res.status(200).json({
-            truyenWithRatings
+            truyen
         });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
@@ -457,34 +438,69 @@ export const layTruyenHot = async (req, res) => {
 };
 
 
-
-
-export const layLuotXemTheoTheLoai = async (req, res) => {
+export const goiYTimKiem = async (req, res) => {
+    const search = req.query.search;
+    if (!search) {
+        return res.status(400).send({ message: 'Vui lòng nhập từ tìm kiếm' });
+    }
     try {
-        // Tìm tất cả các truyện công khai
-        const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
-        .populate('theLoaiIdTruyen'); // Liên kết với thể loại
+        const goiYTruyen = await Truyen.find({
+            tenTruyen: { $regex: search, $options: 'i' },
+            trangThaiTruyen: 'Công khai'})
+            .limit(5)
+            
+        const goiYTacGia = await Nguoidung.find({
+            username: { $regex: search, $options: 'i' }
+        }).limit(3);
 
-        const luotXemTheoTheLoai = {};
+        res.json({ goiYTruyen, goiYTacGia });
+        } catch (err) {
+        console.error('Lỗi trả về gợi ý:', err);
+        res.status(500).send({ message: 'Server error' });
+    }
+};
 
-        // Lặp qua các truyện và cộng dồn lượt xem theo thể loại
-        truyen.forEach(truyen => {
-            const theLoai = truyen.theLoaiIdTruyen.tieuDeTheLoai; // Lấy tên thể loại
-            if (!luotXemTheoTheLoai[theLoai]) {
-                luotXemTheoTheLoai[theLoai] = 0;
-            }
-            luotXemTheoTheLoai[theLoai] += truyen.luotXemTruyen; // Cộng dồn lượt xem theo thể loại
-        });
+export const timKiem = async (req, res) => {
+    const { search, loc } = req.query;
 
-        // Chuyển đổi object thành mảng cho dễ hiển thị
-        const data = Object.keys(luotXemTheoTheLoai).map(theLoai => ({
-            name: theLoai,
-            luotXem: luotXemTheoTheLoai[theLoai]
-        }));
+    try {
+        let ketqua=[];
 
-        res.status(200).json(data);
+        if(loc === 'truyen'){
+            ketqua = await Truyen.find({
+                tenTruyen: { $regex: search, $options: 'i' }, 
+                trangThaiTruyen: 'Công khai'
+            })
+            .populate("tacGiaIdTruyen");
+        } else if(loc === 'tacGia'){
+            ketqua = await Nguoidung.find({
+                username: { $regex: search, $options: 'i' }
+            });
+        }
+
+        return res.status(200).json(ketqua);
     } catch (error) {
-        console.error("Lỗi khi lấy lượt xem theo thể loại", error.message);
         res.status(500).json({ error: "Lỗi 500" });
+        console.log("Lỗi tim kiem controller", error.message);
+    }
+};
+
+
+export const truyenTheoND = async (req, res) => {
+    try {
+        const tacGiaIdTruyen = req.params.id;  
+
+        const nguoidung = await Nguoidung.findById(tacGiaIdTruyen);
+        if (!nguoidung) return res.status(404).json({ message: "Không tìm thấy người dùng" });
+
+        const truyen = await Truyen.find({ tacGiaIdTruyen: tacGiaIdTruyen });
+        if (!truyen || truyen.length === 0) {
+            return res.status(404).json({ message: "Không tìm thấy truyện của người dùng" });
+        }
+
+        res.status(200).json(truyen);
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+        console.error("Error in layTruyenTheoNguoidung controller", error);
     }
 };

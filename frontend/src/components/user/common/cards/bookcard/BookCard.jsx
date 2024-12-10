@@ -10,7 +10,7 @@ function BookCard(props) {
     BookCard.propTypes = {
         id: PropTypes.string,
         tieuDe: PropTypes.string.isRequired,
-        soSao: PropTypes.string.isRequired,
+        soSao: PropTypes.number.isRequired,
         trangThai: PropTypes.string.isRequired,
         luotXem: PropTypes.number.isRequired,
         imgSrc: PropTypes.string.isRequired,
@@ -43,10 +43,12 @@ function BookCard(props) {
                             <span style={{marginLeft:'3px'}}>{trangThai}</span>
                         </div>
                     )}
-                    <div className="danhgia">
-                        <HiStar/>
-                        <span>{soSao}</span>
-                    </div>
+                    {soSao != "null" && (
+                        <div className="danhgia">
+                            <HiStar/>
+                            <span>{soSao}</span>
+                        </div>
+                    )}
                 </div>
             
                 <div className="book-card-image-container">

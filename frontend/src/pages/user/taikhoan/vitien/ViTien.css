@@ -1,0 +1,84 @@
+
+.vitien{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
+    padding: 25px;
+    color: #49372F;
+}
+
+.vitien-thongtin{
+    display: flex;
+    align-content: center;
+}
+
+.vitien-thongtin p{
+    margin: 0 10px;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.vitien button{
+    border: 1px solid #DBC8AD;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    background-color: #EBD9BF;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.vitien button:hover {
+    background-color: #DBC8AD;
+    transform: scale(1.05);
+}
+
+.vitien-text{
+    font-size: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.vitien-text:hover{
+    border-bottom: 2px solid #49372F;
+    padding-bottom: 5px;
+    width: fit-content;
+}
+
+.giaodich-item{
+    display: grid;
+    grid-template-columns: 1fr 1fr 4fr 1fr;
+    font-size: 16px;
+    border: 1px solid #F1E1CA;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    background-color: #EBD9BF;
+    border-radius: 10px;
+    padding: 6px 20px;
+    margin-top: 20px;
+}
+
+.vitien-diemdanh{
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
+    padding: 25px;
+    color: #49372F;
+    margin-top: 15px;
+}
+
+.vitien-giaodich{
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
+    padding: 0 25px 25px 25px;
+    color: #49372F;
+    margin-top: 15px;
+}

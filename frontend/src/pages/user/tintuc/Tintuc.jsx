@@ -165,7 +165,11 @@ export default function Tintuc() {
                         {congdong.length > 0 ? (
                             congdong.map((cd) => (
                                 <div key={cd._id} className="congdong-item"
+<<<<<<< HEAD
                                      onClick={() => navigate(`/congdong/${cd._id}`)}>
+=======
+                                    onClick={() => navigate(`/congdong/${cd._id}`)}>
+>>>>>>> a7c24f22e2db6c7d85438ec1d53b22f6493a9c33
                                     <img src={cd.anhCD} alt={cd.tenCD} />
                                     <div>
                                         <h3>{cd.tenCD}</h3>

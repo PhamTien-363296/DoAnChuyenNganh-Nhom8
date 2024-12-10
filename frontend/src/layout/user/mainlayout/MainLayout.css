@@ -14,6 +14,60 @@
     padding: 15px;
 }
 
+.header-goiy {
+    position: absolute;
+    background-color: #FFF3E2;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 88.2%;
+    top: 12%;
+    left: 76px;
+    border: 1px solid #EBD9BF;
+    max-height: 380px;
+    overflow-y: scroll;
+}
+.header-goiy::-webkit-scrollbar {
+    width: 8px; 
+    background-color: #F0E6D6;
+}
+
+.header-goiy::-webkit-scrollbar-thumb {
+    background-color: #EBD9BF;
+    border-radius: 10px;
+    border: 2px solid #F0E6D6;
+}
+
+.header-goiy::-webkit-scrollbar-thumb:hover {
+    background-color: #D0B68C;
+}
+
+.header-goiy-list {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #49372F;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.header-goiy-list:hover {
+    background-color: #f1f1f1;
+}
+
+.goiy-tieude{
+    color:#49372F;
+    margin: 10px 16px;
+    padding-bottom: 10px; 
+    font-weight: bold;
+    border-bottom: 1px solid #49372fa1;
+}
+
+.goiy-thongbao{
+    font-size: 13px;
+    color:#49372F;
+    margin: 10px 16px;
+    padding-bottom: 10px; 
+}
+
 @media (max-width: 550px) {
     .container {
         display: grid;
@@ -23,6 +77,11 @@
         "sidebar header"
         "sidebar content"
         "sidebar footer";
+    }
+    .header-goiy {
+        width: 75%;
+        top: 12%;
+        left: 65px;
     }
 }
 

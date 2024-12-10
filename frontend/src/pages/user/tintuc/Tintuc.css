@@ -96,12 +96,34 @@
 }
 
 
+<<<<<<< HEAD
 .form-container {
+=======
+/* Backdrop /////////////////////////////////////////////////////////////////////////// */
+.form-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.form-contain {
+>>>>>>> a7c24f22e2db6c7d85438ec1d53b22f6493a9c33
     display: flex;
     flex-direction: row; 
     gap: 20px; 
     padding: 20px;
+<<<<<<< HEAD
     background-color: #fff;
+=======
+    background-color: #FFF3E2;
+>>>>>>> a7c24f22e2db6c7d85438ec1d53b22f6493a9c33
     border-radius: 8px;
     width: 400px; 
     max-width: 30%;
@@ -166,6 +188,10 @@ input, textarea {
     background-color: #8b6f55;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a7c24f22e2db6c7d85438ec1d53b22f6493a9c33
 /* khuc cho cong dong da tham gia */
 .congdong-item {
     display: flex;
@@ -217,3 +243,7 @@ input, textarea {
 .btn-remove:hover {
     background-color: #81693a;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a7c24f22e2db6c7d85438ec1d53b22f6493a9c33

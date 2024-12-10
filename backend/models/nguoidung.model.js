@@ -25,9 +25,11 @@ const nguoidungSchema = new mongoose.Schema(
 		},
         xuTongND: {
 			type: Number,
+			default: 0,
 		},
         xuConLaiND: {
 			type: Number,
+			default: 0,
 		},
         roleND: {
 			type: Boolean,
@@ -59,11 +61,16 @@ const nguoidungSchema = new mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Truyen",
                 },
-				chuongId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Chuong",
-                },
-				lastRead: {
+				danhSachChuong: [
+					{
+						chuongId: {
+							type: mongoose.Schema.Types.ObjectId,
+							ref: "Chuong",
+						},
+						thoiGianDocChuong:{ type: Date }
+					}
+				],
+				thoiGianDoc: {
 					type: Date,
 				},
 			}
@@ -75,7 +82,15 @@ const nguoidungSchema = new mongoose.Schema(
 				default: [],
 			},
 		],
+<<<<<<< HEAD
     },{ timestamps: true }
+=======
+		diemDanh: {
+			type: Date,
+			default: null, 
+		},
+    }
+>>>>>>> a7c24f22e2db6c7d85438ec1d53b22f6493a9c33
 )
 
 const Nguoidung = mongoose.model("Nguoidung", nguoidungSchema,"Nguoidung");

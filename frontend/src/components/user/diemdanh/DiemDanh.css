@@ -1,0 +1,41 @@
+.diemdanh-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.week-list {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.day-item {
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
+    padding: 0 25px 10px 25px;
+    color: #49372F;
+    margin: 0 5px;
+}
+
+.day-item.today {
+    background-color: #F1E1CA;
+    font-weight: bold;
+}
+
+.diemdanh-button{
+    border: 1px solid #DBC8AD;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    background-color: #EBD9BF;
+    border-radius: 15px;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.diemdanh-button:hover {
+    background-color: #DBC8AD;
+    transform: scale(1.05);
+}

@@ -1,6 +1,7 @@
 import Chuong from "../models/chuong.model.js";  
 import Truyen from "../models/truyen.model.js";
 import Nguoidung from "../models/nguoidung.model.js";
+import Giaodich from "../models/giaodich.model.js"
 
 export const themChuong = async (req, res) => {
     try {
@@ -179,5 +180,96 @@ export const layBinhLuan = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lỗi server!" });
         console.error("Error in layBinhLuan controller:", error);
+    }
+};
+
+
+export const kiemTraTruyCapChuong = async (req, res) => {
+    const idNguoiDung = req.nguoidung._id;
+    const chuongId = req.params.chuongId;
+    try {
+        const chuong = await Chuong.findById(chuongId);
+        if (!chuong) return res.status(404).json({ message: "Chương không tồn tại" });
+
+        if (chuong.xuDeMoChuong === 0) {
+            return res.status(200).json({ message: "Chương này miễn phí", truyCap: true });
+        }
+        
+        const daMo = chuong.nguoiDungDaMoChuong.some((item) => item.nguoiDungId.toString() === idNguoiDung.toString());
+        if (daMo) {
+            return res.status(200).json({ message: "Bạn đã mở chương này", truyCap: true });
+        }        
+
+        return res.status(200).json({ message: "Bạn chưa mở khóa chương này", truyCap: false, xuChuong: chuong.xuDeMoChuong });
+    } catch (error) {
+        res.status(500).json({ message: "Đã xảy ra lỗi", error });
+    }
+};
+
+export const moKhoaChuong = async (req, res) => {
+    const idNguoiDung = req.nguoidung._id;
+    const chuongId = req.params.chuongId;
+    try {
+        const chuong = await Chuong.findById(chuongId).populate("truyenIdChuong");
+        if (!chuong) return res.status(404).json({ message: "Chương không tồn tại" });
+
+        const nguoiDung = await Nguoidung.findById(idNguoiDung);
+        if (!nguoiDung) return res.status(404).json({ message: "Người dùng không tồn tại" });
+
+        if (nguoiDung.xuConLaiND < chuong.xuDeMoChuong) {
+            return res.status(400).json({ message: "Bạn không đủ xu để mở chương này", xuConLai: nguoiDung.xuConLaiND, thongBao: true  });
+        }
+
+        let giaoDichMuaThanhCong = false; 
+        let giaoDichHoaHongThanhCong = false; 
+
+        try {
+            const giaoDichMua = new Giaodich({
+                soLuongXuGD: chuong.xuDeMoChuong,
+                dongTien: "Trừ",
+                noiDungGD: `Bạn đã mở khóa ${chuong.tenChuong} - ${chuong.truyenIdChuong.tenTruyen}`,
+                loaiGiaoDich: "MuaChuong",
+                nguoiDungIdGD: idNguoiDung,
+            });
+            console.log("Giao dịch mua:", giaoDichMua);
+            await giaoDichMua.save();
+            giaoDichMuaThanhCong = true; 
+        } catch (error) {
+            console.error("Lỗi khi lưu giao dịch mua:", error);
+            return res.status(500).json({ message: "Lỗi khi lưu giao dịch mua", error });
+        }
+        if (giaoDichMuaThanhCong) {
+            try {
+                const giaoDichHoaHong = new Giaodich({
+                    soLuongXuGD: chuong.xuDeMoChuong,
+                    dongTien: "Cộng",
+                    noiDungGD: `Bạn nhận được ${chuong.xuDeMoChuong} từ ${nguoiDung.username} mua ${chuong.tenChuong} - ${chuong.truyenIdChuong.tenTruyen}`,
+                    loaiGiaoDich: "HoaHong",
+                    nguoiDungIdGD: chuong.truyenIdChuong.tacGiaIdTruyen,
+                });
+                console.log("Giao dịch hoa hồng:", giaoDichHoaHong);
+                await giaoDichHoaHong.save();
+                giaoDichHoaHongThanhCong = true; 
+            } catch (error) {
+                console.error("Lỗi khi lưu giao dịch hoa hồng:", error);
+                return res.status(500).json({ message: "Lỗi khi lưu giao dịch hoa hồng", error });
+            }
+        }
+
+        if (giaoDichHoaHongThanhCong) {
+            try {
+                chuong.nguoiDungDaMoChuong.push({ nguoiDungId: idNguoiDung });
+                await chuong.save();
+            } catch (error) {
+                console.error("Lỗi khi cập nhật chương:", error);
+                return res.status(500).json({ message: "Lỗi khi cập nhật chương", error });
+            }
+        }
+
+        console.log("Mở khóa chương thành công");
+        res.status(200).json({ message: "Đã mở khóa chương thành công" });
+    } catch (error) {
+        console.error("Đã xảy ra lỗi trong quá trình xử lý:", error);
+        res.status(500).json({ message: "Đã xảy ra lỗi", error });
     }
 };

@@ -1,8 +1,73 @@
 import Nguoidung from "../models/nguoidung.model.js";
+import moment from "moment";
+import Giaodich from "../models/giaodich.model.js"
 import Congdong from "../models/congdong.model.js";
 import Thongbao from "../models/thongbao.model.js";
 import {v2 as cloudinary} from 'cloudinary'
-import moment from 'moment';
+import Truyen from '../models/truyen.model.js';
+import Chuong from '../models/chuong.model.js';
+
+export const themLichSu = async (req, res) => {
+    const idND = req.nguoidung._id;
+    const { idTruyen, idChuong } = req.body;
+
+    try {
+        const truyen = await Truyen.findById(idTruyen);
+        if (!truyen) {
+            return res.status(404).json({ message: 'Truyện không tồn tại' });
+        }
+
+        const chuong = await Chuong.findById(idChuong);
+        if (!chuong) {
+            return res.status(404).json({ message: 'Chương không tồn tại' });
+        }
+
+        const nguoiDung = await Nguoidung.findById(idND);
+        if (!nguoiDung) {
+            return res.status(404).json({ message: 'Người dùng không tồn tại' });
+        }
+
+        const lichSuND = nguoiDung.lichSuND || [];
+
+        const truyenIndex = lichSuND.findIndex(item => item.truyenId.toString() === idTruyen);
+
+        if (truyenIndex !== -1) {
+            const danhSachChuong = lichSuND[truyenIndex].danhSachChuong || [];
+            const chuongIndex = danhSachChuong.findIndex(item => item.chuongId.toString() === idChuong);
+
+            if (chuongIndex !== -1) {
+                danhSachChuong[chuongIndex].thoiGianDocChuong = new Date();
+            } else {
+                danhSachChuong.push({
+                    chuongId: idChuong,
+                    thoiGianDocChuong: new Date(),
+                });
+            }
+
+            lichSuND[truyenIndex].danhSachChuong = danhSachChuong;
+            lichSuND[truyenIndex].thoiGianDoc = new Date();
+        } else {
+            lichSuND.push({
+                truyenId: idTruyen,
+                danhSachChuong: [
+                    {
+                        chuongId: idChuong,
+                        thoiGianDocChuong: new Date(),
+                    },
+                ],
+                thoiGianDoc: new Date(),
+            });
+        }
+
+        nguoiDung.lichSuND = lichSuND;
+        await nguoiDung.save();
+
+        res.status(200).json({ message: 'Cập nhật lịch sử đọc thành công', lichSuND });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Đã xảy ra lỗi', error });
+    }
+};
 
 export const layLichSuDoc = async (req, res) => {
     const idND = req.nguoidung._id;
@@ -10,7 +75,7 @@ export const layLichSuDoc = async (req, res) => {
     try {
         const nguoiDung = await Nguoidung.findById(idND)
             .populate('lichSuND.truyenId')
-            .populate('lichSuND.chuongId');
+            .populate('lichSuND.danhSachChuong.chuongId');
 
         if (!nguoiDung) {
             return res.status(404).json({ message: 'Không tìm thấy người dùng' });
@@ -18,24 +83,22 @@ export const layLichSuDoc = async (req, res) => {
 
         const result = nguoiDung.lichSuND.map(item => {
             const truyen = item.truyenId;
-            const chuong = item.chuongId;
+            return item.danhSachChuong.map(chuongItem => {
+                const chuong = chuongItem.chuongId;
 
-            if (truyen && chuong) {
-                return {
-                    truyen: truyen,    
-                    chuong: chuong,
-                    lastRead: item.lastRead,
-                };
-            }
-        }).filter(item => item !== undefined);
+                if (truyen && chuong) {
+                    return {
+                        truyen: truyen,
+                        chuong: chuong,
+                        thoiGianDoc: chuongItem.thoiGianDocChuong,
+                    };
+                }
+            });
+        }).flat();
 
-        const sortedResult = result.sort((a, b) => new Date(b.lastRead) - new Date(a.lastRead));
+        const sapXep = result.sort((a, b) => new Date(b.thoiGianDoc) - new Date(a.thoiGianDoc));
 
-        const uniqueResult = [...new Map(sortedResult.map(item => [item.truyen._id, item])).values()];
-
-
-        res.status(200).json(uniqueResult);
-
+        res.status(200).json(sapXep);
     } catch (error) {
         console.error('Lỗi khi lấy lịch sử đọc:', error);
         res.status(500).json({ message: 'Lỗi server' });
@@ -92,17 +155,79 @@ export const layYeuThich = async (req, res) => {
     }
 };
 
-
-
 export const layNguoiDungTN = async (req, res) => {
 	try {
 		const nguoidung = req.nguoidung._id;
 
-		const nguoidungdaloc = await Nguoidung.find({ _id: { $ne: nguoidung } }).select("-matKhau");
+		const nguoidungdaloc = await Nguoidung.find({ _id: { $ne: nguoidung } })
+        .select("-matKhau")
+        .populate("anhDaiDienND")
+     
 
 		res.status(200).json(nguoidungdaloc);
 	} catch (error) {
 		console.error("Lỗi layNguoiDungTN controller: ", error.message);
+		res.status(500).json({ error: "Lỗi 500" });
+	}
+};
+
+export const diemDanh = async (req, res) => {
+	try {
+		const idNguoiDung = req.nguoidung._id;
+
+		const nguoidung = await Nguoidung.findById(idNguoiDung);
+
+		if (!nguoidung) {
+            return res.status(404).json({ message: "Người dùng không tồn tại." });
+        }
+
+        const today = moment().startOf("day");
+        const lanDiemDanh = nguoidung.diemDanh ? moment(nguoidung.diemDanh).startOf("day") : null;
+
+        if (lanDiemDanh && today.isSame(lanDiemDanh)) {
+            return res.status(400).json({ message: "Bạn đã điểm danh hôm nay rồi." });
+        }
+
+        const dayOfWeek = today.day();
+        let xu = 0;
+        switch (dayOfWeek) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                xu = 10;
+                break;
+            case 5:
+                xu = 30;
+                break;
+            case 6:
+            case 0:
+                xu = 40;
+                break;
+            default:
+                xu = 0;
+        }
+
+        nguoidung.diemDanh = today.toDate();
+
+        await nguoidung.save();
+
+        const giaoDichMoi = new Giaodich({
+            soLuongXuGD: xu,
+            dongTien: 'Cộng',
+            noiDungGD: `Bạn đã điểm danh ngày ${today.format("DD/MM/YYYY")}`,
+            loaiGiaoDich: 'DiemDanh',
+            nguoiDungIdGD: idNguoiDung,
+        });
+
+        await giaoDichMoi.save();
+
+        return res.status(200).json({
+            message: `Điểm danh thành công! Bạn nhận được ${xu} xu.`,
+            xuConLaiND: nguoidung.xuConLaiND,
+        });
+	} catch (error) {
+		console.error("Lỗi điểm danh controller: ", error.message);
 		res.status(500).json({ error: "Lỗi 500" });
 	}
 };
@@ -270,7 +395,7 @@ export const layFollower = async (req, res) => {
         const idnguoidung = req.nguoidung._id;
 
         
-        const nguoidung = await Nguoidung.findById(idnguoidung).populate('theoDoiND', 'username email');
+        const nguoidung = await Nguoidung.findById(idnguoidung).populate('theoDoiND', 'username email anhDaiDienND');
 
         if (!nguoidung) {
             return res.status(404).json({ message: 'Không tìm thấy người dùng' });
@@ -306,5 +431,57 @@ export const layThongBao = async (req, res) => {
     } catch (error) {
         console.error("Lỗi layThongBao controller:", error.message);
         return res.status(500).json({ error: "Lỗi 500" });
+    }
+};
+
+
+export const capNhat = async (req, res) => {
+    const { username,  moTaND} = req.body;
+    let {  anhDaiDienND} = req.body; 
+
+    const id = req.nguoidung._id;
+    try {
+        let nguoidung = await Nguoidung.findById(id);
+        if (!nguoidung) return res.status(404).json({ message: "Không tìm thấy người dùng" });
+
+        if (anhDaiDienND) {
+        
+            if (nguoidung.anhDaiDienND) {
+                await cloudinary.uploader.destroy(nguoidung.anhDaiDienND.split("/").pop().split(".")[0]);
+            }
+        
+            const uploadedResponse = await cloudinary.uploader.upload(anhDaiDienND);
+            anhDaiDienND = uploadedResponse.secure_url;
+        }
+
+        nguoidung.username = username|| nguoidung.username;
+        nguoidung.moTaND = moTaND || nguoidung.moTaND;
+        nguoidung.anhDaiDienND = anhDaiDienND|| nguoidung.anhDaiDienND;
+
+        nguoidung = await nguoidung.save();
+
+        return res.status(200).json({ nguoidung });
+    } catch (error) {
+        console.log("Lỗi capNhat controller:", error.message);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+export const layNguoiDungQuaId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+     
+        const nguoidung = await Nguoidung.findById(id).select("-matKhau").populate('theoDoiND', 'username');
+
+        if (!nguoidung) {
+            return res.status(404).json({ message: "Không tìm thấy người dùng" });
+        }
+
+        return res.status(200).json({ nguoidung });
+    } catch (error) {
+        console.error("Lỗi layNguoiDungQuaId controller:", error.message);
+        return res.status(500).json({ message: "Lỗi 500" });
     }
 };

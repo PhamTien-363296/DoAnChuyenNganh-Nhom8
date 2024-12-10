@@ -1,6 +1,5 @@
 import Baiviet from "../models/baiviet.model.js"
 import Congdong from "../models/congdong.model.js";
-
 import {v2 as cloudinary} from 'cloudinary'
 import Nguoidung from "../models/nguoidung.model.js";
 
@@ -9,13 +8,8 @@ import Nguoidung from "../models/nguoidung.model.js";
 export const layBaiViet = async (req, res) => {
     try {
         const nguoidung = req.nguoidung._id; 
-        
-        // Lấy tất cả bài viết của người dùng và populate các thông tin liên quan
-        const baiviet = await Baiviet.find({ nguoiDungIdBV: nguoidung })
-            .populate('nguoiDungIdBV', 'username') // Lấy thông tin người dùng (username)
-            .populate('thuocCD', 'tenCD'); // Lấy thông tin cộng đồng (tenCD)
-
-        res.status(200).json(baiviet); // Trả về danh sách bài viết
+        const baiviet = await Baiviet.find({ nguoiDungIdBV: nguoidung }).populate('nguoiDungIdBV', 'username');
+        res.status(200).json(baiviet);
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
         console.error("Các bài viết", error);
@@ -160,23 +154,6 @@ export const xoaBaiViet =async(req,res)=>{
     }
 }
 
-export const layHetBaiViet = async (req, res) => {
-    try {
-        const baiviet = await Baiviet.find()
-            .populate('nguoiDungIdBV', 'username') // Lấy thông tin người dùng (username)
-            .populate('thuocCD', 'tenCD')
-            .sort({ createdAt: -1 }); // Sắp xếp theo ngày tạo mới nhất
-
-        if (!baiviet || baiviet.length === 0) {
-            return res.status(404).json({ message: "Không có bài viết nào." });
-        }
-
-        res.status(200).json(baiviet);
-    } catch (error) {
-        res.status(500).json({ error: "Lỗi 500: Không thể lấy danh sách bài viết." });
-        console.error("Lỗi trong phương thức layHetBaiViet:", error);
-    }
-};
 
 export const taoBaiVietCongDong = async (req, res) => {
     try {
@@ -265,5 +242,24 @@ export const layBaiVietCongDong = async (req, res) => {
     } catch (error) {
         console.error("Lỗi layBaiVietCongDong controller", error);
         res.status(500).json({ error: "Lỗi 500" });
+    }
+};
+
+
+export const layHetBaiViet = async (req, res) => {
+    try {
+        const baiviet = await Baiviet.find()
+            .populate('nguoiDungIdBV', 'username') // Lấy thông tin người dùng (username)
+            .populate('thuocCD', 'tenCD')
+            .sort({ createdAt: -1 }); // Sắp xếp theo ngày tạo mới nhất
+
+        if (!baiviet || baiviet.length === 0) {
+            return res.status(404).json({ message: "Không có bài viết nào." });
+        }
+
+        res.status(200).json(baiviet);
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi 500: Không thể lấy danh sách bài viết." });
+        console.error("Lỗi trong phương thức layHetBaiViet:", error);
     }
 };
