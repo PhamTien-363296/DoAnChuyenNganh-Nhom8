@@ -81,7 +81,7 @@ export default function DiemDanh({ thongTin }) {
                 ))}
             </div>
             {!kiemTra && (
-                <button onClick={handleCheckIn}>Điểm danh</button>
+                <button className="diemdanh-button" onClick={handleCheckIn}>Điểm danh</button>
             )}
             {kiemTra && <p>Bạn đã điểm danh hôm nay.</p>}
             <p>{status}</p>

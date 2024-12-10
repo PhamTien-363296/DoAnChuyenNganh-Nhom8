@@ -24,7 +24,6 @@ function ListBaiVietTinTuc() {
         }
     };
 
-   
     useEffect(() => {
         baiVietTatCa();
 

@@ -61,19 +61,24 @@ export default function Vitien() {
                     <p className='vitien-text' onClick={xulyLichSuGiaoDich}>Lịch sử giao dịch</p>
                     {hienThiLichSuGiaoDich && (
                         <div className='vitien-list'>
-                            {lichSuGD.map((giaodich, index) => (
-                                <GiaoDichItem 
-                                    key={index}
-                                    loaiGiaoDich={giaodich.loaiGiaoDich}
-                                    createdAt={giaodich.createdAt}
-                                    noiDungGD={giaodich.noiDungGD}
-                                    dongTien={giaodich.dongTien}
-                                    soLuongXuGD={giaodich.soLuongXuGD}
-                                />
-                            ))}
+                            {lichSuGD.length === 0 ? (
+                                <p>Chưa có giao dịch nào.</p> // Thêm thông báo khi không có giao dịch
+                            ) : (
+                                lichSuGD.map((giaodich) => (
+                                    <GiaoDichItem 
+                                        key={giaodich._id} // Sử dụng ID của giao dịch thay vì index nếu có
+                                        loaiGiaoDich={giaodich.loaiGiaoDich}
+                                        createdAt={giaodich.createdAt}
+                                        noiDungGD={giaodich.noiDungGD}
+                                        dongTien={giaodich.dongTien}
+                                        soLuongXuGD={giaodich.soLuongXuGD}
+                                    />
+                                ))
+                            )}
                         </div>
                     )}
                 </div>
+
 
             </div>
         </TaiKhoanLayout>

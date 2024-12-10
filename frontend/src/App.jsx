@@ -30,6 +30,7 @@ import TimKiem from './pages/user/timkiem/TimKiem';
 import NapXu from './pages/user/taikhoan/napxu/NapXu';
 import NapXuThongBao from './pages/user/taikhoan/napxuthongbao/NapXuThongBao';
 import ListBaiVietCongDong from './components/user/manager/listbaiviet/ListBaiVietCongDong';
+import Trangcanhan from './pages/user/trangcanhan/TrangCaNhan';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -70,7 +71,7 @@ function App() {
       <Route path="/taikhoan/baocao" element={<UserBaoCao />} />
       <Route path="/search" element={<TimKiem/>} />
       <Route path="/:tenNguoiDung/napxu" element={<NapXu/>} />
-
+      <Route path="/payment-result" element={<NapXuThongBao />} />
 
       {/* Các trang truyện */}
       <Route path="/chitiettruyen/:tieude" element={<Chitiettruyen />} />
@@ -80,11 +81,10 @@ function App() {
       <Route path="/suachuong" element={<SuaChuong />} />
       <Route path="/:tenTruyen/:tenChuong" element={<ChiTietChuong />} />
 
-      <Route path="/payment-result" element={<NapXuThongBao />} />
-
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />
       <Route path="/dangnhap"  element={!authUser ? <Dangnhap /> : <Navigate to="/" />} />
+      <Route path="/canhan" element={<Trangcanhan />} />
 
       {/* Trang quản trị */}
       <Route path="/adminhome" element={<Home />} />
