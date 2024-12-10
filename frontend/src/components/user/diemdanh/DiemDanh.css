@@ -1,0 +1,29 @@
+.diemdanh-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.week-list {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.day-item {
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
+    padding: 0 25px 10px 25px;
+    color: #49372F;
+    margin: 0 5px;
+}
+
+.day-item.today {
+    background-color: #F1E1CA;
+    font-weight: bold;
+}
+
+.day-item{
+    
+}

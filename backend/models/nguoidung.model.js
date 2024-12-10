@@ -25,9 +25,11 @@ const nguoidungSchema = new mongoose.Schema(
 		},
         xuTongND: {
 			type: Number,
+			default: 0,
 		},
         xuConLaiND: {
 			type: Number,
+			default: 0,
 		},
         roleND: {
 			type: Boolean,
@@ -63,7 +65,7 @@ const nguoidungSchema = new mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Chuong",
                 },
-				lastRead: {
+				thoiGianDoc: {
 					type: Date,
 				},
 			}
@@ -75,6 +77,10 @@ const nguoidungSchema = new mongoose.Schema(
 				default: [],
 			},
 		],
+		diemDanh: {
+			type: Date,
+			default: null, 
+		},
     }
 )
 

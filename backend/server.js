@@ -12,6 +12,9 @@ import danhgiaRoutes from "./routes/danhgia.route.js"
 import nguoidungRoutes from "./routes/nguoidung.route.js"
 import tinnhanRoutes from "./routes/tinnhan.route.js"
 import baivietRoutes from "./routes/baiviet.route.js"
+import vnpayRoutes from "./routes/vnpay.route.js";
+import giaodichRoutes from "./routes/giaodich.route.js";
+
 import {v2 as cloudinary} from "cloudinary"
 
 
@@ -39,7 +42,8 @@ app.use("/api/danhgia", danhgiaRoutes)
 app.use("/api/nguoidung", nguoidungRoutes)
 app.use("/api/tinnhan", tinnhanRoutes)
 app.use("/api/baiviet",baivietRoutes)
-
+app.use("/api/vnpay", vnpayRoutes);
+app.use("/api/giaodich", giaodichRoutes);
 
 
 app.get("/", (req, res) => {
