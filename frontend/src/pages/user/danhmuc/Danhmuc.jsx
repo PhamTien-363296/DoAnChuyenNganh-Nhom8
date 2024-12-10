@@ -34,12 +34,7 @@ export default function Danhmuc() {
                 } else {
                     response = await axios.get(`/api/truyen/?sort=${sort}&page=${page}&sao=${filterSao}&tinhtrang=${filterTinhTrang}`);
                 }
-                console.log("Dữ liệu trả về từ API:", response.data);
-                const truyenData = response.data.truyenWithRatings.map(item => ({
-                    ...item.truyen,
-                    trungBinhSao: item.trungBinhSao
-                }));
-                setBookList(truyenData);
+                setBookList(response.data.truyen);
                 setTong(response.data.tong);
                 setTongPages(response.data.tongPage);
                 setLoading(false);
@@ -112,6 +107,11 @@ export default function Danhmuc() {
                         onClick={() => handleSortChange('moinhat')}  
                         className={`danhmuc-chon-sapxep-button ${sort === 'moinhat' ? 'chon' : ' '}`}>
                         Mới nhất
+                    </button>
+                    <button 
+                        onClick={() => handleSortChange('danhgia')}  
+                        className={`danhmuc-chon-sapxep-button ${sort === 'danhgia' ? 'chon' : ' '}`}>
+                        Đánh giá tốt
                     </button>
                 </div>
                 <div className='danhmuc-chon-loc'>

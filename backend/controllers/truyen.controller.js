@@ -9,82 +9,67 @@ export const layTatcaTruyen = async (req, res) => {
 
     const pageSize = parseInt(limit);
     const skip = (page - 1) * pageSize;
+
     try {
         let sortQuery;
         switch (sort) {
-            case 'phobien':
+            case "phobien":
                 sortQuery = { luotXemTruyen: -1 };
                 break;
-            case 'moinhat':
+            case "moinhat":
                 sortQuery = { updatedAt: -1 };
                 break;
+            case "danhgia":
+                sortQuery = { "danhGia.trungBinhSao": -1 };
+                break;
+            default:
+                sortQuery = {};
         }
 
         let dkLoc = { trangThaiTruyen: "Công khai" };
 
         if (tinhtrang && tinhtrang !== "tatca") {
-            if(tinhtrang=='hoanthanh'){
-                dkLoc.tinhTrangTruyen = 'Hoàn thành';
-            } else if(tinhtrang=='dangviet'){
-                dkLoc.tinhTrangTruyen = 'Đang viết';
-            } else if(tinhtrang=='tamdung'){
-                dkLoc.tinhTrangTruyen = 'Tạm dừng';
+            if (tinhtrang === "hoanthanh") {
+                dkLoc.tinhTrangTruyen = "Hoàn thành";
+            } else if (tinhtrang === "dangviet") {
+                dkLoc.tinhTrangTruyen = "Đang viết";
+            } else if (tinhtrang === "tamdung") {
+                dkLoc.tinhTrangTruyen = "Tạm dừng";
+            }
+        }
+
+        if (sao && sao !== "tatca") {
+            const saoRange = sao.split("-");
+            const minSao = parseFloat(saoRange[0]);
+            const maxSao = parseFloat(saoRange[1]);
+
+            if (!isNaN(minSao) && !isNaN(maxSao)) {
+                dkLoc["danhGia.trungBinhSao"] = { $gte: minSao, $lte: maxSao };
             }
         }
 
         const tong = await Truyen.countDocuments(dkLoc);
+
         const tongPage = Math.ceil(tong / pageSize);
 
         const truyen = await Truyen.find(dkLoc)
-        .sort(sortQuery)
-        .skip(skip)
-        .limit(pageSize);
-
-        const truyenWithRatings = [];
-
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            if (sao && sao !== "tatca") {
-                const saoRange = sao.split('-');
-                const minSao = parseInt(saoRange[0]);
-                const maxSao = parseInt(saoRange[1]);
-                if (trungBinhSao < minSao || trungBinhSao > maxSao) {
-                    continue;
-                }
-            }
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
-        }
+            .sort(sortQuery)
+            .skip(skip)
+            .limit(pageSize)
+            .populate("tacGiaIdTruyen", "tenNguoiDung")
+            .populate("theLoaiIdTruyen", "tenTheLoai");
 
         res.status(200).json({
-            truyenWithRatings,
+            truyen,
             tongPage,
-            tong
+            tong,
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
         console.error("Error in layTatcaTruyen controller", error);
     }
 };
+
 
 export const layTruyenTheoTheloai = async (req, res) => {
     const { id } = req.params;
@@ -96,76 +81,56 @@ export const layTruyenTheoTheloai = async (req, res) => {
     try {
         let sortQuery;
         switch (sort) {
-            case 'phobien':
+            case "phobien":
                 sortQuery = { luotXemTruyen: -1 };
                 break;
-            case 'moinhat':
+            case "moinhat":
                 sortQuery = { updatedAt: -1 };
                 break;
+            case "danhgia":
+                sortQuery = { "danhGia.trungBinhSao": -1 };
+                break;
+            default:
+                sortQuery = {};
         }
 
         let dkLoc = { theLoaiIdTruyen: id, trangThaiTruyen: "Công khai" };
 
         if (tinhtrang && tinhtrang !== "tatca") {
-            if(tinhtrang=='hoanthanh'){
-                dkLoc.tinhTrangTruyen = 'Hoàn thành';
-            } else if(tinhtrang=='dangviet'){
-                dkLoc.tinhTrangTruyen = 'Đang viết';
-            } else if(tinhtrang=='tamdung'){
-                dkLoc.tinhTrangTruyen = 'Tạm dừng';
+            if (tinhtrang === "hoanthanh") {
+                dkLoc.tinhTrangTruyen = "Hoàn thành";
+            } else if (tinhtrang === "dangviet") {
+                dkLoc.tinhTrangTruyen = "Đang viết";
+            } else if (tinhtrang === "tamdung") {
+                dkLoc.tinhTrangTruyen = "Tạm dừng";
+            }
+        }
+
+        if (sao && sao !== "tatca") {
+            const saoRange = sao.split("-");
+            const minSao = parseFloat(saoRange[0]);
+            const maxSao = parseFloat(saoRange[1]);
+
+            if (!isNaN(minSao) && !isNaN(maxSao)) {
+                dkLoc["danhGia.trungBinhSao"] = { $gte: minSao, $lte: maxSao };
             }
         }
 
         const tong = await Truyen.countDocuments(dkLoc);
+
         const tongPage = Math.ceil(tong / pageSize);
 
         const truyen = await Truyen.find(dkLoc)
-        .sort(sortQuery)
-        .skip(skip)
-        .limit(pageSize);
-
-        if (!truyen.length) {
-            return res.status(404).json({ message: "No stories found in this category." });
-        }
-        const truyenWithRatings = [];
-
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            if (sao && sao !== "tatca") {
-                const saoRange = sao.split('-');
-                const minSao = parseInt(saoRange[0]);
-                const maxSao = parseInt(saoRange[1]);
-                if (trungBinhSao < minSao || trungBinhSao > maxSao) {
-                    continue;
-                }
-            }
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
-        }
+            .sort(sortQuery)
+            .skip(skip)
+            .limit(pageSize)
+            .populate("tacGiaIdTruyen", "tenNguoiDung")
+            .populate("theLoaiIdTruyen", "tenTheLoai");
 
         res.status(200).json({
-            truyenWithRatings,
+            truyen,
             tongPage,
-            tong
+            tong,
         });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -205,21 +170,6 @@ export const layTheoId = async (req, res) => {
             path: "idCacChuong",
             match: { trangThaiChuong: "Công khai" },
         });
-
-        const danhGia = await Danhgia.find({ truyenIdDG: id })
-
-        const soLuongDanhGia = danhGia.length;
-        const tongSoSao = danhGia.reduce((total, danhGia) => total + danhGia.soSaoDG, 0);
-        let trungBinhSao = 0;
-
-        if (soLuongDanhGia > 0) {
-            trungBinhSao = tongSoSao / soLuongDanhGia;
-            if (trungBinhSao % 1 !== 0) {
-                trungBinhSao = trungBinhSao.toFixed(1);
-            } else {
-                trungBinhSao = trungBinhSao.toString();
-            }
-        }
         
         const nguoiDung = await Nguoidung.findById(idND);
         const lichSuDoc = nguoiDung ? nguoiDung.lichSuND : [];
@@ -239,7 +189,6 @@ export const layTheoId = async (req, res) => {
 
         res.status(200).json({
             truyen: { ...truyen._doc, idCacChuong: chaptersWithStatus },
-            trungBinhSao,
             isFavorite
         });
     } catch (error) {
@@ -386,26 +335,9 @@ export const layTruyenTrending = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        const truyenWithRatings = [];
+        const truyenLike = [];
 
         for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
             let isFavorite = false;
             if (idND) {
                 isFavorite = await Nguoidung.exists({
@@ -414,15 +346,15 @@ export const layTruyenTrending = async (req, res) => {
                 });
             }
 
-            truyenWithRatings.push({
+            truyenLike.push({
                 truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0',
                 isFavorite
             });
         }
 
+
         res.status(200).json({
-            truyenWithRatings
+            truyenLike
         });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
@@ -441,34 +373,8 @@ export const layTruyenHoanThanh = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        const truyenWithRatings = [];
-
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
-        }
-
         res.status(200).json({
-            truyenWithRatings
+            truyen
         });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });
@@ -488,34 +394,8 @@ export const layTruyenHot = async (req, res) => {
             return res.status(404).json({ message: 'Không có Truyện công khai' });
         }
 
-        const truyenWithRatings = [];
-
-        for (let i = 0; i < truyen.length; i++) {
-            const danhGia = await Danhgia.find({ truyenIdDG: truyen[i]._id });
-
-            const soLuongDanhGia = danhGia.length;
-            const tongSoSao = danhGia.reduce((total, dg) => total + dg.soSaoDG, 0);
-            let trungBinhSao = 0;
-
-            if (soLuongDanhGia > 0) {
-                trungBinhSao = tongSoSao / soLuongDanhGia;
-                if (trungBinhSao % 1 !== 0) {
-                    trungBinhSao = trungBinhSao.toFixed(1);
-                } else {
-                    trungBinhSao = trungBinhSao.toString();
-                }
-            }
-
-            truyen[i].trungBinhSao = trungBinhSao;
-
-            truyenWithRatings.push({
-                truyen: truyen[i],
-                trungBinhSao: trungBinhSao || '0'
-            });
-        }
-
         res.status(200).json({
-            truyenWithRatings
+            truyen
         });
     } catch (error) {
         res.status(500).json({ error: "Lỗi 500" });

@@ -13,7 +13,7 @@ function ListBookDanhMuc({bookList}) {
                         key={index}
                         id={book._id}
                         tieuDe={book.tenTruyen}
-                        soSao={book.trungBinhSao}
+                        soSao={book.danhGia.trungBinhSao}
                         trangThai={book.tinhTrangTruyen}
                         luotXem={book.luotXemTruyen}
                         imgSrc={book.anhTruyen}

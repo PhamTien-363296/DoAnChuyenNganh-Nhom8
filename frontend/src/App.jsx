@@ -27,6 +27,8 @@ import SuaTruyen from './pages/user/truyen/suatruyen/SuaTruyen';
 import SuaChuong from './pages/user/truyen/suachuong/SuaChuong';
 import ChiTietChuong from './pages/user/truyen/chitietchuong/ChiTietChuong';
 import TimKiem from './pages/user/timkiem/TimKiem';
+import NapXu from './pages/user/taikhoan/napxu/NapXu';
+import NapXuThongBao from './pages/user/taikhoan/napxuthongbao/NapXuThongBao';
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -65,6 +67,8 @@ function App() {
       <Route path="/taikhoan/vitien" element={<Vitien />} />
       <Route path="/taikhoan/baocao" element={<UserBaoCao />} />
       <Route path="/search" element={<TimKiem/>} />
+      <Route path="/:tenNguoiDung/napxu" element={<NapXu/>} />
+
 
       {/* Các trang truyện */}
       <Route path="/chitiettruyen/:tieude" element={<Chitiettruyen />} />
@@ -74,6 +78,7 @@ function App() {
       <Route path="/suachuong" element={<SuaChuong />} />
       <Route path="/:tenTruyen/:tenChuong" element={<ChiTietChuong />} />
 
+      <Route path="/payment-result" element={<NapXuThongBao />} />
 
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />

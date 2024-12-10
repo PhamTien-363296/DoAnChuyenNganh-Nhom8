@@ -39,6 +39,24 @@ const truyenSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Chuong"
     },],
+    danhGia: {
+      tongSao: {
+        type: Number,
+        default: 0,
+        min: 0,
+      },
+      tongDanhGia: {
+        type: Number,
+        default: 0,
+        min: 0,
+      },
+      trungBinhSao: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5,
+      },
+    },
   },
   { timestamps: true }
 );

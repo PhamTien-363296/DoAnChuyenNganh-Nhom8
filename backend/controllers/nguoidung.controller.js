@@ -1,4 +1,6 @@
 import Nguoidung from "../models/nguoidung.model.js";
+import moment from "moment";
+import Giaodich from "../models/giaodich.model.js"
 
 export const layLichSuDoc = async (req, res) => {
     const idND = req.nguoidung._id;
@@ -88,8 +90,6 @@ export const layYeuThich = async (req, res) => {
     }
 };
 
-
-
 export const layNguoiDungTN = async (req, res) => {
 	try {
 		const nguoidung = req.nguoidung._id;
@@ -99,6 +99,69 @@ export const layNguoiDungTN = async (req, res) => {
 		res.status(200).json(nguoidungdaloc);
 	} catch (error) {
 		console.error("Lỗi layNguoiDungTN controller: ", error.message);
+		res.status(500).json({ error: "Lỗi 500" });
+	}
+};
+
+export const diemDanh = async (req, res) => {
+	try {
+		const idNguoiDung = req.nguoidung._id;
+
+		const nguoidung = await Nguoidung.findById(idNguoiDung);
+
+		if (!nguoidung) {
+            return res.status(404).json({ message: "Người dùng không tồn tại." });
+        }
+
+        const today = moment().startOf("day");
+        const lanDiemDanh = nguoidung.diemDanh ? moment(nguoidung.diemDanh).startOf("day") : null;
+
+        if (lanDiemDanh && today.isSame(lanDiemDanh)) {
+            return res.status(400).json({ message: "Bạn đã điểm danh hôm nay rồi." });
+        }
+
+        const dayOfWeek = today.day();
+        let xu = 0;
+        switch (dayOfWeek) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                xu = 10;
+                break;
+            case 5:
+                xu = 30;
+                break;
+            case 6:
+            case 0:
+                xu = 40;
+                break;
+            default:
+                xu = 0;
+        }
+
+        nguoidung.xuConLaiND += xu;
+        nguoidung.xuTongND += xu;
+        nguoidung.diemDanh = today.toDate();
+
+        await nguoidung.save();
+
+        const giaoDichMoi = new Giaodich({
+            soLuongXuGD: xu,
+            dongTien: 'Cộng',
+            noiDungGD: `Bạn đã điểm danh ngày ${today.format("DD/MM/YYYY")}`,
+            loaiGiaoDich: 'DiemDanh',
+            nguoiDungIdGD: idNguoiDung,
+        });
+
+        await giaoDichMoi.save();
+
+        return res.status(200).json({
+            message: `Điểm danh thành công! Bạn nhận được ${xu} xu.`,
+            xuConLaiND: nguoidung.xuConLaiND,
+        });
+	} catch (error) {
+		console.error("Lỗi điểm danh controller: ", error.message);
 		res.status(500).json({ error: "Lỗi 500" });
 	}
 };

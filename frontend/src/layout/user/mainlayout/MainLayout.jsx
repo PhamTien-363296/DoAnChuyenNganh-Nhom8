@@ -18,7 +18,7 @@ const MainLayout = ({ children }) => {
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && (dsGoiYTruyen.length > 0 || dsGoiYTacGia.length > 0)) {
-            navigate(`/search?search=${timKiem}&loc=phobien&trang=1&sao=tatca&tinhtrang=tatca`);
+            navigate(`/search?search=${timKiem}`);
             window.location.reload();
         }
     };

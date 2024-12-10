@@ -37,7 +37,8 @@
     font-size: 13px;
     flex: 1;
     cursor: pointer;
-    width: 100%; transition: background-color 0.3s, transform 0.2s;
+    width: 100%; 
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .dstheloai-noidung button:hover {

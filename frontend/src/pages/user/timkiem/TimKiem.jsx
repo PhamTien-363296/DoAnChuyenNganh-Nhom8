@@ -1,4 +1,4 @@
-import MainLayout from '../../../layout/user/mainLayout/MainLayout';
+import MainLayout from '../../../layout/user/mainlayout/MainLayout';
 import './TimKiem.css';
 import { useState, useEffect  } from "react";
 import axios from 'axios';
@@ -12,6 +12,7 @@ export default function TimKiem() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [locTheo, setLocTheo] = useState("truyen")
+    const [soLuongHienThi, setSoLuongHienThi] = useState(18);
 
     const query = new URLSearchParams(window.location.search); 
     const search = query.get('search');
@@ -47,6 +48,9 @@ export default function TimKiem() {
         setLocTheo(locId);
     };
 
+    const handleLoadMore = () => {
+        setSoLuongHienThi(prev => prev + 18);
+    };
 
     if (loading) {
         return <div>Loading...</div>; 
@@ -77,7 +81,7 @@ export default function TimKiem() {
                 <div className='timkiem-list'>
                     {locTheo === 'truyen' && (
                         <div className='timkiem-list-noidung'>
-                            <ListTruyen ketQua={ketQua} />
+                            <ListTruyen ketQua={ketQua} soLuongHienThi={soLuongHienThi} />
                         </div>
                     )}
                     {locTheo === 'tacGia' && (
@@ -88,6 +92,13 @@ export default function TimKiem() {
                     )}
                     {locTheo === 'congDong' && (
                         <ListCongDong ketQua={ketQua} />
+                    )}
+                </div>
+                <div className='timkiem-list-xemthem' style={{display:'flex', justifyContent:'center', alignContent:'center', marginTop:'20px'}}>
+                    {ketQua.length > soLuongHienThi && (
+                        <button className="xem-them-btn" onClick={handleLoadMore}>
+                            Xem thêm
+                        </button>
                     )}
                 </div>
             </div>
