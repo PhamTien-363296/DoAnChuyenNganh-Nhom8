@@ -1,6 +1,6 @@
 import Nguoidung from "../models/nguoidung.model.js";
 
-export const updateXuWhenSavingGiaoDich = async function (next) {
+export const capNhatXu = async function (next) {
     const giaoDich = this;
 
     if (giaoDich.loaiGiaoDich === "NapXu" && giaoDich.thongTinGiaoDich && giaoDich.thongTinGiaoDich.trangThaiThanhToan !== "Thành công") {

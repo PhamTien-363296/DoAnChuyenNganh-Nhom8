@@ -28,11 +28,7 @@ export const themLichSu = async (req, res) => {
 
         // Xử lý cập nhật lịch sử đọc
         const lichSuND = nguoiDung.lichSuND || [];
-        try {
-            
-        } catch (error) {
-            
-        }
+        
         const truyenIndex = lichSuND.findIndex(item => item.truyenId.toString() === idTruyen.toString());
 
         if (truyenIndex !== -1) {

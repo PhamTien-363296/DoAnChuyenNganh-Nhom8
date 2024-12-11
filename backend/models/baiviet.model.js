@@ -34,7 +34,7 @@ const baivietSchema = new mongoose.Schema(
         },
         cacluotThich: [
 			{
-				type: mongoose.Schema.Types.ObjectId,  // them nay
+				type: mongoose.Schema.Types.ObjectId,
 				ref: "Nguoidung",
 			},
 		],

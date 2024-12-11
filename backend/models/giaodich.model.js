@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { updateXuWhenSavingGiaoDich } from "../middleware/giaodich.middleware.js";
+import { capNhatXu } from "../middleware/giaodich.middleware.js";
 
 const giaodichSchema = new mongoose.Schema(
 	{
@@ -33,7 +33,7 @@ const giaodichSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-giaodichSchema.pre('save', updateXuWhenSavingGiaoDich);
+giaodichSchema.pre('save', capNhatXu);
 
 const Giaodich = mongoose.model("Giaodich", giaodichSchema, "Giaodich");
 
