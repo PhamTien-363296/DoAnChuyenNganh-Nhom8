@@ -30,9 +30,6 @@ function Navadmin({ children }) {
                   <Link to="/adminbaocao"> <HiClipboardDocumentCheck style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
                 </li>
                 <li>
-                  <Link to="/chat"> <IoChatbubbleEllipsesSharp style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
-                </li>
-                <li>
                   <Link to="/quanly/theloai"><HiBookmarkAlt  style={{ color: '#482F0B', fontSize: '32px' }} /></Link>
                 </li>
                 <li>
