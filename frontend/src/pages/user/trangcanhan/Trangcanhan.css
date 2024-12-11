@@ -73,12 +73,10 @@
 
     .canhan-noidung{
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr 1fr auto;
+        grid-template-rows: 1fr 1fr;
         column-gap: 30px;
         grid-template-areas: 
-        "gioithieu"
-        "tacpham"
-        "theodoi"
+        "thongtin"
         "baiviet"
     }
 
@@ -87,12 +85,9 @@
 .canhan-noidung{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
     column-gap: 30px;
     grid-template-areas: 
-    "baiviet baiviet gioithieu"
-    "baiviet baiviet tacpham"
-    "baiviet baiviet theodoi"
+    "baiviet baiviet thongtin"
 }
 
 .canhan-baiviet-text{
@@ -106,7 +101,12 @@
     margin-bottom: 20px;
 }
 
+.canhan-baiviet{
+    grid-area: baiviet;
+}
+
 .canhan-gioithieu, .canhan-tacpham, .canhan-theodoi{
+    grid-area: thongtin;
     background-color: #FFF3E2;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
     border: 2px solid #DBC8AD;
@@ -114,21 +114,10 @@
     padding: 0 25px;
     color: #49372F;
     margin-top: 20px;
+    height: fit-content;
 }
 
 .canhan-gioithieu{
-    grid-area: gioithieu;
     margin-top: 30px;
-}
-
-.canhan-baiviet{
-    grid-area: baiviet;
-}
-
-.canhan-tacpham{
-    grid-area: tacpham;
-}
-
-.canhan-theodoi{
-    grid-area: theodoi;
+    height: fit-content;
 }

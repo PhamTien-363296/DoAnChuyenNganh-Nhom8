@@ -17,7 +17,7 @@ const MainLayout = ({ children }) => {
     const navigate = useNavigate(); 
 
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && (dsGoiYTruyen.length > 0 || dsGoiYTacGia.length > 0)) {
+        if (e.key === 'Enter') {
             navigate(`/search?search=${timKiem}`);
             window.location.reload();
         }
@@ -31,6 +31,7 @@ const MainLayout = ({ children }) => {
                 setTimKiem={setTimKiem} 
                 setdsGoiYTruyen={setdsGoiYTruyen}
                 setdsGoiYTacGia={setdsGoiYTacGia}
+                setdsGoiYCongDong={setdsGoiYCongDong}
                 setLoading={setLoading}
                 setError={setError}
                 handleKeyPress={handleKeyPress}

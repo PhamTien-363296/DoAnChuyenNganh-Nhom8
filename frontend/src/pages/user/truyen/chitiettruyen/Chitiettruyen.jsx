@@ -36,7 +36,7 @@ function Chitiettruyen() {
   const layTruyen = async (id) => {
       try {
           const response = await axios.get(`/api/truyen/laytheoid/${id}`);
-          console.log(response.data)
+          //console.log(response.data)
           const truyenData = response.data.truyen; 
           setTruyen(truyenData); 
           setTrungBinhSao(truyenData.danhGia.trungBinhSao);

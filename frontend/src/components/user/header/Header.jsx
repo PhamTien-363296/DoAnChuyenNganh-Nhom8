@@ -5,7 +5,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useAuthContext } from '../../../context/AuthContext';
 
-export default function Searchmain({ setTimKiem, setdsGoiYTruyen,setdsGoiYTacGia, setLoading, setError, handleKeyPress }) {
+export default function Searchmain({ setTimKiem,setdsGoiYCongDong, setdsGoiYTruyen,setdsGoiYTacGia, setLoading, setError, handleKeyPress }) {
 
     const { authUser } = useAuthContext();
 
@@ -15,6 +15,7 @@ export default function Searchmain({ setTimKiem, setdsGoiYTruyen,setdsGoiYTacGia
         if (value.trim() === '') {
             setdsGoiYTruyen([]);
             setdsGoiYTacGia([]);
+            setdsGoiYCongDong([]);
             setTimKiem('');
             return;
         }
@@ -23,6 +24,7 @@ export default function Searchmain({ setTimKiem, setdsGoiYTruyen,setdsGoiYTacGia
             const response = await axios.get(`/api/truyen/search/goiy?search=${value}`);
             setdsGoiYTruyen(response.data.goiYTruyen || []);
             setdsGoiYTacGia(response.data.goiYTacGia || []);
+            setdsGoiYCongDong(response.data.goiYCongDong || [])
         } catch (error) {
             setError('Có lỗi khi tìm kiếm. Vui lòng thử lại.');
             console.error(error);
@@ -56,10 +58,11 @@ export default function Searchmain({ setTimKiem, setdsGoiYTruyen,setdsGoiYTacGia
 }
 
 Searchmain.propTypes = {
-    setTimKiem: PropTypes.func.isRequired,
-    setdsGoiYTruyen: PropTypes.func.isRequired,
-    setdsGoiYTacGia: PropTypes.func.isRequired,
-    setLoading: PropTypes.func.isRequired,
-    setError: PropTypes.func.isRequired,
-    handleKeyPress: PropTypes.func.isRequired,
+    setTimKiem: PropTypes.func,
+    setdsGoiYTruyen: PropTypes.func,
+    setdsGoiYTacGia: PropTypes.func,
+    setdsGoiYCongDong: PropTypes.func,
+    setLoading: PropTypes.func,
+    setError: PropTypes.func,
+    handleKeyPress: PropTypes.func,
 };

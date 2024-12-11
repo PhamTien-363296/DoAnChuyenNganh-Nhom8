@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import TacGiaItem from '../../common/items/tacgiaitem/TacGiaItem';
 
-function ListTacGia({ketQua}) {
+function ListTacGia({ketQua = []}) {
 
     return (
         <>
@@ -12,10 +12,9 @@ function ListTacGia({ketQua}) {
                     <TacGiaItem 
                         key={index}
                         idTacGia={tg._id}
-                        anhDaiDienND={tg.anhDaiDienND}
-                        username={tg.username}
-                        theoDoi={tg.theoDoi}
-                        slTheoDoi={0}
+                        anhDaiDienND={tg?.anhDaiDienND}
+                        username={tg?.username || 'Tên người dùng'}
+                        slTheoDoi={tg?.nguoiTheoDoiND?.length}
                     />
                 ))
             )}

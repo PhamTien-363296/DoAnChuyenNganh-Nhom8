@@ -5,6 +5,25 @@
     color: #49372F;
 }
 
+.ct-chuong-dieuhuong{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #49372F;
+    margin-left: 30px;
+}
+
+.ct-chuong-dieuhuong p{
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.ct-chuong-dieuhuong p:hover{
+    color: #C7A57E;
+    font-weight: bold;
+    transform: scale(0.95);
+}
+
 .ct-chuong-noidung{
     margin: 10px 50px;
     border-top: 1px solid #49372f4b;

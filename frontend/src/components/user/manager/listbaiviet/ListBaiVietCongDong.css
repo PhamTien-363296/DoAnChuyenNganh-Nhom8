@@ -1,75 +1,184 @@
-/* ListBaiVietCongDongModified.css */
-.bv-thembaiviet-container {
-    display: flex;
-    background-color: #f7f4e9;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .bv-avatar img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .bv-textarea-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background-color: #fff;
-  }
-  
-  .image-preview-container {
-    position: relative;
-    display: inline-block;
-    margin-top: 10px;
-  }
-  
-  .image-preview-container img {
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .close-image-icon {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  .upload-image-icon {
-    font-size: 24px;
-    cursor: pointer;
-    color: #aaa;
-  }
-  
-  .bv-post-button-container button {
-    padding: 8px 15px;
-    background-color: #f5c36b;
-    border: none;
-    border-radius: 6px;
-    color: #333;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .bv-post-button-container button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
+.congdong-anh {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background-color: aqua;
+  border: 3px solid #DBC8AD;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+.congdong-anh img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  opacity: 0.5;
+  filter: brightness(70%);
+}
+
+.congdong-anh .congdong-anh-text {
+  position: absolute;
+  top: 55%;
+  left: 3%;
+  color: #6D5F50;
+  font-size: 1.5rem;
+}
+
+.congdong-anh .congdong-anh-text p{
+  margin: 0;
+}
+
+.congdong-noidung{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  column-gap: 20px;
+  grid-template-areas: 
+      "congdongnd congdongnd congdongtt";
+}
+
+.congdong-baiviet{
+  grid-area: congdongnd;
+}
+
+.congdong-thongtin{
+  grid-area: congdongtt;
+}
+
+.congdong-noidung .congdong-thembaiviet {
+  display: flex;
+  align-items: flex-start;
+  background-color: #FFF3E2;
+  border: 2px solid #DBC8AD;
+  border-radius: 15px 0 0 15px;
+  padding: 15px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+  flex-wrap: wrap;
+  position: relative;
+  margin-top: 15px;
+}
+
+.congdong-noidung .congdong-thembaiviet .congdong-avata {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid #DBC8AD;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.congdong-noidung .congdong-thembaiviet .congdong-avata img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.congdong-noidung .congdong-thembaiviet .congdong-camnghi {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #6D5F50;
+  position: relative;
+  max-width: calc(100% - 120px);
+}
+
+.congdong-noidung .congdong-thembaiviet .congdong-camnghi .text-input {
+  background-color: #FFF3E2;
+  border: none;
+  outline: none;
+  width: 100%;
+  resize: none;
+  padding: 10px;
+  font-size: 13px;
+  box-sizing: border-box;
+  min-height: 40px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Arial', sans-serif;
+}
+
+.congdong-noidung .congdong-thembaiviet .img-container {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  width: 100%;
+  position: relative;
+}
+
+
+.congdong-noidung .congdong-thembaiviet .img-container img {
+  max-width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
+.congdong-noidung .congdong-thembaiviet .congdong-themanh-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #EFE2D0;
+  border-radius: 50%;
+  color: #49372F;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #DBC8AD;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 5px;
+}
+
+.congdong-noidung .congdong-thembaiviet .congdong-themanh-icon:hover {
+  background-color: #EBD9BF;
+}
+
+.congdong-noidung .congdong-thembaiviet .congdong-dang {
+  font-weight: bold;
+  background-color: #EFE2D0;
+  color: #49372F;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #DBC8AD;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 25px;
+}
+
+.congdong-dang button {
+  border: none;
+  background-color: #EFE2D0;
+  padding: 10px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.congdong-dang button:hover {
+  background-color: #EBD9BF;
+}
+
+.congdong-gioithieu, .congdong-tacpham, .congdong-theodoi{
+  background-color: #FFF3E2;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+  border: 2px solid #DBC8AD;
+  border-radius: 0 15px 15px 0;
+  padding: 25px;
+  color: #49372F;
+  margin-top: 20px;
+  height: fit-content;
+}
+
+.congdong-gioithieu{
+  margin-top: 15px;
+  height: fit-content;
+}
+
+.congdong-list-baiviet{
+  margin-top: 15px;
+}

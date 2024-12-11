@@ -26,13 +26,10 @@ function BookItem(props) {
     };
 
     const ChinhsuaClick = () => {
-        console.log('Chỉnh sửa:', tenTruyen);
         navigate('/suatruyen', { state: { idTruyen: idTruyen } });
     };
     
     const ThemChuongClick = () => {
-        console.log('Thêm chương cho truyện:', tenTruyen);
-
         navigate('/viettruyen', { state: { idTruyen: idTruyen } });
     };
 

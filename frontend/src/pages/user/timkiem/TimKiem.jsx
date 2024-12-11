@@ -30,7 +30,6 @@ export default function TimKiem() {
             setLoading(true);
             try {
                 const response = await axios.get(`/api/truyen/search/timkiem?search=${search}&loc=${locTheo}`);
-                console.log("ketqua", response.data);
                 setKQ(response.data);
             } catch (err) {
                 console.error(err);

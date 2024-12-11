@@ -165,7 +165,11 @@ export default function Tintuc() {
                         {congdong.length > 0 ? (
                             congdong.map((cd) => (
                                 <div key={cd._id} className="congdong-item"
-                                    onClick={() => navigate(`/congdong/${cd._id}`)}>
+                                    onClick={() => {
+                                        const urlTen = cd.tenCD.trim().replace(/\s+/g, '-');
+                                        navigate(`/${urlTen}/tintuc`, { state: { idCongDong: cd._id } });
+                                    }}   
+                                >
                                     <img src={cd.anhCD} alt={cd.tenCD} />
                                     <div>
                                         <h3>{cd.tenCD}</h3>

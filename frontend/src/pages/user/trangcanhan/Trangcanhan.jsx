@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation  } from 'react-router-dom';
 import MainLayout from '../../../layout/user/mainLayout/MainLayout';
 import Axios from 'axios';
 import './Trangcanhan.css';
 
 function Trangcanhan() {
-    const { id } = useParams(); // Lấy id từ URL
+    const location = useLocation();
+    const { idNguoiDung } = location.state || {};
     const [nguoiDung, setNguoiDung] = useState(null);
     const [danhSachTacPham, setDanhSachTacPham] = useState([]);
     const [danhSachBaiViet, setDanhSachBaiViet] = useState([]);
@@ -14,7 +15,7 @@ function Trangcanhan() {
     // Lấy thông tin người dùng
     const layNguoiDung = async () => {
         try {
-            const response = await Axios.get(`/api/nguoidung/lay/${id}`);
+            const response = await Axios.get(`/api/nguoidung/lay/${idNguoiDung}`);
             setNguoiDung(response.data.nguoidung || null);
         } catch (error) {
             console.error("Lỗi khi lấy dữ liệu người dùng", error);
@@ -27,7 +28,7 @@ function Trangcanhan() {
     // Lấy danh sách tác phẩm của người dùng
     const layDanhSachTacPham = async () => {
         try {
-            const response = await Axios.get(`/api/truyen/truyentheonguoidung/${id}`);
+            const response = await Axios.get(`/api/truyen/truyentheonguoidung/${idNguoiDung}`);
             setDanhSachTacPham(response.data || []);
         } catch (error) {
             console.error("Lỗi khi lấy danh sách tác phẩm", error);
@@ -38,7 +39,7 @@ function Trangcanhan() {
     // Lấy danh sách bài viết của người dùng
     const layBaiVietCaNhan = async () => {
         try {
-            const response = await Axios.get(`/api/baiviet/canhan/${id}`);
+            const response = await Axios.get(`/api/baiviet/canhan/${idNguoiDung}`);
             setDanhSachBaiViet(response.data || []);
         } catch (error) {
             console.error("Lỗi khi lấy bài viết người dùng", error);
@@ -54,7 +55,7 @@ function Trangcanhan() {
         layNguoiDung();
         layDanhSachTacPham();
         layBaiVietCaNhan();  // Gọi API lấy bài viết
-    }, [id]);
+    }, [idNguoiDung]);
 
     if (loading) {
         return <p>Đang tải...</p>;
@@ -120,33 +121,36 @@ function Trangcanhan() {
                             ))}
                         </div>
                     </div>
-                    <div className='canhan-gioithieu'>
-                        <p style={{ fontWeight: 'bold', fontSize: '18px' }}>GIỚI THIỆU</p>
-                        <p>{nguoiDung.moTaND || "Không có mô tả"}</p>
-                    </div>
-                    <div className='canhan-tacpham'>
-                        <p style={{ fontWeight: 'bold', fontSize: '18px' }}>TÁC PHẨM</p>
-                        <div className='canhan-list-tacpham'>
-                            {danhSachTacPham.map((tacPham, index) => (
-                                <div key={index} className='tacpham-item'>
-                                    <p>{tacPham.tenTruyen}</p>
-                                </div>
-                            ))}
+                    <div className='canhan-thongtin'>
+                        <div className='canhan-gioithieu'>
+                            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>GIỚI THIỆU</p>
+                            <p>{nguoiDung.moTaND || "Không có mô tả"}</p>
                         </div>
-                    </div>
-                    <div className='canhan-theodoi'>
-                        <p style={{ fontWeight: 'bold', fontSize: '18px' }}>NGƯỜI ĐANG THEO DÕI</p>
-                        <div className='canhan-list-nguoidangtheodoi'>
-                            {nguoiDung.theoDoiND.length > 0 ? (
-                                nguoiDung.theoDoiND.map((nguoi, index) => (
-                                    <div key={index} className='nguoi-item'>
-                                        <p>{nguoi.username}</p>
+                        <div className='canhan-tacpham'>
+                            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>TÁC PHẨM</p>
+                            <div className='canhan-list-tacpham'>
+                                {danhSachTacPham.map((tacPham, index) => (
+                                    <div key={index} className='tacpham-item'>
+                                        <p>{tacPham.tenTruyen}</p>
                                     </div>
-                                ))
-                            ) : (
-                                <p>Không có người đang theo dõi.</p>
-                            )}
+                                ))}
+                            </div>
                         </div>
+                        <div className='canhan-theodoi'>
+                            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>NGƯỜI ĐANG THEO DÕI</p>
+                            <div className='canhan-list-nguoidangtheodoi'>
+                                {nguoiDung.theoDoiND.length > 0 ? (
+                                    nguoiDung.theoDoiND.map((nguoi, index) => (
+                                        <div key={index} className='nguoi-item'>
+                                            <p>{nguoi.username}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>Không có người đang theo dõi.</p>
+                                )}
+                            </div>
+                        </div>
+                    
                     </div>
                 </div>
             </div>

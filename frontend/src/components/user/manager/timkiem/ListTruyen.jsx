@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import BookCard from '../../common/cards/bookcard/BookCard';
 
-function ListTruyen({ketQua, soLuongHienThi}) {
+function ListTruyen({ketQua = [], soLuongHienThi}) {
 
     return (
         <>

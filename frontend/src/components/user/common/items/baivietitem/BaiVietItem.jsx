@@ -6,21 +6,21 @@ import Axios from 'axios';
 import { IoTrashSharp } from "react-icons/io5";
 
 
-function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelete, tenCD,anhDaiDienND }) {
+function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelete, tenCD,anhDaiDienND, nguoiDungIdBV }) {
    
     const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(baiviet.cacluotThich.length);
+    const [likeCount, setLikeCount] = useState(luotThichBV || 0);
     const [isDeleted, setIsDeleted] = useState(false);  
     const [isFollowed, setIsFollowed] = useState(false);  // Thêm state theo dõi
     
     // Kiểm tra trạng thái theo dõi khi tải lại trang
     useEffect(() => {
         const followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
-        const userId = baiviet.nguoiDungIdBV._id; // ID người dùng mà bạn theo dõi
+        const userId = nguoiDungIdBV; // ID người dùng mà bạn theo dõi
         if (followedUsers.includes(userId)) {
             setIsFollowed(true); 
         }
-    }, [baiviet.nguoiDungIdBV._id]);
+    }, [nguoiDungIdBV]);
 
     
     const likeBaiViet = async (e) => {
@@ -67,7 +67,7 @@ function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelet
     const theoDoiBaiViet = async (e) => {
         e.preventDefault();
         try {
-            const userId = baiviet.nguoiDungIdBV._id; 
+            const userId = nguoiDungIdBV; 
             const response = await Axios.post(`/api/nguoidung/follow/${userId}`);
             console.log(response.data);
 
@@ -132,11 +132,13 @@ function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelet
                         <p style={{ marginLeft: '3px', fontSize: '13px' }}></p>
                     </div>
 
+                    {onDelete && (
                     <div className="baiviet-item-thongtin-thungrac">
                         <button onClick={xoaBaiViet} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                             <IoTrashSharp color="gray" size={20} />
                         </button>
                     </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -144,15 +146,16 @@ function BaiVietItem({ noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelet
 }
 
 BaiVietItem.propTypes = {
-    noiDungBV: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    noiDungBV: PropTypes.string,
+    username: PropTypes.string,
     hinhAnh: PropTypes.string,
-    baiVietId: PropTypes.string.isRequired,
-    IdNguoiDung: PropTypes.object,
+    baiVietId: PropTypes.string,
+    nguoiDungIdBV: PropTypes.object,
     baiviet: PropTypes.object,
     onDelete: PropTypes.func,  // Hàm callback để gọi khi xóa bài viết
     tenCD: PropTypes.string,   
     anhDaiDienND: PropTypes.string,   
+    luotThichBV: PropTypes.number,   
 };
 
 export default BaiVietItem;

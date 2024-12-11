@@ -66,7 +66,16 @@
     width: 20px;
     height: 20px;
     font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+
 }
+
+.trending-button:hover {
+    background-color: #E0C5A8; 
+    transform: scale(1.05);
+}
+
 
 .hot-list{
     background-color: #FFF3E2;

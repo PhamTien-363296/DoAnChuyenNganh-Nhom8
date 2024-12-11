@@ -1,7 +1,7 @@
 
 .tt-tintuc-container {
     display: grid;
-    grid-template-columns: 5fr 2fr;
+    grid-template-columns: 4fr 2fr;
     column-gap: 20px;
     grid-template-areas: 
         "noidung congdong";
@@ -80,6 +80,8 @@
     background-color: #FFF3E2;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.19);
     border: 2px solid #DBC8AD;
+    height: fit-content;
+    padding: 20px;
 }
 
 
@@ -180,6 +182,7 @@ input, textarea {
     border-radius: 2px;
     margin-bottom: 5px; 
     margin-top: 5px;
+    cursor: pointer;
 }
 
 .congdong-item img {
