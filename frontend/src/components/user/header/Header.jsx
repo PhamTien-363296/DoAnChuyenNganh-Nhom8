@@ -65,7 +65,7 @@ export default function Searchmain({ setTimKiem,setdsGoiYCongDong, setdsGoiYTruy
                     </div>
                 </Link>
             ) : (
-                <p>Loading user data...</p>
+                <p>...</p>
             )}
             </div>
         </header>

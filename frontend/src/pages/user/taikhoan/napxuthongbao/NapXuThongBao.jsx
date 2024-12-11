@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-
+import './NapXuThongBao.css'
+import MainLayout from "../../../../layout/user/mainLayout/MainLayout";
 const NapXuThongBao = () => {
     const idGiaoDich = Cookies.get('idGiaoDich');
     const [giaodich, setGiaodich] = useState(null);
@@ -53,11 +54,12 @@ const NapXuThongBao = () => {
     }
 
     return (
-        <div className='flex items-center justify-center w-screen h-screen'>
+        <MainLayout>
+            <div className="napxu-container">
             {giaodich.thongTinGiaoDich.trangThaiThanhToan === "Thất bại" ? (
-                <div className='bg-red-50 p-5 rounded-lg shadow-xl'>
-                    <FaCircleXmark className='text-6xl text-red-600 m-auto mb-3' />
-                    <p className="flex justify-center items-center">Thanh toán thất bại!</p>
+                <div className="napxu-box napxu-box-error">
+                    <FaCircleXmark className="napxu-icon napxu-icon-failure" />
+                    <p className="napxu-message">Thanh toán thất bại!</p>
                     {giaodich.thongTinGiaoDich && (
                         <>
                             <p><strong>Số tiền:</strong> {giaodich.tongTien.toLocaleString('vi-VN')}</p>
@@ -66,18 +68,18 @@ const NapXuThongBao = () => {
                             <p><strong>Phương thức thanh toán:</strong> {giaodich.thongTinGiaoDich.loaiGiaoDich} ({giaodich.thongTinGiaoDich.loaiThe})</p>
                         </>
                     )}
-                    <p className="text-xs">Thời gian còn lại: {countdown} giây</p>
+                    <p className="napxu-countdown">Thời gian còn lại: {countdown} giây</p>
                     <div
                         onClick={() => navigate('/')}
-                        className="cursor-pointer p-3 bg-red-500 text-white rounded-md hover:bg-red-600 active:scale-95 transition duration-200 flex items-center justify-center text-center"
-                        >
+                        className="napxu-button napxu-button-error"
+                    >
                         Đóng
                     </div>
                 </div>
             ) : giaodich.thongTinGiaoDich.trangThaiThanhToan === "Thành công" ? (
-                <div className='bg-green-50 p-5 rounded-lg shadow-xl'>
-                    <FaCheckCircle className='text-6xl text-green-600 m-auto mb-3' />
-                    <p className="flex justify-center items-center">Thanh toán thành công!</p>
+                <div className="napxu-box napxu-box-success">
+                    <FaCheckCircle className="napxu-icon napxu-icon-success" />
+                    <p className="napxu-message">Thanh toán thành công!</p>
                     {giaodich.thongTinGiaoDich && (
                         <>
                             <p><strong>Số tiền:</strong> {giaodich.thongTinGiaoDich.amount.toLocaleString('vi-VN')}</p>
@@ -86,20 +88,21 @@ const NapXuThongBao = () => {
                             <p><strong>Phương thức thanh toán:</strong> {giaodich.thongTinGiaoDich.loaiGiaoDich} ({giaodich.thongTinGiaoDich.loaiThe})</p>
                         </>
                     )}
-                    <p className="text-sm">Thời gian còn lại: {countdown} giây</p>
+                    <p className="napxu-countdown">Thời gian còn lại: {countdown} giây</p>
                     <div
                         onClick={() => navigate('/')}
-                        className="cursor-pointer p-3 bg-green-500 text-white rounded-md hover:bg-green-600 active:scale-95 transition duration-200 flex items-center justify-center text-center"
-                        >
+                        className="napxu-button napxu-button-success"
+                    >
                         Đóng
                     </div>
                 </div>
             ) : (
-                <div className='bg-gray-50 p-5 rounded-lg shadow-xl'>
+                <div className="napxu-box napxu-box-default">
                     <p>Không có giao dịch.</p>
                 </div>
             )}
-        </div>
+            </div>
+        </MainLayout>
     );
 };
 

@@ -553,7 +553,7 @@ export const truyenTheoND = async (req, res) => {
 
         const truyen = await Truyen.find({ tacGiaIdTruyen: tacGiaIdTruyen });
         if (!truyen || truyen.length === 0) {
-            return res.status(404).json({ message: "Không tìm thấy truyện của người dùng" });
+            return res.status(200).json({ message: "Không tìm thấy truyện của người dùng" });
         }
 
         res.status(200).json(truyen);

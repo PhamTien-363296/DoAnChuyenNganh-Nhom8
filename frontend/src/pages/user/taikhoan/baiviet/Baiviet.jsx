@@ -6,6 +6,7 @@ import './style.css';
 import ListBaiVietTaiKhoan from '../../../../components/user/manager/listbaiviet/ListBaiVietTaiKhoan';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
+import BookCard from '../../../../components/user/common/cards/bookcard/BookCard';
 
 export default function Baiviet() {
     const [coverImage, setCoverImage] = useState(null); 
@@ -16,6 +17,7 @@ export default function Baiviet() {
 
     const [followers, setFollowers] = useState([]); // Lưu danh sách người theo dõi
     const [loading, setLoading] = useState(true); // Loading state cho danh sách người theo dõi
+    const [danhSachTacPham, setDanhSachTacPham] = useState([]);
 
     const navigate = useNavigate();
 
@@ -104,9 +106,20 @@ export default function Baiviet() {
         }
     };
 
+    const layDanhSachTacPham = async () => {
+        try {
+            const response = await Axios.get(`/api/truyen/laytheonguoidung`);
+            setDanhSachTacPham(response.data || []);
+        } catch (error) {
+            console.error("Lỗi khi lấy danh sách tác phẩm", error);
+            alert("Lỗi khi lấy danh sách tác phẩm: " + (error.response?.data?.message || error.message));
+        }
+    };
+
     // Lấy danh sách người theo dõi khi component mount
     useEffect(() => {
         nguoiTheoDoicuaToi();
+        layDanhSachTacPham();
 
         const interval = setInterval(() => {
             nguoiTheoDoicuaToi();
@@ -130,7 +143,7 @@ export default function Baiviet() {
                 <div className='bv-noidung'>
                     <div className='bv-thembaiviet'>
                         <div className='bv-avata'>
-                            <img src={authUser.anhDaiDienND} alt="Avatar" />
+                            <img src={authUser.anhDaiDienND || 'https://via.placeholder.com/50x50'} alt="Avatar" />
                         </div>
                         <div className='bv-camnghi'>
                             <textarea 
@@ -171,31 +184,60 @@ export default function Baiviet() {
                 <div className='bv-thongtin'>
                     <div className='bv-gioithieu'>
                         <p className='bv-tieude'>GIỚI THIỆU</p>
-                        <p className='bv-noidung'>Xin chào</p>
+                        <p className='bv-noidung'>{authUser.moTaND}</p>
                     </div>
+                    <div className='canhan-tacpham'>
+                            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>TÁC PHẨM</p>
+                            <div className='canhan-list-tacpham'>
+                                <div className='listtacpham'>
+                                    {Array.isArray(danhSachTacPham) && danhSachTacPham.length > 0 ? (
+                                        danhSachTacPham.map((tacPham, index) => (
+                                            <BookCard
+                                                key={index}
+                                                id={tacPham._id}
+                                                tieuDe={tacPham.tenTruyen}
+                                                soSao={tacPham.danhGia.trungBinhSao}
+                                                trangThai={tacPham.tinhTrangTruyen}
+                                                luotXem={tacPham.luotXemTruyen}
+                                                imgSrc={tacPham.anhTruyen}
+                                            />
+                                        ))
+                                    ) : (
+                                        <p className="no-tacpham">Chưa có tác phẩm nào.</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     <div className='bv-list-nguoitheodoi'>
                         <p className='bv-tieude'>NGƯỜI THEO DÕI</p>
                         <div className='bv-list'>
-                            {followers.map((follower) => (
-                                <div 
-                                key={follower._id}
-                                className="follower-item"
-                                onClick={() => {
-                                    const urlTen = follower.username.trim().replace(/\s+/g, '-');
-                                    navigate(`/${urlTen}`, { state: { idNguoiDung: follower._id } });
-                                }}                                
-                                style={{ cursor: 'pointer' }}
-                            >
-                                <img
-                                    src={follower.anhDaiDienND || 'https://via.placeholder.com/50x50'} 
-                                    alt={follower.username}
-                                    className="follower-avatar"
-                                />
-                                <span className="follower-name">{follower.username}</span>
-                            </div>
-                            ))}
+                            {Array.isArray(followers) && followers.length > 0 ? (
+                                followers.map((follower) => (
+                                    <div 
+                                        key={follower?._id || Math.random()}
+                                        className="follower-item"
+                                        onClick={() => {
+                                            if (follower?.username && follower?._id) {
+                                                const urlTen = follower.username.trim().replace(/\s+/g, '-');
+                                                navigate(`/${urlTen}`, { state: { idNguoiDung: follower._id } });
+                                            }
+                                        }}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <img
+                                            src={follower?.anhDaiDienND || 'https://via.placeholder.com/50x50'} 
+                                            alt={follower?.username || 'No name'}
+                                            className="follower-avatar"
+                                        />
+                                        <span className="follower-name">{follower?.username || 'Ẩn danh'}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="no-followers">Chưa có người theo dõi nào.</p>
+                            )}
                         </div>
                     </div>
+
                 </div>
             </div>
         </TaiKhoanLayout>

@@ -36,19 +36,21 @@ body {
     min-width: 260px; 
   }
   
-  .image-container {
+  .image-container-ctt {
     border-radius: 10px;
     border: 1px solid #D9D9D9;
     overflow: hidden;
-    width: 100%; 
-    max-width: 260px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 260px; 
+    height: 360px;
     padding: 5px;
-    height: auto; 
   }
   
-  .image-container img {
+  .image-container-ctt img {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 10px;
     object-fit: cover;
   }

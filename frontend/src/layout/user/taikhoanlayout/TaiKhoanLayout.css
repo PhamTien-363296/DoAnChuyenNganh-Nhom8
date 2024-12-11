@@ -112,12 +112,16 @@
 
 /* check /////////////////////////////////////////////// */
 .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999;
 }
 
 .modal-content {
@@ -129,7 +133,20 @@
 }
 
 .modal-actions {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
     justify-content: space-between;
+}
+.button-tk-baiviet{
+    background-color: #F1E1CA;
+    color: #49372F;
+    padding: 10px 20px;
+    border: 2px solid #DBC8AD;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.button-tk-baiviet:hover{
+    background-color: #DBC8AD;
+    font-weight: bold;
 }

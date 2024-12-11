@@ -3,8 +3,10 @@ import { useLocation  } from 'react-router-dom';
 import MainLayout from '../../../layout/user/mainLayout/MainLayout';
 import Axios from 'axios';
 import './Trangcanhan.css';
-
+import { useNavigate } from 'react-router-dom';
+import BookCard from '../../../components/user/common/cards/bookcard/BookCard';
 function Trangcanhan() {
+    const navigate = useNavigate();
     const location = useLocation();
     const { idNguoiDung } = location.state || {};
     const [nguoiDung, setNguoiDung] = useState(null);
@@ -76,13 +78,13 @@ function Trangcanhan() {
                         <p style={{ margin: '0' }}>{nguoiDung.username || "Không có tên"}</p>
                     </div>
                     <div className="nguoitheodoi">
-                        <p>{nguoiDung.nguoiTheoDoiND.length || 0} Người theo dõi</p>
+                        <p>{nguoiDung?.theoDoiND.length || 0} Người theo dõi</p>
                     </div>
                     <div className="dangtheodoi">
-                        <p>{nguoiDung.theoDoiND.length || 0} Đang theo dõi</p>
+                        <p>{nguoiDung?.nguoiTheoDoiND.length || 0} Đang theo dõi</p>
                     </div>
                     <div className="slbaiviet">
-                        <p>{nguoiDung.cacBaiVietND.length || 0} Bài viết</p>
+                        <p>{nguoiDung?.cacBaiVietND.length || 0} Bài viết</p>
                     </div>
                 </div>
                 <div className='canhan-noidung'>
@@ -129,21 +131,47 @@ function Trangcanhan() {
                         <div className='canhan-tacpham'>
                             <p style={{ fontWeight: 'bold', fontSize: '18px' }}>TÁC PHẨM</p>
                             <div className='canhan-list-tacpham'>
-                                {danhSachTacPham.map((tacPham, index) => (
-                                    <div key={index} className='tacpham-item'>
-                                        <p>{tacPham.tenTruyen}</p>
-                                    </div>
-                                ))}
+                                <div className='listtacpham'>
+                                    {Array.isArray(danhSachTacPham) && danhSachTacPham.length > 0 ? (
+                                        danhSachTacPham.map((tacPham, index) => (
+                                            <BookCard
+                                                key={index}
+                                                id={tacPham._id}
+                                                tieuDe={tacPham.tenTruyen}
+                                                soSao={tacPham.danhGia.trungBinhSao}
+                                                trangThai={tacPham.tinhTrangTruyen}
+                                                luotXem={tacPham.luotXemTruyen}
+                                                imgSrc={tacPham.anhTruyen}
+                                            />
+                                        ))
+                                    ) : (
+                                        <p className="no-tacpham">Chưa có tác phẩm nào.</p>
+                                    )}
+                                </div>
                             </div>
                         </div>
+
                         <div className='canhan-theodoi'>
                             <p style={{ fontWeight: 'bold', fontSize: '18px' }}>NGƯỜI ĐANG THEO DÕI</p>
                             <div className='canhan-list-nguoidangtheodoi'>
                                 {nguoiDung.theoDoiND.length > 0 ? (
-                                    nguoiDung.theoDoiND.map((nguoi, index) => (
-                                        <div key={index} className='nguoi-item'>
-                                            <p>{nguoi.username}</p>
-                                        </div>
+                                    nguoiDung?.theoDoiND?.map((nguoi) => (
+                                    <div 
+                                        key={nguoi._id}
+                                        className="follower-item"
+                                        onClick={() => {
+                                            const urlTen = nguoi.username.trim().replace(/\s+/g, '-');
+                                            navigate(`/${urlTen}`, { state: { idNguoiDung: nguoi._id } });
+                                        }}                                
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <img
+                                            src={nguoi.anhDaiDienND || 'https://via.placeholder.com/50x50'} 
+                                            alt={nguoi.username}
+                                            className="follower-avatar"
+                                        />
+                                        <span className="follower-name">{nguoi.username}</span>
+                                    </div>
                                     ))
                                 ) : (
                                     <p>Không có người đang theo dõi.</p>
