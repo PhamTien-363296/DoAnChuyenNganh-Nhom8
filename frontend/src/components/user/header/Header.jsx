@@ -3,11 +3,22 @@ import './Header.css'
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useAuthContext } from '../../../context/AuthContext';
+import { useState, useEffect } from "react";
 
 export default function Searchmain({ setTimKiem,setdsGoiYCongDong, setdsGoiYTruyen,setdsGoiYTacGia, setLoading, setError, handleKeyPress }) {
+    const [authUser, setAuthUser] = useState(null);
 
-    const { authUser } = useAuthContext();
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('/api/auth/getme');
+                setAuthUser(response.data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+        fetchUserData();
+    }, []); 
 
     const handleSearchChange = async (e) => {
         const value = e.target.value;
@@ -47,11 +58,15 @@ export default function Searchmain({ setTimKiem,setdsGoiYCongDong, setdsGoiYTruy
             </div>
 
             <div className="profile-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {authUser ? (
                 <Link to="/taikhoan/baiviet">
                     <div className='profile-container-img'>
-                        <img src={authUser.anhDaiDienND ||"https://placehold.co/20x10"} style={{ borderRadius: '30px' }} />
+                        <img src={authUser.anhDaiDienND || "https://placehold.co/20x10"} style={{ borderRadius: '30px' }} alt="User Avatar" />
                     </div>
                 </Link>
+            ) : (
+                <p>Loading user data...</p>
+            )}
             </div>
         </header>
     );

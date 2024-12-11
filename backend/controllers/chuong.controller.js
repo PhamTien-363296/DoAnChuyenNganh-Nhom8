@@ -101,7 +101,7 @@ export const layTheoId = async (req, res) => {
 };
 
 export const suaChuong = async (req, res) => {
-    const { tenChuong, noiDungChuong } = req.body;
+    const { tenChuong, noiDungChuong,xuDeMoChuong,trangThaiChuong  } = req.body;
 
     try {
         let chuong = await Chuong.findById(req.params.id);
@@ -110,6 +110,8 @@ export const suaChuong = async (req, res) => {
 
         if (tenChuong) chuong.tenChuong = tenChuong;
         if (noiDungChuong) chuong.noiDungChuong = noiDungChuong;
+        if (xuDeMoChuong) chuong.xuDeMoChuong = xuDeMoChuong;
+        if (trangThaiChuong) chuong.trangThaiChuong = trangThaiChuong;
 
         chuong = await chuong.save();
 

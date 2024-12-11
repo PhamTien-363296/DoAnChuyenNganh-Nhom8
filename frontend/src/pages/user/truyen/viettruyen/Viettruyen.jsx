@@ -65,7 +65,6 @@ const Viettruyen = () => {
             />
             <div className="block-1"
               style={{
-                width: '100%',
                 wordWrap: 'break-word',
                 whiteSpace: 'pre-wrap',
               }}

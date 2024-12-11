@@ -109,7 +109,7 @@ const SuaTruyen = () => {
     };
 
     const xulyXoa = async () => {
-        const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa thể loại này?");
+        const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa tryện này?");
         if (!confirmDelete) return;
     
         try {
@@ -118,11 +118,11 @@ const SuaTruyen = () => {
                 toast.success("Xóa thành công!", { duration: 2000 });
                 navigate('/taikhoan/tacpham');
             } else {
-                alert("Có lỗi xảy ra khi xóa thể loại, vui lòng thử lại.");
+                alert("Có lỗi xảy ra khi xóa tryện, vui lòng thử lại.");
             }
         } catch (error) {
-            console.error("Lỗi khi xóa thể loại:", error);
-            alert("Lỗi khi xóa thể loại: " + (error.response?.data?.message || error.message));
+            console.error("Lỗi khi xóa tryện:", error);
+            alert("Lỗi khi xóa tryện: " + (error.response?.data?.message || error.message));
         }
     }; 
 

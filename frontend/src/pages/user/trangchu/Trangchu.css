@@ -114,10 +114,25 @@
 }
 
 .quangcao{
-    background-color: dimgray;
-    height: 300px;
-    margin: 30px 0;
+    background-color: #DBC8AD;
+    height: 400px;
+    margin: 0 0 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    background-color: #FFF3E2;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    border: 2px solid #DBC8AD;
+    border-radius: 15px;
 }
+
+.quangcao img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit:cover;  
+    border-radius: 15px;
+}
+
 
 .theloai-list{
     background-color: #FFF3E2;
