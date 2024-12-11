@@ -86,7 +86,7 @@ const nguoidungSchema = new mongoose.Schema(
 			type: Date,
 			default: null, 
 		},
-    }
+    },{timestamps:true}
 )
 
 const Nguoidung = mongoose.model("Nguoidung", nguoidungSchema,"Nguoidung");

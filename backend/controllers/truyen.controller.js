@@ -562,3 +562,33 @@ export const truyenTheoND = async (req, res) => {
         console.error("Error in layTruyenTheoNguoidung controller", error);
     }
 };
+
+export const layLuotXemTheoTheLoai = async (req, res) => {
+    try {
+        // Tìm tất cả các truyện công khai
+        const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
+        .populate('theLoaiIdTruyen'); // Liên kết với thể loại
+
+        const luotXemTheoTheLoai = {};
+
+        
+        truyen.forEach(truyen => {
+            const theLoai = truyen.theLoaiIdTruyen.tieuDeTheLoai; // Lấy tên thể loại
+            if (!luotXemTheoTheLoai[theLoai]) {
+                luotXemTheoTheLoai[theLoai] = 0;
+            }
+            luotXemTheoTheLoai[theLoai] += truyen.luotXemTruyen; // Cộng dồn lượt xem theo thể loại
+        });
+
+     
+        const data = Object.keys(luotXemTheoTheLoai).map(theLoai => ({
+            name: theLoai,
+            luotXem: luotXemTheoTheLoai[theLoai]
+        }));
+
+        res.status(200).json(data);
+    } catch (error) {
+        console.error("Lỗi khi lấy lượt xem theo thể loại", error.message);
+        res.status(500).json({ error: "Lỗi 500" });
+    }
+};
