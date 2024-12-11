@@ -493,3 +493,27 @@ export const layNguoiDungQuaId = async (req, res) => {
         return res.status(500).json({ message: "Lỗi 500" });
     }
 };
+
+
+export const coTheoDoiKhong = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const idNguoiDungHienTai = req.nguoidung._id; 
+
+      
+        const nguoiDungHienTai = await Nguoidung.findById(idNguoiDungHienTai);
+
+        if (!nguoiDungHienTai) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng hiện tại' });
+        }
+
+        // Kiểm tra danh sách theo dõi của người dùng hiện tại
+        const dangTheoDoi = nguoiDungHienTai.theoDoiND.includes(id);
+
+     
+        return res.status(200).json({ dangTheoDoi });
+    } catch (error) {
+        console.error("Lỗi coTheoDoiKhong controller:", error.message);
+        return res.status(500).json({ message: "Lỗi server" });
+    }
+};

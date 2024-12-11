@@ -67,7 +67,7 @@ function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiv
     const theoDoiBaiViet = async (e) => {
         e.preventDefault();
         try {
-            const userId = nguoiDungIdBV; 
+            const userId = baiviet.nguoiDungIdBV._id; 
             const response = await Axios.post(`/api/nguoidung/follow/${userId}`);
             console.log(response.data);
 
