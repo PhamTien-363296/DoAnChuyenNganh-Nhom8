@@ -50,10 +50,16 @@ export const layTheoId = async (req, res) => {
     try {
         const chuong = await Chuong.findById(id).populate({
             path: "truyenIdChuong",
-            populate: {
-                path: "idCacChuong",
-                match: { trangThaiChuong: 'Công khai' },
-            }
+            populate: [
+                {
+                    path: "idCacChuong",
+                    match: { trangThaiChuong: 'Công khai' }
+                },
+                {
+                    path: "theLoaiIdTruyen",
+                    ref: "Theloai"
+                }
+            ]
         });
 
         if (!chuong) {

@@ -12,28 +12,32 @@ export const themLichSu = async (req, res) => {
     const { idTruyen, idChuong } = req.body;
 
     try {
-        const truyen = await Truyen.findById(idTruyen);
-        if (!truyen) {
-            return res.status(404).json({ message: 'Truyện không tồn tại' });
-        }
-
-        const chuong = await Chuong.findById(idChuong);
-        if (!chuong) {
-            return res.status(404).json({ message: 'Chương không tồn tại' });
-        }
-
         const nguoiDung = await Nguoidung.findById(idND);
         if (!nguoiDung) {
             return res.status(404).json({ message: 'Người dùng không tồn tại' });
         }
 
-        const lichSuND = nguoiDung.lichSuND || [];
+        // Kiểm tra xem tài liệu đã bị khóa chưa
+        if (nguoiDung.isProcessing) {
+            return res.status(409).json({ message: 'Tài liệu đang được xử lý, vui lòng thử lại sau' });
+        }
 
-        const truyenIndex = lichSuND.findIndex(item => item.truyenId.toString() === idTruyen);
+        // Khóa tài liệu trong quá trình cập nhật
+        nguoiDung.isProcessing = true;
+        await nguoiDung.save();
+
+        // Xử lý cập nhật lịch sử đọc
+        const lichSuND = nguoiDung.lichSuND || [];
+        try {
+            
+        } catch (error) {
+            
+        }
+        const truyenIndex = lichSuND.findIndex(item => item.truyenId.toString() === idTruyen.toString());
 
         if (truyenIndex !== -1) {
             const danhSachChuong = lichSuND[truyenIndex].danhSachChuong || [];
-            const chuongIndex = danhSachChuong.findIndex(item => item.chuongId.toString() === idChuong);
+            const chuongIndex = danhSachChuong.findIndex(item => item.chuongId.toString() === idChuong.toString());
 
             if (chuongIndex !== -1) {
                 danhSachChuong[chuongIndex].thoiGianDocChuong = new Date();
@@ -62,12 +66,17 @@ export const themLichSu = async (req, res) => {
         nguoiDung.lichSuND = lichSuND;
         await nguoiDung.save();
 
+        // Mở khóa tài liệu sau khi cập nhật
+        nguoiDung.isProcessing = false;
+        await nguoiDung.save();
+
         res.status(200).json({ message: 'Cập nhật lịch sử đọc thành công', lichSuND });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Đã xảy ra lỗi', error });
     }
 };
+
 
 export const layLichSuDoc = async (req, res) => {
     const idND = req.nguoidung._id;
@@ -281,7 +290,6 @@ export const thamGiaCongDong = async (req, res) => {
         const { idcongdong } = req.params; 
         const idnguoidung = req.nguoidung._id.toString(); 
 
-       
         const congdong = await Congdong.findById(idcongdong);
         if (!congdong) {
             return res.status(404).json({ message: "Không tìm thấy cộng đồng" });

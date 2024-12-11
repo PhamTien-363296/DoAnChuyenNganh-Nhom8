@@ -181,7 +181,7 @@ const TaiKhoanLayout = ({ children }) => {
                             </div>
                         <div className="chinhsua">
                             <div className="button"
-                              onClick={() => setIsEditing(true)}>
+                                onClick={() => setIsEditing(true)}>
                                 Chỉnh sửa trang cá nhân
                             </div>
                         </div>

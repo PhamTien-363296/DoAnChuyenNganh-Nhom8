@@ -17,8 +17,6 @@ function ListBookTrend() {
         const layTruyen = async () => {
             try {
                 const response = await axios.get('/api/truyen/lay/trangchu/trending');
-
-                console.log(response.data);
                 setdsTruyen(response.data.truyenLike);
                 const favoriteStatus = {};
                 response.data.truyenLike.forEach(book => {

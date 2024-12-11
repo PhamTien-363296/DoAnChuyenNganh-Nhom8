@@ -64,7 +64,7 @@ function App() {
       <Route path="/theloai/:tenTheLoai" element={<Danhmuc />} />
       <Route path="/taikhoan/baiviet" element={<Baiviet />} />
       <Route path="/taikhoan/tacpham" element={<Tacpham />} />
-      <Route path="/congdong/:id" element={<ListBaiVietCongDong/>} />
+      <Route path="/:ten/tintuc" element={<ListBaiVietCongDong/>} />
       <Route path="/taikhoan/lichsu" element={<Lichsu />} />
       <Route path="/taikhoan/yeuthich" element={<Yeuthich />} />
       <Route path="/taikhoan/vitien" element={<Vitien />} />
@@ -84,7 +84,7 @@ function App() {
       {/* Trang đăng nhập và đăng ký */}
       <Route path="/dangky" element={!authUser ? <Dangky /> : <Navigate to="/" />} />
       <Route path="/dangnhap"  element={!authUser ? <Dangnhap /> : <Navigate to="/" />} />
-      <Route path="/canhan/:id" element={<Trangcanhan />} />
+      <Route path="/:ten" element={<Trangcanhan />} />
 
       {/* Trang quản trị */}
       <Route path="/adminhome" element={<Home />} />

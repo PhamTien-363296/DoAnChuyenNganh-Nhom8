@@ -1,22 +1,25 @@
 import PropTypes from 'prop-types';
-import TacGiaItem from '../../common/items/tacgiaitem/TacGiaItem';
+import BaiVietItem from '../../common/items/baivietitem/BaiVietItem';
 
-function ListBaiViet({ketQua}) {
+function ListBaiViet({ketQua = []}) {
 
     return (
         <>
             {ketQua.length === 0 ? (
                 <div>Không có kết quả nào.</div>
             ) : (
-                ketQua.map((book, index) => (
-                    <TacGiaItem 
+                ketQua.map((baiviet, index) => (
+                    <BaiVietItem 
                         key={index}
-                        id={book._id}
-                        tieuDe={book.tenTruyen}
-                        soSao={book.trungBinhSao}
-                        trangThai={book.tinhTrangTruyen}
-                        luotXem={book.luotXemTruyen}
-                        imgSrc={book.anhTruyen}
+                        noiDungBV={baiviet.noiDungBV}
+                        luotThichBV={baiviet?.cacluotThich?.length}
+                        binhLuanBV={baiviet.binhLuanBV}
+                        nguoiDungIdBV={baiviet.nguoiDungIdBV}
+                        username={baiviet?.nguoiDungIdBV?.username }
+                        tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
+                        hinhAnh={baiviet.hinhAnhBV}
+                        baiVietId={baiviet._id}
+                        baiviet={baiviet}
                     />
                 ))
             )}
@@ -27,5 +30,6 @@ function ListBaiViet({ketQua}) {
 ListBaiViet.propTypes = {
     ketQua: PropTypes.array,
 };
+
 
 export default ListBaiViet;

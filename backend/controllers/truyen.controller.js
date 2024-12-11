@@ -3,6 +3,8 @@ import {v2 as cloudinary} from 'cloudinary'
 import Nguoidung from "../models/nguoidung.model.js";
 import Theloai from "../models/theloai.model.js";
 import Danhgia from "../models/danhgia.model.js";
+import Baiviet from "../models/baiviet.model.js";
+import Congdong from "../models/congdong.model.js";
 
 export const layTatcaTruyen = async (req, res) => {
     const { sort = "phobien", page = 1, limit = 18, sao, tinhtrang } = req.query;
@@ -399,7 +401,7 @@ export const layTruyenHot = async (req, res) => {
         let limit = 6;
         const truyen = await Truyen.find({ trangThaiTruyen: "Công khai" })
             .populate("tacGiaIdTruyen")
-            .sort({ luotXemTruyen: -1 })
+            .sort({ "danhGia.trungBinhSao": -1 })
             .limit(limit);
 
         if (truyen.length === 0) {
@@ -414,7 +416,6 @@ export const layTruyenHot = async (req, res) => {
         console.log("Lỗi lấy truyện hot controller", error.message);
     }
 };
-
 
 export const goiYTimKiem = async (req, res) => {
     const search = req.query.search;
@@ -431,7 +432,11 @@ export const goiYTimKiem = async (req, res) => {
             username: { $regex: search, $options: 'i' }
         }).limit(3);
 
-        res.json({ goiYTruyen, goiYTacGia });
+        const goiYCongDong = await Congdong.find({
+            tenCD: { $regex: search, $options: 'i' }
+        }).limit(3);
+
+        res.json({ goiYTruyen, goiYTacGia, goiYCongDong });
         } catch (err) {
         console.error('Lỗi trả về gợi ý:', err);
         res.status(500).send({ message: 'Server error' });
@@ -453,6 +458,14 @@ export const timKiem = async (req, res) => {
         } else if(loc === 'tacGia'){
             ketqua = await Nguoidung.find({
                 username: { $regex: search, $options: 'i' }
+            });
+        } else if(loc === 'baiViet'){
+            ketqua = await Baiviet.find({
+                noiDungBV: { $regex: search, $options: 'i' }
+            }).populate("nguoiDungIdBV");
+        } else if(loc === 'congDong'){
+            ketqua = await Congdong.find({
+                tenCD: { $regex: search, $options: 'i' }
             });
         }
 

@@ -30,7 +30,7 @@ export default function Trangchu() {
 
             <div className="hot-list">
                 <div className="hot-tieude">
-                    <span className="tieude">Truyện HOT</span>
+                    <span className="tieude">Truyện được đánh giá tốt</span>
                     <Link className="xemtatca" to="/danhmuc">Xem thêm</Link>
                 </div>
 

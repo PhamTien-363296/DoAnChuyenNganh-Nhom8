@@ -50,6 +50,8 @@
     outline: none;
     border-radius: 15px;
     font-size: 14px;
+    margin: 0;
+    padding: 25px;
 }
 
 .search-icon {

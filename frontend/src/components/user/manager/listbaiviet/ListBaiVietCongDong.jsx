@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useLocation  } from 'react-router-dom';
+
 import Axios from 'axios';
 import { HiOutlinePhotograph } from 'react-icons/hi'; 
 import { IoCloseSharp } from 'react-icons/io5'; 
@@ -8,7 +10,8 @@ import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
 import "./ListBaiVietCongDong.css"; 
 
 function ListBaiVietCongDong() {
-  const { id } = useParams(); 
+  const location = useLocation();
+  const { idCongDong } = location.state || {};
   const [baiviets, setBaiviets] = useState([]); 
   const [loading, setLoading] = useState(true); 
   const [coverImage, setCoverImage] = useState(null); 
@@ -22,7 +25,7 @@ function ListBaiVietCongDong() {
   // Lấy danh sách bài viết
   const baiVietTatCa = async () => {
     try {
-      const response = await Axios.get(`/api/baiviet/lay/congdong/${id}`);
+      const response = await Axios.get(`/api/baiviet/lay/congdong/${idCongDong}`);
       console.log(response.data);
       if (Array.isArray(response.data)) {
         setBaiviets(response.data);
@@ -46,7 +49,7 @@ function ListBaiVietCongDong() {
     }, 7000);
 
     return () => clearInterval(interval);
-  }, [id]);
+  }, [idCongDong]);
 
   if (loading) {
     return <p>Đang tải...</p>;
@@ -83,7 +86,7 @@ function ListBaiVietCongDong() {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await Axios.post(`/api/baiviet/taobaiviet/congdong/${id}`, formData);
+      const response = await Axios.post(`/api/baiviet/taobaiviet/congdong/${idCongDong}`, formData);
       if (response.status === 201) {
         alert("Thêm thành công!");
         setFormData({ noiDungBV: '', hinhAnhBV: '' }); // Reset form sau khi gửi
@@ -104,68 +107,95 @@ function ListBaiVietCongDong() {
 
   return (
     <MainLayout>
-      <div className='bv-thembaiviet'>
-        <div className='bv-avata'>
-          <img src='https://placehold.co/129x203' alt="Avatar" />
-        </div>
-        <div className='bv-camnghi'>
-          <textarea
-            placeholder="Bạn đang nghĩ gì?"
-            rows="4"
-            className='text-input'
-            value={formData.noiDungBV}
-            onChange={(e) => setFormData({ ...formData, noiDungBV: e.target.value })}
-          />
-          {coverImage && (
-            <div className='img-container'>
-              <IoCloseSharp className='close-icon' onClick={handleRemoveImage} />
-              <img src={coverImage} alt="Preview" />
-            </div>
-          )}
-        </div>
-        <div className='bv-themanh-icon'>
-          <input
-            type="file"
-            id="file-input"
-            hidden
-            ref={imgRef}
-            onChange={handleImageChange}
-            accept="image/*"
-          />
-          <HiOutlinePhotograph onClick={handleIconClick} className="cursor-pointer text-xl" />
-        </div>
-        <div className='bv-dang'>
-          <button onClick={handleSubmit} disabled={!formData.noiDungBV}>
-            Đăng
-          </button>
+      <div className="congdong-anh">
+        <img src="path/to/image.jpg" alt="Ảnh mẫu" />
+        <div className="congdong-anh-text">
+          <p style={{fontSize:'35px', fontWeight:'bold'}}>Cộng đồng CHEO thích sách</p>
+          <p style={{fontSize:'20px',marginTop:'10px'}}>1005 Thành viên</p>
         </div>
       </div>
 
-      {/* Hiển thị các bài viết */}
-      {baiviets.length === 0 ? (
-        <p>Cộng đồng này chưa có bài viết nào.</p>
-      ) : (
-        baiviets.map((baiviet, index) => (
-          <Link
-            to={baiviet.path}
-            key={index}
-            style={{ textDecoration: 'none', color: 'black' }}
-          >
-            <BaiVietItem
-              noiDungBV={baiviet.noiDungBV}
-              luotThichBV={baiviet.luotThichBV}
-              binhLuanBV={baiviet.binhLuanBV}
-              IdNguoiDung={baiviet.nguoiDungIdBV}
-              username={baiviet.nguoiDungIdBV.username}
-              anhDaiDienND={baiviet.nguoiDungIdBV.anhDaiDienND} 
-              tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
-              hinhAnh={baiviet.hinhAnhBV}
-              baiVietId={baiviet._id}
-              baiviet={baiviet}
-            />
-          </Link>
-        ))
-      )}
+      <div className='congdong-noidung'>
+        <div className='congdong-baiviet'>
+          <div className='congdong-thembaiviet'>
+            <div className='congdong-avata'>
+              <img src='https://placehold.co/129x203' alt="Avatar" />
+            </div>
+            <div className='congdong-camnghi'>
+              <textarea
+                placeholder="Bạn đang nghĩ gì?"
+                rows="4"
+                className='text-input'
+                value={formData.noiDungBV}
+                onChange={(e) => setFormData({ ...formData, noiDungBV: e.target.value })}
+              />
+              {coverImage && (
+                <div className='img-container'>
+                  <IoCloseSharp className='close-icon' onClick={handleRemoveImage} />
+                  <img src={coverImage} alt="Preview" />
+                </div>
+              )}
+            </div>
+            <div className='congdong-themanh-icon'>
+              <input
+                type="file"
+                id="file-input"
+                hidden
+                ref={imgRef}
+                onChange={handleImageChange}
+                accept="image/*"
+              />
+              <HiOutlinePhotograph onClick={handleIconClick} className="cursor-pointer text-xl" />
+            </div>
+            <div className='congdong-dang'>
+              <button onClick={handleSubmit} disabled={!formData.noiDungBV}>
+                Đăng
+              </button>
+            </div>
+          </div>
+          <div className='congdong-list-baiviet'>
+            {/* Hiển thị các bài viết */}
+            {baiviets.length === 0 ? (
+                    <p>Cộng đồng này chưa có bài viết nào.</p>
+                  ) : (
+                    baiviets.map((baiviet, index) => (
+                      <Link
+                        to={baiviet.path}
+                        key={index}
+                        style={{ textDecoration: 'none', color: '#49372F', marginTop:'15px' }}
+                      >
+                        <BaiVietItem
+                          noiDungBV={baiviet.noiDungBV}
+                          luotThichBV={baiviet.luotThichBV}
+                          binhLuanBV={baiviet.binhLuanBV}
+                          IdNguoiDung={baiviet.nguoiDungIdBV}
+                          username={baiviet.nguoiDungIdBV.username}
+                          anhDaiDienND={baiviet.nguoiDungIdBV.anhDaiDienND} 
+                          tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
+                          hinhAnh={baiviet.hinhAnhBV}
+                          baiVietId={baiviet._id}
+                          baiviet={baiviet}
+                        />
+                      </Link>
+                    ))
+                  )}
+          </div>
+        </div>
+        <div className='congdong-thongtin'>
+          <div className='congdong-gioithieu'>
+            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>GIỚI THIỆU</p>
+            <p>giới thiệu nè</p>
+          </div>
+          <div className='congdong-tacpham'>
+            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>TÁC PHẨM</p>
+            <div className='congdong-list-tacpham'>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </MainLayout>
   );
 }

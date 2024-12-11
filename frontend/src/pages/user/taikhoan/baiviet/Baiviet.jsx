@@ -165,19 +165,22 @@ export default function Baiviet() {
                         <p className='bv-tieude'>NGƯỜI THEO DÕI</p>
                         <div className='bv-list'>
                             {followers.map((follower) => (
-                               <div 
-                               key={follower._id}
-                               className="follower-item"
-                               onClick={() => navigate(`/canhan/${follower._id}`)} // Điều hướng bằng navigate
-                               style={{ cursor: 'pointer' }}
-                           >
-                               <img
-                                   src={follower.anhDaiDienND || 'https://via.placeholder.com/50x50'} 
-                                   alt={follower.username}
-                                   className="follower-avatar"
-                               />
-                               <span className="follower-name">{follower.username}</span>
-                           </div>
+                                <div 
+                                key={follower._id}
+                                className="follower-item"
+                                onClick={() => {
+                                    const urlTen = follower.username.trim().replace(/\s+/g, '-');
+                                    navigate(`/${urlTen}`, { state: { idNguoiDung: follower._id } });
+                                }}                                
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <img
+                                    src={follower.anhDaiDienND || 'https://via.placeholder.com/50x50'} 
+                                    alt={follower.username}
+                                    className="follower-avatar"
+                                />
+                                <span className="follower-name">{follower.username}</span>
+                            </div>
                             ))}
                         </div>
                     </div>

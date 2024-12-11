@@ -6,6 +6,8 @@ import BinhLuanChuong from '../../../../components/user/binhluanchuong/BinhLuanC
 import './ChiTietChuong.css'
 import { FaLock  } from "react-icons/fa";
 import { TbCoin } from "react-icons/tb";
+import { FaChevronRight } from "react-icons/fa6";
+
 function ChiTietChuong() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -172,10 +174,45 @@ function ChiTietChuong() {
             </MainLayout>
         );
     }
+
+    const handleNavigateHome = () => {
+        navigate(`/`);
+    };
+    
+    const handleNavigateTruyen = () => {
+        const tenTruyen = chuong?.chuong?.truyenIdChuong?.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
+        navigate(`/chitiettruyen/${tenTruyen}`, { state: { idTruyen: chuong?.chuong?.truyenIdChuong?._id } });
+    };
+    
+    const handleNavigateChuong = () => {
+        const tenTruyen = chuong?.chuong?.truyenIdChuong?.tenTruyen.trim().replace(/\s+/g, '-').toLowerCase();
+        const tenChuong = chuong?.chuong?.tenChuong.trim().replace(/\s+/g, '-').toLowerCase();
+        navigate(`/${tenTruyen}/${tenChuong}`, { state: { idChuong: chuong?.chuong?._id } });
+    };
+
+    const handleNavigateTheloai = () => {
+        const tenTheloai = chuong?.chuong?.truyenIdChuong?.theLoaiIdTruyen?.tieuDeTheLoai.replace(/\s+/g, '-').toLowerCase();
+        navigate(`/theloai/${tenTheloai}?loc=phobien&trang=1&sao=tatca&tinhtrang=tatca`, { state: { theloaiId: chuong?.chuong?.truyenIdChuong?.theLoaiIdTruyen?._id } });
+    };
     
     return (
         <MainLayout>
             <div className='chitietchuong-content'>
+                <div className='ct-chuong-dieuhuong'>
+                    <p onClick={handleNavigateHome}>Trang chủ</p>
+                    <FaChevronRight />
+                    <p onClick={handleNavigateTheloai}>
+                        {chuong?.chuong?.truyenIdChuong?.theLoaiIdTruyen?.tieuDeTheLoai}
+                    </p>
+                    <FaChevronRight />
+                    <p onClick={handleNavigateTruyen}>
+                        {chuong?.chuong?.truyenIdChuong?.tenTruyen}
+                    </p>
+                    <FaChevronRight />
+                    <p onClick={handleNavigateChuong}>
+                        {chuong?.chuong?.tenChuong}
+                    </p>
+                </div>
                 <div className='ct-chuong-tieude'>
                     <h2>{chuong.chuong.tenChuong}</h2>
                 </div>
