@@ -25,6 +25,7 @@
     border: 1px solid #EBD9BF;
     max-height: 380px;
     overflow-y: scroll;
+    z-index: 9999;
 }
 .header-goiy::-webkit-scrollbar {
     width: 8px; 

@@ -381,6 +381,7 @@ export const layTruyenHoanThanh = async (req, res) => {
         let limit = 6;
         const truyen = await Truyen.find({ trangThaiTruyen: "Công khai", tinhTrangTruyen: "Hoàn thành" })
             .populate("tacGiaIdTruyen")
+            .sort({ luotXemTruyen: -1 })
             .limit(limit);
 
         if (truyen.length === 0) {
@@ -417,6 +418,72 @@ export const layTruyenHot = async (req, res) => {
     }
 };
 
+export const layTheLoaiDocNhieu = async (req, res) => {
+    try {
+        const topTheLoai = await Truyen.aggregate([
+            { $group: {
+                _id: "$theLoaiIdTruyen",
+                totalLuotXem: { $sum: "$luotXemTruyen" },
+            }},
+            { $sort: { totalLuotXem: -1 } },
+            { $limit: 1 },
+        ]);
+
+        if (topTheLoai.length > 0) {
+            const topTheLoaiId = topTheLoai[0]._id;
+
+            const topBooks = await Truyen.find({ theLoaiIdTruyen: topTheLoaiId })
+                .populate("theLoaiIdTruyen")
+                .sort({ luotXemTruyen: -1 })
+                .limit(6);
+
+            res.status(200).json({
+                topTheLoai: topTheLoai[0],
+                topBooks,
+                message: `Thể loại có truyện được xem nhiều nhất: ${topTheLoai[0]._id}`,
+            });
+        } else {
+            res.status(404).json({ message: "Không tìm thấy thể loại nào." });
+        }
+    } catch (error) {
+        console.error("Lỗi lấy thể loại và sách:", error.message);
+        res.status(500).json({ error: "Lỗi hệ thống" });
+    }
+};
+
+export const layTopTacGia = async (req, res) => {
+    try {
+        //nhóm theo tác giả
+        const topTacGia = await Truyen.aggregate([
+            { $match: { trangThaiTruyen: "Công khai" } },
+            { $group: {
+                _id: "$tacGiaIdTruyen",
+                totalLuotXem: { $sum: "$luotXemTruyen" },
+            }},
+            { $lookup: {
+                from: "Nguoidung",
+                localField: "_id", 
+                foreignField: "_id", 
+                as: "tacGiaInfo",
+            }},
+            { $unwind: "$tacGiaInfo" },
+            { $sort: { totalLuotXem: -1 } },
+            { $limit: 6 },
+        ]);
+
+        if (topTacGia.length > 0) {
+            res.status(200).json({
+                topTacGia,
+                message: "Top 6 tác giả có lượt xem nhiều nhất.",
+            });
+        } else {
+            res.status(404).json({ message: "Không tìm thấy tác giả nào." });
+        }
+    } catch (error) {
+        console.error("Lỗi lấy top tác giả:", error.message);
+        res.status(500).json({ error: "Lỗi hệ thống" });
+    }
+};
 export const goiYTimKiem = async (req, res) => {
     const search = req.query.search;
     if (!search) {

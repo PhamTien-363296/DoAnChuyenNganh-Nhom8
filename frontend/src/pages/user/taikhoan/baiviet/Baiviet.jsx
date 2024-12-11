@@ -4,7 +4,6 @@ import { HiOutlinePhotograph } from "react-icons/hi";
 import { IoCloseSharp } from "react-icons/io5"; 
 import './style.css';
 import ListBaiVietTaiKhoan from '../../../../components/user/manager/listbaiviet/ListBaiVietTaiKhoan';
-import { useAuthContext } from '../../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
@@ -21,7 +20,20 @@ export default function Baiviet() {
     const navigate = useNavigate();
 
     const imgRef = useRef(null); 
-    const { authUser } = useAuthContext();
+    const [authUser, setAuthUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await Axios.get('/api/auth/getme');
+                setAuthUser(response.data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+        fetchUserData();
+    }, []); 
+
 
     // Hàm xử lý thay đổi ảnh
     const handleImageChange = (event) => {

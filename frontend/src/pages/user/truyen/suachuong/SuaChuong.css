@@ -1,0 +1,75 @@
+.sua-chuong-container{
+    display: flex;
+    flex-direction:column;
+    gap: 20px;
+    justify-content: center;
+    align-content: center;
+}
+
+.input-field-ch{
+    width: 98%;
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid hsl(36, 71%, 34%);
+    text-align: center;
+    background-color: #FFF3E2;
+}
+
+.noidung-chuong-ch{
+    border: 2px solid #B19060;
+    border-radius: 7px;
+    height: fit-content;
+    overflow-y: auto;
+    width: 94%;
+    margin-top: 15px;
+    scrollbar-width: thin; 
+    scrollbar-color: #482F0B #FFF3E2; 
+    padding: 20px;
+}
+
+.noidung-chuong-ch2{
+    width: 98%;
+    min-height: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: vertical;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.noidung-chuong-ch2 textarea{
+    height: fit-content;
+}
+
+.form-group-ch{
+    width: fit-content;
+    margin: auto;
+
+}
+
+.form-group-ch label{
+    width: auto;
+}
+
+.radio-group-ch{
+    display: flex;
+    gap:40px;
+}
+
+.form-group-ch-item{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    margin-top: 10px;
+}
+
+.submit-btn-ch{
+    background-color: #482F0B;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 10%;
+    margin: auto;
+}

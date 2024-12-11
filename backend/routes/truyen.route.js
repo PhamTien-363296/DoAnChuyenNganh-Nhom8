@@ -1,5 +1,5 @@
 import express from "express"
-import {goiYTimKiem, timKiem, layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrending, layTruyenHoanThanh, layTruyenHot,truyenTheoND,layLuotXemTheoTheLoai } from "../controllers/truyen.controller.js"
+import {goiYTimKiem, timKiem, layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrending, layTruyenHoanThanh, layTruyenHot,truyenTheoND,layLuotXemTheoTheLoai,layTopTacGia, layTheLoaiDocNhieu } from "../controllers/truyen.controller.js"
 import { protectRoute } from "../middleware/protectRoute.js"
 
 const router = express.Router()
@@ -19,7 +19,8 @@ router.patch("/capnhat/luotxem/:id",capNhatLuotXem)
 router.get("/lay/trangchu/trending",protectRoute,layTruyenTrending)
 router.get("/lay/trangchu/hoanthanh",layTruyenHoanThanh)
 router.get("/lay/trangchu/hot",layTruyenHot)
-
+router.get("/lay/trangchu/theloai",layTheLoaiDocNhieu)
+router.get("/lay/trangchu/tacgia",layTopTacGia)
 router.get("/search/goiy",goiYTimKiem)
 router.get("/search/timkiem",timKiem)
 router.get("/truyentheonguoidung/:id", protectRoute, truyenTheoND)
