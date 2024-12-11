@@ -16,8 +16,6 @@ function NapXu() {
             if (Response.status === 201) {
     
                 const idGiaoDich = Response.data.giaoDich._id; 
-                console.log('id Giao dịch:', idGiaoDich);
-                alert(`Thêm thành công! id Giao dịch: ${idGiaoDich}`);
     
                 const newPayment = {
                     amount: goi.soTien,

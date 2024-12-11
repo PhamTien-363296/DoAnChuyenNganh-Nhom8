@@ -127,11 +127,6 @@ function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiv
                         </button>
                         <p style={{ marginLeft: '3px', fontSize: '13px' }}>{likeCount} lượt thích</p>
                     </div>
-                    <div className="baiviet-item-thongtin-cmt">
-                        <p style={{ fontSize: '20px', margin: '0' }}><HiOutlineChat /></p>
-                        <p style={{ marginLeft: '3px', fontSize: '13px' }}></p>
-                    </div>
-
                     {onDelete && (
                     <div className="baiviet-item-thongtin-thungrac">
                         <button onClick={xoaBaiViet} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>

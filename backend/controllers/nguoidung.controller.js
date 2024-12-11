@@ -107,7 +107,17 @@ export const layLichSuDoc = async (req, res) => {
 
         const sapXep = result.sort((a, b) => new Date(b.thoiGianDoc) - new Date(a.thoiGianDoc));
 
-        res.status(200).json(sapXep);
+        // Loại bỏ các truyện trùng lặp, chỉ giữ truyện mới nhất
+        const uniqueTruyen = new Map();
+        sapXep.forEach(item => {
+            if (!uniqueTruyen.has(item.truyen._id)) {
+                uniqueTruyen.set(item.truyen._id, item);
+            }
+        });
+
+        const ketQuaCuoiCung = Array.from(uniqueTruyen.values());
+
+        res.status(200).json(ketQuaCuoiCung);
     } catch (error) {
         console.error('Lỗi khi lấy lịch sử đọc:', error);
         res.status(500).json({ message: 'Lỗi server' });
@@ -481,7 +491,7 @@ export const layNguoiDungQuaId = async (req, res) => {
         const { id } = req.params;
 
      
-        const nguoidung = await Nguoidung.findById(id).select("-matKhau").populate('theoDoiND', 'username');
+        const nguoidung = await Nguoidung.findById(id).select("-matKhau").populate("theoDoiND");
 
         if (!nguoidung) {
             return res.status(404).json({ message: "Không tìm thấy người dùng" });

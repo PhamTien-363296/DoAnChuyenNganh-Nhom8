@@ -80,11 +80,11 @@ const TaiKhoanLayout = ({ children }) => {
             setUser(response.data.nguoidung);
             setIsEditing(false);
             alert("Cập nhật thông tin thành công!");
+            window.location.reload();
         } catch (err) {
             console.error("Không thể cập nhật thông tin.", err);
         }
     };
-
 
     const handleAvatarClick = () => {
         fileInputRef.current.click();
@@ -98,6 +98,7 @@ const TaiKhoanLayout = ({ children }) => {
                 setTimKiem={setTimKiem} 
                 setdsGoiYTruyen={setdsGoiYTruyen}
                 setdsGoiYTacGia={setdsGoiYTacGia}
+                setdsGoiYCongDong={setdsGoiYCongDong}
                 setLoading={setLoading}
                 setError={setError}
                 handleKeyPress={handleKeyPress}
@@ -171,13 +172,13 @@ const TaiKhoanLayout = ({ children }) => {
                     </div>
                         <div className="tennguoidung" style={{fontWeight:'bold', fontSize:'30px'}}><p style={{margin:'0'}}>{user?.username|| "Tên người dùng"}</p></div>
                         <div className="nguoitheodoi">
-                            <p>1005 Người theo dõi</p>
+                            <p>{user?.theoDoiND?.length || 0} Người theo dõi</p>
                             </div>
                             <div className="dangtheodoi">
-                                <p>1005 Đang theo dõi</p>
+                                <p>{user?.nguoiTheoDoiND?.length || 0} Đang theo dõi</p>
                             </div>
                             <div className="slbaiviet">
-                                <p>1005 Bài viết</p>
+                                <p>{user?.cacBaiVietND?.length || 0} Bài viết</p>
                             </div>
                         <div className="chinhsua">
                             <div className="button"
@@ -217,10 +218,10 @@ const TaiKhoanLayout = ({ children }) => {
                                 ></textarea>
                             </label>
                             <div className="modal-actions">
-                                <button type="button" onClick={() => setIsEditing(false)}>
+                                <button type="button" onClick={() => setIsEditing(false)} className='button-tk-baiviet'>
                                     Hủy
                                 </button>
-                                <button type="submit">Lưu</button>
+                                <button type="submit" className='button-tk-baiviet'>Lưu</button>
                             </div>
                         </form>
                     </div>

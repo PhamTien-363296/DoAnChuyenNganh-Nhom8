@@ -90,7 +90,7 @@ function Chitiettruyen() {
           <div>
             <div className="content-wrapper">
               <div className="left">
-                <div className="image-container">
+                <div className="image-container-ctt">
                   <img src={truyen.anhTruyen || "https://placehold.co/260x360"} alt={truyen.tenTruyen}/>
                 </div>
               </div>

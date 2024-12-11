@@ -57,6 +57,7 @@ export default function DiemDanh({ thongTin }) {
             setStatus(response.data.message);
             setKiemTra(true);
             taoDanhSachTuan();
+            window.location.reload();
         } catch (err) {
             setStatus(err.response?.data?.message || "Lỗi server.");
         }
