@@ -58,7 +58,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={authUser ? <Trangchu /> : <Navigate to="/dangky" />} />
+      <Route path="/" element={authUser ? (authUser.roleND === 'admin' ? <Home /> : <Trangchu />) : <Navigate to="/dangky" />} />
       <Route path="/tintuc" element={<Tintuc />} />
       <Route path="/tinnhan" element={<Tinnhan />} />
       <Route path="/theloai/:tenTheLoai" element={<Danhmuc />} />

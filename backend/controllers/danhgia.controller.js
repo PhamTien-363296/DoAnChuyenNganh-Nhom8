@@ -35,7 +35,9 @@ export const themDanhGia = async (req, res) => {
 
         truyen.danhGia.tongSao += parseInt(soSaoDG, 10);
         truyen.danhGia.tongDanhGia += 1;
-        truyen.danhGia.trungBinhSao = (truyen.danhGia.tongSao / truyen.danhGia.tongDanhGia);
+        truyen.danhGia.trungBinhSao = parseFloat(
+            (truyen.danhGia.tongSao / truyen.danhGia.tongDanhGia).toFixed(1)
+        );
 
         await truyen.save();
 

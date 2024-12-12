@@ -32,7 +32,7 @@ const nguoidungSchema = new mongoose.Schema(
 			default: 0,
 		},
         roleND: {
-			type: Boolean,
+			type: String,
 		},
         theoDoiND: [
 			{
