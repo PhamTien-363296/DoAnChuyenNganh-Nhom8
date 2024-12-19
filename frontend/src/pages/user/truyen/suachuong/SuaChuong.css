@@ -17,6 +17,10 @@
     background-color: #FFF3E2;
 }
 
+.input-field-ch:focus{
+    outline: none;
+}
+
 .noidung-chuong-ch{
     border: 2px solid #B19060;
     border-radius: 7px;
@@ -29,21 +33,10 @@
     padding: 20px;
 }
 
-.noidung-chuong-ch2{
-    width: 98%;
-    min-height: 200px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    resize: vertical;
-    margin-top: 10px;
-    margin-bottom: 20px;
+.noidung-chuong-ch:focus{
+    outline: none;
 }
 
-.noidung-chuong-ch2 textarea{
-    height: fit-content;
-}
 
 .form-group-ch{
     width: fit-content;
@@ -80,4 +73,35 @@
     transform: scale(1.3);
     margin-bottom: 5px;
     cursor: pointer;
+}
+
+.ql-code-block {
+    background-color: #23241f;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    color: white
+}
+
+.ql-font-monospace {
+    font-family: 'Courier New', monospace;
+}
+
+.ql-font-serif {
+    font-family: 'Times New Roman', serif;
+}
+
+.ql-align-right {
+    text-align: right;
+}
+
+.ql-align-center{
+    text-align: center;
+}
+
+.ql-align-justify{
+    text-align: justify;
 }

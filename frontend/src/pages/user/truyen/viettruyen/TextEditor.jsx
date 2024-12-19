@@ -12,14 +12,15 @@ const TextEditor = ({ setText }) => {
         }
 
         const toolbarOptions = [
-            [{ 'header': [1, 2, false] }],
-            ['bold', 'italic', 'underline'],
+            [{ 'font': [] }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike'], 
+            ['code-block'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }], 
+            [{ 'color': [] }, { 'background': [] }], 
             [{ 'align': [] }],
-            ['image'], 
-            ['clean'], 
-            [{ 'color': [] }], 
-            [{ 'background': [] }]
+            ['clean']  
         ];
 
         const quillInstance = new Quill('#container', {
@@ -30,34 +31,9 @@ const TextEditor = ({ setText }) => {
             placeholder:'Nhập nội dung vào đây...'
         });
 
-        const handleImageUpload = () => {
-            const input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/png, image/jpeg, image/gif');
-            input.click();
-
-            input.onchange = async () => {
-                const file = input.files[0];
-                const formData = new FormData();
-                formData.append('image', file);
-
-                const response = await fetch('YOUR_UPLOAD_URL', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-                
-                const range = quillInstance.getSelection();
-                quillInstance.insertEmbed(range.index, 'image', data.url);
-            };
-        };
-
-        quillInstance.getModule('toolbar').addHandler('image', handleImageUpload);
-
-
         quillInstance.on('text-change', () => {
             const content = quillInstance.root.innerHTML; 
-            //console.log("Content changed: ", content); 
+            console.log("Content changed: ", content); 
             setText(content); 
         });
 
