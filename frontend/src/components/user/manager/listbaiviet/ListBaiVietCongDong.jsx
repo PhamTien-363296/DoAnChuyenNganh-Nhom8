@@ -139,9 +139,6 @@ function ListBaiVietCongDong() {
       <div className='congdong-noidung'>
         <div className='congdong-baiviet'>
           <div className='congdong-thembaiviet'>
-            <div className='congdong-avata'>
-              <img src='https://placehold.co/129x203' alt="Avatar" />
-            </div>
             <div className='congdong-camnghi'>
               <textarea
                 placeholder="Bạn đang nghĩ gì?"
