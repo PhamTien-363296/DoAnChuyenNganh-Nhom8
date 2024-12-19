@@ -225,7 +225,7 @@ export const moKhoaChuong = async (req, res) => {
         if (!nguoiDung) return res.status(404).json({ message: "Người dùng không tồn tại" });
 
         if (nguoiDung.xuConLaiND < chuong.xuDeMoChuong) {
-            return res.status(400).json({ message: "Bạn không đủ xu để mở chương này", xuConLai: nguoiDung.xuConLaiND, thongBao: true  });
+            return res.status(201).json({ message: "Bạn không đủ xu để mở chương này. Vui lòng nạp thêm!", xuConLai: nguoiDung.xuConLaiND, thongBao: true  });
         }
 
         let giaoDichMuaThanhCong = false; 

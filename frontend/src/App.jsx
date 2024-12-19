@@ -20,7 +20,6 @@ import Tacpham from './pages/user/taikhoan/tacpham/Tacpham';
 import Lichsu from './pages/user/taikhoan/lichsu/LichSu';
 import Yeuthich from './pages/user/taikhoan/yeuthich/YeuThich';
 import Vitien from './pages/user/taikhoan/vitien/ViTien';
-import UserBaoCao from './pages/user/taikhoan/baocao/BaoCao';
 import Theloai from './pages/admin/theloai/Theloai';
 import AdminBaocao from './pages/admin/Baocao';
 import SuaTruyen from './pages/user/truyen/suatruyen/SuaTruyen';
@@ -68,7 +67,6 @@ function App() {
       <Route path="/taikhoan/lichsu" element={<Lichsu />} />
       <Route path="/taikhoan/yeuthich" element={<Yeuthich />} />
       <Route path="/taikhoan/vitien" element={<Vitien />} />
-      <Route path="/taikhoan/baocao" element={<UserBaoCao />} />
       <Route path="/search" element={<TimKiem/>} />
       <Route path="/:tenNguoiDung/napxu" element={<NapXu/>} />
       <Route path="/payment-result" element={<NapXuThongBao />} />

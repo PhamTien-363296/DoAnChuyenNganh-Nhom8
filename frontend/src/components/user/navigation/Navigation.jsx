@@ -26,9 +26,6 @@ const Navmain = () => {
         <li className="navrow">
           <Link to="/taikhoan/vitien" className={isActive("/taikhoan/vitien")}>Ví tiền</Link>
         </li>
-        <li className="navrow">
-          <Link to="/taikhoan/baocao" className={isActive("/taikhoan/baocao")}>Báo cáo</Link>
-        </li>
       </ul>
     </nav>
   )

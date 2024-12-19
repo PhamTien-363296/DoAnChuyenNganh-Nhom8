@@ -128,13 +128,8 @@ export default function Baiviet() {
         return () => clearInterval(interval);
     }, []);
 
-    // Hiển thị khi đang tải hoặc không có người theo dõi
     if (loading) {
         return <p>Đang tải...</p>;
-    }
-
-    if (followers.length === 0) {
-        return <p>Không có người theo dõi nào.</p>;
     }
     
     return (
