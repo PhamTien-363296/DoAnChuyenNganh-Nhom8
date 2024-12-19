@@ -64,10 +64,6 @@ const Viettruyen = () => {
               className="chapter-title-input"
             />
             <div className="block-1"
-              style={{
-                wordWrap: 'break-word',
-                whiteSpace: 'pre-wrap',
-              }}
               dangerouslySetInnerHTML={{ __html: replaceSpacesWithNbsp(text) || "<br />" }}
             />
             <div className="block-2">
@@ -75,9 +71,9 @@ const Viettruyen = () => {
                 <TextEditor setText={setText} />
               </form>
             </div>
+            <button className="create-story" onClick={handleViettruyen}>Xuất bản</button>
+            {thongBao && <div className="thong-bao">{thongBao}</div>}
           </div>
-          <button className="create-story" onClick={handleViettruyen}>Xuất bản</button>
-          {thongBao && <div className="thong-bao">{thongBao}</div>}
         </div>
       </MainLayout>
     </>

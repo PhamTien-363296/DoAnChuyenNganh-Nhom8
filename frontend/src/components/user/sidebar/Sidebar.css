@@ -56,6 +56,10 @@
     border: 1px solid #D7B98E;
     margin-left: 70px;
     z-index: 1000;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #D7B98E #FFF3E2;
 }
 
 .SidebarList .active {
@@ -65,9 +69,9 @@
 }
 
 .notification-item {
-    padding: 10px ; 
-   background-color: #d7b98e3c;
-   margin-top: 2px;
-   border-radius: 12px;
+    padding: 5px 10px; 
+    background-color: #d7b98e3c;
+    margin-top: 10px;
+    border-radius: 12px;
 }
 

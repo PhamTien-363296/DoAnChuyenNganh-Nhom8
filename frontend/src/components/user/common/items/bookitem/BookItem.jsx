@@ -81,8 +81,7 @@ function BookItem(props) {
                         {moTa}
                     </p>
                     <hr />
-                    <div style={{display:'flex', justifyContent:'space-between'}}>
-                        <div style={{display:'flex', alignItems:'center'}}><HiOutlineFire/> <p style={{marginLeft:'5px'}}>HẠNG: 50</p></div>
+                    <div>
                         {trangThai === "Công khai" && (
                             <p style={{ textTransform: 'uppercase', color:'#066C21', fontWeight:'bold', fontSize:'20px'}}>{trangThai}</p>
                         )}

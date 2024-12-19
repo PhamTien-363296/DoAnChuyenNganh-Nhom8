@@ -4,32 +4,32 @@ body {
     background-color: #FFF3E2;
 }
 
-.all{
-    padding-left: 30px;
-}
-
 .block{
-    width: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-
-.block-1{
-    margin-top: 15px;
-    padding: 20px;
+.block-1 {
+    width: 1000px;
+    max-width: 1000px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    padding: 10px;
+    margin: 10px auto; 
+    border-radius: 8px;
     border: 2px solid #B19060;
-    border-radius: 7px;
-    height: fit-content;
-    overflow-y: auto;
-    width: 50%;
-    scrollbar-width: thin; 
-    scrollbar-color: #482F0B #FFF3E2; 
 }
 
 .block-2{
+    width: 1020px;
     margin-top: 20px;
-    width: 50%;
+    max-width: 1020px;
     height: fit-content;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .create-story{
@@ -37,10 +37,11 @@ body {
     color: white;
     padding: 10px 30px;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .chapter-title-input {
-    width: 50%;
+    width: 90%;
     padding: 15px;
     font-size: 16px;
     border: none;
