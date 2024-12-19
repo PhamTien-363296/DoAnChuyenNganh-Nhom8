@@ -17,7 +17,7 @@ const Viettruyen = () => {
   const location = useLocation();
   const { idTruyen } = location.state || {}; // Access the passed `id`
 
-  console.log('ID:', idTruyen);
+  //console.log('ID:', idTruyen);
 
   const handleTitleChange = (e) => {
     setChapterTitle(e.target.value); 
