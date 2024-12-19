@@ -23,3 +23,12 @@ export const protectRoute = async (req,res,next)=>{
         return res.status(500).json({error:" Lỗi 500" })
     }
 }
+
+
+export const isAdmin = async (req,res,next) => {
+    if (req.nguoidung && req.nguoidung.roleND == "admin") {
+        next();
+    } else {
+        return res.status(403).json({error: "Error: Chỉ dành cho admin" })
+    }
+}

@@ -2,6 +2,7 @@ import Baiviet from "../models/baiviet.model.js"
 import Congdong from "../models/congdong.model.js";
 import {v2 as cloudinary} from 'cloudinary'
 import Nguoidung from "../models/nguoidung.model.js";
+import moment from 'moment';
 
 
 
@@ -285,3 +286,28 @@ export const layBaiVietCaNhan = async (req, res) => {
         res.status(500).json({ error: "Lỗi 500: Không thể lấy bài viết." });
     }
 };
+
+
+
+
+export const layTongBaiVietTrongThang = async (req, res) => {
+    try {
+        // Lấy đầu tháng và cuối tháng (timestamp)
+        const dauThang = moment().startOf('month').toDate(); // Ngày đầu tháng
+        const cuoiThang = moment().endOf('month').toDate();   // Ngày cuối tháng
+
+        // Đếm số bài viết trong khoảng này
+        const tongSoBaiViet = await Baiviet.countDocuments({
+            createdAt: {
+                $gte: dauThang,
+                $lte: cuoiThang,
+            },
+        });
+
+        res.status(200).json({ tongSoBaiViet });
+    } catch (error) {
+        console.error("Lỗi trong phương thức layTongBaiVietTrongThang:", error);
+        res.status(500).json({ error: "Lỗi 500: Không thể lấy tổng số bài viết trong tháng." });
+    }
+};
+

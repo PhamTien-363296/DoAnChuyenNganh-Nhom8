@@ -1,26 +1,34 @@
 import { useState, useEffect } from 'react';
-import { HiOutlineChat, HiOutlineHeart, HiHeart } from 'react-icons/hi';
+import {  HiOutlineHeart, HiHeart } from 'react-icons/hi';
 import PropTypes from 'prop-types';
 import './Style.css';
 import Axios from 'axios';
 import { IoTrashSharp } from "react-icons/io5";
 
 
-function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelete, tenCD,anhDaiDienND, nguoiDungIdBV }) {
+function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiviet, onDelete, tenCD,anhDaiDienND }) {
    
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(luotThichBV || 0);
     const [isDeleted, setIsDeleted] = useState(false);  
     const [isFollowed, setIsFollowed] = useState(false);  // Thêm state theo dõi
+    const userId = baiviet.nguoiDungIdBV._id; 
+
+    useEffect(() => {
+        const likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || [];
+        if (likedPosts.includes(baiVietId)) {
+            setIsLiked(true);
+        }
+    }, [baiVietId]);
     
-    // Kiểm tra trạng thái theo dõi khi tải lại trang
+  
     useEffect(() => {
         const followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
-        const userId = nguoiDungIdBV; // ID người dùng mà bạn theo dõi
+        const userId = baiviet.nguoiDungIdBV._id; 
         if (followedUsers.includes(userId)) {
             setIsFollowed(true); 
         }
-    }, [nguoiDungIdBV]);
+    }, [userId]);
 
     
     const likeBaiViet = async (e) => {
@@ -73,7 +81,6 @@ function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiv
 
             setIsFollowed(!isFollowed); // Toggle theo dõi
 
-            // Cập nhật trạng thái theo dõi vào localStorage
             const followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
             if (isFollowed) {
                 localStorage.setItem('followedUsers', JSON.stringify(followedUsers.filter(id => id !== userId)));

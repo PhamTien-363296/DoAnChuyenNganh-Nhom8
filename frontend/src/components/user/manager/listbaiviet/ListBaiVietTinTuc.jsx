@@ -56,7 +56,7 @@ function ListBaiVietTinTuc() {
                 >
                     <BaiVietItem
                         noiDungBV={baiviet.noiDungBV}
-                        luotThichBV={baiviet.luotThichBV}
+                        luotThichBV={baiviet.cacluotThich.length}
                         binhLuanBV={baiviet.binhLuanBV}
                         IdNguoiDung={baiviet.nguoiDungIdBV}  // Truyền IdNguoiDung
                         username={baiviet.nguoiDungIdBV.username} 

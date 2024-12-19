@@ -8,21 +8,21 @@ function CongDongItem(props) {
     const { idCongDong, tenCD, thanhVienCD, anhCD } = props;
     const navigate = useNavigate();
     
-    // Track if the user has joined the community
+
     const [isJoined, setIsJoined] = useState(false);
 
-    // This function can check if the user has already joined
+
     const checkIfJoined = async () => {
         try {
             const response = await Axios.get(`/api/nguoidung/thamgia/congdong/${idCongDong}`);
-            setIsJoined(response.data.isJoined);  // Assuming the API returns an object with 'isJoined' status
+            setIsJoined(response.data.isJoined); 
         } catch (error) {
             console.error("Error checking join status:", error);
         }
     };
 
     useEffect(() => {
-        checkIfJoined();  // Check if the user is already a member when the component mounts
+        checkIfJoined();  
     }, [idCongDong]);
 
     const xemTrangCongDong = () => {
@@ -34,13 +34,11 @@ function CongDongItem(props) {
         e.preventDefault();
         try {
             if (isJoined) {
-                // If the user is already a member, they want to leave the community
                 await Axios.post(`/api/nguoidung/thamgia/roi/congdong/${idCongDong}`);
-                setIsJoined(false);  // Update the status
+                setIsJoined(false); 
             } else {
-                // If the user is not a member, they want to join the community
                 await Axios.post(`/api/nguoidung/thamgia/congdong/${idCongDong}`);
-                setIsJoined(true);  // Update the status
+                setIsJoined(true); 
             }
         } catch (error) {
             console.error("Error toggling participation:", error);

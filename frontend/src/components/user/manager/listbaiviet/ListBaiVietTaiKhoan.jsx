@@ -54,7 +54,7 @@ function ListBaiVietTaiKhoan() {
                 >
                     <BaiVietItem
                         noiDungBV={baiviet.noiDungBV}
-                        luotThichBV={baiviet.luotThichBV}
+                        luotThichBV={baiviet.cacluotThich.length}
                         binhLuanBV={baiviet.binhLuanBV}
                         nguoiDungIdBV={baiviet.nguoiDungIdBV}  // Truyền IdNguoiDung
                         username={baiviet.nguoiDungIdBV.username}  // Truyền username

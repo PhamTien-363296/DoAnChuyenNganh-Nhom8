@@ -5,6 +5,7 @@ import Theloai from "../models/theloai.model.js";
 import Danhgia from "../models/danhgia.model.js";
 import Baiviet from "../models/baiviet.model.js";
 import Congdong from "../models/congdong.model.js";
+import moment from "moment";
 
 export const layTatcaTruyen = async (req, res) => {
     const { sort = "phobien", page = 1, limit = 18, sao, tinhtrang } = req.query;
@@ -590,5 +591,56 @@ export const layLuotXemTheoTheLoai = async (req, res) => {
     } catch (error) {
         console.error("Lỗi khi lấy lượt xem theo thể loại", error.message);
         res.status(500).json({ error: "Lỗi 500" });
+    }
+};
+
+
+
+
+export const tinhThongKeTruyen = async (req, res) => {
+    try {
+        
+        const startOfMonth = moment().startOf("month").toDate();
+        const endOfMonth = moment().endOf("month").toDate();
+
+      
+        const tongSoTruyen = await Truyen.countDocuments();
+
+      
+        const truyenMoiTrongThang = await Truyen.countDocuments({
+            createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+        });
+
+      
+        res.status(200).json({
+            tongSoTruyen,
+            truyenMoiTrongThang,
+        });
+    } catch (error) {
+        console.error("Lỗi tính thống kê truyện:", error);
+        res.status(500).json({ error: "Lỗi hệ thống" });
+    }
+};
+
+
+
+export const tongLuotXemTruyen = async (req, res) => {
+    try {
+       
+        const tongLuotXem = await Truyen.aggregate([
+            { $match: { trangThaiTruyen: "Công khai" } }, 
+            { $group: { _id: null, totalViews: { $sum: "$luotXemTruyen" } } } 
+        ]);
+
+        if (tongLuotXem.length > 0) {
+            res.status(200).json({
+                totalViews: tongLuotXem[0].totalViews,
+            });
+        } else {
+            res.status(404).json({ message: "Không có truyện công khai nào." });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi 500" });
+        console.error("Error calculating total views in tinhTongLuotXemTruyen controller", error.message);
     }
 };

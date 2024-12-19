@@ -1,6 +1,6 @@
 import express from "express"
-import {goiYTimKiem, timKiem, layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrending, layTruyenHoanThanh, layTruyenHot,truyenTheoND,layLuotXemTheoTheLoai,layTopTacGia, layTheLoaiDocNhieu } from "../controllers/truyen.controller.js"
-import { protectRoute } from "../middleware/protectRoute.js"
+import {goiYTimKiem, timKiem, layTatcaTruyen, layTruyenTheoNguoidung, layTruyenTheoTheloai, themTruyen, suaTruyen, layTheoId, xoaTruyen, capNhatLuotXem, layTruyenTrending, layTruyenHoanThanh, layTruyenHot,truyenTheoND,layLuotXemTheoTheLoai,layTopTacGia, layTheLoaiDocNhieu, tinhThongKeTruyen,tongLuotXemTruyen } from "../controllers/truyen.controller.js"
+import { isAdmin, protectRoute } from "../middleware/protectRoute.js"
 
 const router = express.Router()
 
@@ -25,5 +25,7 @@ router.get("/search/goiy",goiYTimKiem)
 router.get("/search/timkiem",timKiem)
 router.get("/truyentheonguoidung/:id", protectRoute, truyenTheoND)
 
-router.get("/layluotxem",layLuotXemTheoTheLoai)
+router.get("/layluotxem",protectRoute,isAdmin,layLuotXemTheoTheLoai)
+router.get("/thongke",protectRoute,isAdmin,tinhThongKeTruyen)
+router.get("/tongluotxem",protectRoute,isAdmin,tongLuotXemTruyen)
 export default router
