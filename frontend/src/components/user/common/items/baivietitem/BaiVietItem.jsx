@@ -12,7 +12,7 @@ function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiv
     const [likeCount, setLikeCount] = useState(luotThichBV || 0);
     const [isDeleted, setIsDeleted] = useState(false);  
     const [isFollowed, setIsFollowed] = useState(false);  // Thêm state theo dõi
-    const userId = baiviet.nguoiDungIdBV._id; 
+
 
     useEffect(() => {
         const likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || [];
@@ -24,11 +24,12 @@ function BaiVietItem({luotThichBV, noiDungBV, username, hinhAnh, baiVietId, baiv
   
     useEffect(() => {
         const followedUsers = JSON.parse(localStorage.getItem('followedUsers')) || [];
-        const userId = baiviet.nguoiDungIdBV._id; 
-        if (followedUsers.includes(userId)) {
-            setIsFollowed(true); 
+        const userId = baiviet && baiviet.nguoiDungIdBV ? baiviet.nguoiDungIdBV._id : null;
+    
+        if (userId && followedUsers.includes(userId)) {
+            setIsFollowed(true);
         }
-    }, [userId]);
+    }, [baiviet]);
 
     
     const likeBaiViet = async (e) => {
