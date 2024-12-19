@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&display=swap');
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -12,7 +14,7 @@ body {
     align-items: center;
 }
 
-.block-1 {
+.ql-editor.text{
     width: 1000px;
     max-width: 1000px;
     overflow-wrap: break-word;

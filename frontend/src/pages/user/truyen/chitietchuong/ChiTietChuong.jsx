@@ -242,7 +242,7 @@ function ChiTietChuong() {
                 <div className='ct-chuong-tieude'>
                     <h2>{chuong.chuong.tenChuong}</h2>
                 </div>
-                <div className='ct-chuong-noidung' dangerouslySetInnerHTML={{ __html: chuong.chuong.noiDungChuong }} />
+                <div className="ql-editor textchitiet" dangerouslySetInnerHTML={{ __html: chuong.chuong.noiDungChuong }} />
                 <div className='ct-chuong'>
                     <button onClick={quayLai} className='chuong-btn' style={{marginRight:'10px'}}>
                         Chương trước

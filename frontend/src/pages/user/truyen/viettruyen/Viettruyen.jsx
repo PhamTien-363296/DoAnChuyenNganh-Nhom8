@@ -5,6 +5,7 @@ import axios from 'axios';
 import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; 
+import "quill/dist/quill.snow.css";
 
 const Viettruyen = () => {
   const [text, setText] = useState(""); 
@@ -17,11 +18,6 @@ const Viettruyen = () => {
   const { idTruyen } = location.state || {}; // Access the passed `id`
 
   console.log('ID:', idTruyen);
-
-  const replaceSpacesWithNbsp = (content) => {
-    if (!content) return content;
-    return content.replace(/ /g, '&nbsp;');
-  };
 
   const handleTitleChange = (e) => {
     setChapterTitle(e.target.value); 
@@ -63,8 +59,9 @@ const Viettruyen = () => {
               placeholder="Nhập tên chương"
               className="chapter-title-input"
             />
-            <div className="block-1"
-              dangerouslySetInnerHTML={{ __html: replaceSpacesWithNbsp(text) || "<br />" }}
+            <div
+              className="ql-editor text"
+              dangerouslySetInnerHTML={{ __html: text || "<br />" }}
             />
             <div className="block-2">
               <form>
