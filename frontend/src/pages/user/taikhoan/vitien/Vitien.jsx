@@ -62,11 +62,11 @@ export default function Vitien() {
                     {hienThiLichSuGiaoDich && (
                         <div className='vitien-list'>
                             {lichSuGD.length === 0 ? (
-                                <p>Chưa có giao dịch nào.</p> // Thêm thông báo khi không có giao dịch
+                                <p>Chưa có giao dịch nào.</p>
                             ) : (
                                 lichSuGD.map((giaodich) => (
                                     <GiaoDichItem 
-                                        key={giaodich._id} // Sử dụng ID của giao dịch thay vì index nếu có
+                                        key={giaodich._id} 
                                         loaiGiaoDich={giaodich.loaiGiaoDich}
                                         createdAt={giaodich.createdAt}
                                         noiDungGD={giaodich.noiDungGD}

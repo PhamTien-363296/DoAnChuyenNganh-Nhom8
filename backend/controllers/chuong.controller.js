@@ -45,8 +45,6 @@ export const layChuong = async (req, res) => {
 
 export const layTheoId = async (req, res) => {
     const { id } = req.params;
-    const idND = req.nguoidung._id;
-
     try {
         const chuong = await Chuong.findById(id).populate({
             path: "truyenIdChuong",
@@ -66,30 +64,8 @@ export const layTheoId = async (req, res) => {
             return res.status(404).json({ message: 'Chương không tồn tại' });
         }
 
-        const truyenId = chuong.truyenIdChuong;
-
         const idCacChuongIds = chuong.truyenIdChuong.idCacChuong.map(ch => ch._id.toString());
 
-        const nguoiDung = await Nguoidung.findById(idND);
-        if (!nguoiDung) {
-            return res.status(404).json({ message: 'Người dùng không tồn tại' });
-        }
-
-        const lichSuHienTai = nguoiDung.lichSuND.find(
-            (lichSu) => lichSu.truyenId.toString() === truyenId.toString() && lichSu.chuongId.toString() === id.toString()
-        );
-
-        if (lichSuHienTai) {
-            lichSuHienTai.lastRead = new Date();
-        } else {
-            nguoiDung.lichSuND.push({
-                truyenId,
-                chuongId: id,
-                lastRead: new Date(),
-            });
-        }
-
-        await nguoiDung.save();
         res.status(200).json({
             chuong: chuong,
             idCacChuongIds: idCacChuongIds
@@ -246,6 +222,7 @@ export const moKhoaChuong = async (req, res) => {
             console.error("Lỗi khi lưu giao dịch mua:", error);
             return res.status(500).json({ message: "Lỗi khi lưu giao dịch mua", error });
         }
+        
         if (giaoDichMuaThanhCong) {
             try {
                 const giaoDichHoaHong = new Giaodich({

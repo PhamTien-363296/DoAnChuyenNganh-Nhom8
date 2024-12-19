@@ -16,17 +16,6 @@ export const themLichSu = async (req, res) => {
         if (!nguoiDung) {
             return res.status(404).json({ message: 'Người dùng không tồn tại' });
         }
-
-        // Kiểm tra xem tài liệu đã bị khóa chưa
-        if (nguoiDung.isProcessing) {
-            return res.status(409).json({ message: 'Tài liệu đang được xử lý, vui lòng thử lại sau' });
-        }
-
-        // Khóa tài liệu trong quá trình cập nhật
-        nguoiDung.isProcessing = true;
-        await nguoiDung.save();
-
-        // Xử lý cập nhật lịch sử đọc
         const lichSuND = nguoiDung.lichSuND || [];
         
         const truyenIndex = lichSuND.findIndex(item => item.truyenId.toString() === idTruyen.toString());
@@ -60,10 +49,6 @@ export const themLichSu = async (req, res) => {
         }
 
         nguoiDung.lichSuND = lichSuND;
-        await nguoiDung.save();
-
-        // Mở khóa tài liệu sau khi cập nhật
-        nguoiDung.isProcessing = false;
         await nguoiDung.save();
 
         res.status(200).json({ message: 'Cập nhật lịch sử đọc thành công', lichSuND });
@@ -177,7 +162,7 @@ export const layNguoiDungTN = async (req, res) => {
 		const nguoidungdaloc = await Nguoidung.find({ _id: { $ne: nguoidung } })
         .select("-matKhau")
         .populate("anhDaiDienND")
-     
+    
 
 		res.status(200).json(nguoidungdaloc);
 	} catch (error) {
