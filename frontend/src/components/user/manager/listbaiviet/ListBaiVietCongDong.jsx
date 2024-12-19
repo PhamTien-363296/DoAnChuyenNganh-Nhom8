@@ -1,13 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { useLocation  } from 'react-router-dom';
-
+import { Link, useLocation } from 'react-router-dom';
 import Axios from 'axios';
 import { HiOutlinePhotograph } from 'react-icons/hi'; 
 import { IoCloseSharp } from 'react-icons/io5'; 
 import BaiVietItem from '../../common/items/baivietitem/BaiVietItem';
 import MainLayout from '../../../../layout/user/mainLayout/MainLayout';
-import "./ListBaiVietCongDong.css"; 
+import "./ListBaiVietCongDong.css";
 
 function ListBaiVietCongDong() {
   const location = useLocation();
@@ -19,8 +17,14 @@ function ListBaiVietCongDong() {
     noiDungBV: '', 
     hinhAnhBV: '' 
   });
+  const [congdong, setCongdong] = useState({
+    tenCD: '',
+    anhCD: '',
+    soLuongTV: 0,
+    gioiThieu: ''
+  });
 
-  const imgRef = useRef(null); // Dùng ref cho input file hình ảnh
+  const imgRef = useRef(null);
 
   // Lấy danh sách bài viết
   const baiVietTatCa = async () => {
@@ -40,9 +44,28 @@ function ListBaiVietCongDong() {
     }
   };
 
-  // Fetch dữ liệu khi component được mount và định kỳ mỗi 7 giây
+  // Lấy thông tin cộng đồng
+  const layThongTinCongDong = async () => {
+    try {
+      const response = await Axios.get(`/api/nguoidung/lay/thongtin/congdong/${idCongDong}`);
+      console.log(response.data);
+      if (response.data) {
+        setCongdong({
+          tenCD: response.data.tenCD,
+          anhCD: response.data.anhCD,
+          soLuongThanhVien: response.data.soLuongThanhVien,
+          moTaCD: response.data.moTaCD
+        });
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy thông tin cộng đồng:", error);
+      alert("Lỗi khi lấy thông tin cộng đồng: " + (error.response?.data?.message || error.message));
+    }
+  };
+
   useEffect(() => {
     baiVietTatCa();
+    layThongTinCongDong();
 
     const interval = setInterval(() => {
       baiVietTatCa();
@@ -64,7 +87,7 @@ function ListBaiVietCongDong() {
         setCoverImage(reader.result);
         setFormData((prevData) => ({
           ...prevData,
-          hinhAnhBV: reader.result, // Cập nhật hình ảnh vào formData
+          hinhAnhBV: reader.result,
         }));
       };
       reader.readAsDataURL(file); 
@@ -76,20 +99,19 @@ function ListBaiVietCongDong() {
     setCoverImage(null);
     setFormData((prevData) => ({
       ...prevData,
-      hinhAnhBV: '', // Xóa hình ảnh trong formData
+      hinhAnhBV: '',
     }));
-    if (imgRef.current) imgRef.current.value = null; // Reset input file
+    if (imgRef.current) imgRef.current.value = null;
   };
 
   // Xử lý gửi bài viết
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     try {
       const response = await Axios.post(`/api/baiviet/taobaiviet/congdong/${idCongDong}`, formData);
       if (response.status === 201) {
         alert("Thêm thành công!");
-        setFormData({ noiDungBV: '', hinhAnhBV: '' }); // Reset form sau khi gửi
+        setFormData({ noiDungBV: '', hinhAnhBV: '' });
         setCoverImage(null); 
       } else {
         alert("Có lỗi xảy ra khi thêm bài viết, vui lòng thử lại.");
@@ -100,7 +122,6 @@ function ListBaiVietCongDong() {
     }
   };
 
-  // Mở file input khi click vào icon
   const handleIconClick = () => {
     if (imgRef.current) imgRef.current.click();
   };
@@ -108,10 +129,10 @@ function ListBaiVietCongDong() {
   return (
     <MainLayout>
       <div className="congdong-anh">
-        <img src="path/to/image.jpg" alt="Ảnh mẫu" />
+        <img src={congdong.anhCD || "path/to/image.jpg"} alt="Ảnh cộng đồng" />
         <div className="congdong-anh-text">
-          <p style={{fontSize:'35px', fontWeight:'bold'}}>Cộng đồng CHEO thích sách</p>
-          <p style={{fontSize:'20px',marginTop:'10px'}}>1005 Thành viên</p>
+          <p style={{fontSize:'35px', fontWeight:'bold'}}>{congdong.tenCD}</p>
+          <p style={{fontSize:'20px', marginTop:'10px'}}>{congdong.soLuongThanhVien} thành viên</p>
         </div>
       </div>
 
@@ -154,48 +175,39 @@ function ListBaiVietCongDong() {
             </div>
           </div>
           <div className='congdong-list-baiviet'>
-            {/* Hiển thị các bài viết */}
             {baiviets.length === 0 ? (
-                    <p>Cộng đồng này chưa có bài viết nào.</p>
-                  ) : (
-                    baiviets.map((baiviet, index) => (
-                      <Link
-                        to={baiviet.path}
-                        key={index}
-                        style={{ textDecoration: 'none', color: '#49372F', marginTop:'15px' }}
-                      >
-                        <BaiVietItem
-                          noiDungBV={baiviet.noiDungBV}
-                          luotThichBV={baiviet.luotThichBV}
-                          binhLuanBV={baiviet.binhLuanBV}
-                          IdNguoiDung={baiviet.nguoiDungIdBV}
-                          username={baiviet.nguoiDungIdBV.username}
-                          anhDaiDienND={baiviet.nguoiDungIdBV.anhDaiDienND} 
-                          tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
-                          hinhAnh={baiviet.hinhAnhBV}
-                          baiVietId={baiviet._id}
-                          baiviet={baiviet}
-                        />
-                      </Link>
-                    ))
-                  )}
+              <p>Cộng đồng này chưa có bài viết nào.</p>
+            ) : (
+              baiviets.map((baiviet, index) => (
+                <Link
+                  to={baiviet.path}
+                  key={index}
+                  style={{ textDecoration: 'none', color: '#49372F', marginTop:'15px' }}
+                >
+                  <BaiVietItem
+                    noiDungBV={baiviet.noiDungBV}
+                    luotThichBV={baiviet.cacluotThich.length}
+                    binhLuanBV={baiviet.binhLuanBV}
+                    IdNguoiDung={baiviet.nguoiDungIdBV}
+                    username={baiviet.nguoiDungIdBV.username}
+                    anhDaiDienND={baiviet.nguoiDungIdBV.anhDaiDienND} 
+                    tenCD={baiviet.thuocCD ? baiviet.thuocCD.tenCD : null}
+                    hinhAnh={baiviet.hinhAnhBV}
+                    baiVietId={baiviet._id}
+                    baiviet={baiviet}
+                  />
+                </Link>
+              ))
+            )}
           </div>
         </div>
         <div className='congdong-thongtin'>
           <div className='congdong-gioithieu'>
             <p style={{ fontWeight: 'bold', fontSize: '18px' }}>GIỚI THIỆU</p>
-            <p>giới thiệu nè</p>
-          </div>
-          <div className='congdong-tacpham'>
-            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>TÁC PHẨM</p>
-            <div className='congdong-list-tacpham'>
-
-            </div>
+            <p>{congdong.moTaCD}</p>
           </div>
         </div>
       </div>
-
-
     </MainLayout>
   );
 }

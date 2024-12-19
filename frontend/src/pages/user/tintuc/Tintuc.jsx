@@ -119,8 +119,8 @@ export default function Tintuc() {
                     </div>
 
                     {isFormVisible && (
-                        <div className="form-backdrop" onClick={toggleForm}>
-                            <div className="form-container" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal" onClick={toggleForm}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                                 <div
                                     className="image-placeholder"
                                     onClick={() => document.getElementById("coverImg").click()}
@@ -153,9 +153,9 @@ export default function Tintuc() {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className="button-container">
-                                    <button className='bt-create' onClick={handleSubmit}>TẠO</button>
-                                    <button className='bt-close' onClick={toggleForm}>ĐÓNG</button>
+                                <div className="modal-actions">
+                                    <button className='button-tk-baiviet' onClick={handleSubmit}>TẠO</button>
+                                    <button className='button-tk-baiviet' onClick={toggleForm}>ĐÓNG</button>
                                 </div>
                             </div>
                         </div>

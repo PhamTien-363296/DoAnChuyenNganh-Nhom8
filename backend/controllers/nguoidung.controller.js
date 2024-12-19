@@ -523,3 +523,33 @@ export const coTheoDoiKhong = async (req, res) => {
         return res.status(500).json({ message: "Lỗi server" });
     }
 };
+
+
+export const layThongTinCongDong = async (req, res) => {
+    try {
+        const { idcongdong } = req.params;
+
+      
+        const congdong = await Congdong.findById(idcongdong).select('tenCD moTaCD anhCD thanhVienCD');
+
+        if (!congdong) {
+            return res.status(404).json({ message: 'Không tìm thấy cộng đồng' });
+        }
+
+       
+        const soLuongThanhVien = congdong.thanhVienCD.length;
+
+      
+        return res.status(200).json({
+            tenCD: congdong.tenCD,
+            moTaCD: congdong.moTaCD,
+            anhCD: congdong.anhCD,
+            soLuongThanhVien: soLuongThanhVien,
+        });
+    } catch (error) {
+        console.error('Lỗi layThongTinCongDong controller:', error.message);
+        return res.status(500).json({ message: 'Lỗi server', error: error.message });
+    }
+};
+
+
