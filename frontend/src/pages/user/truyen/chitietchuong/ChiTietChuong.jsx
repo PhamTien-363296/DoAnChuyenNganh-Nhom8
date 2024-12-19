@@ -7,6 +7,7 @@ import './ChiTietChuong.css'
 import { FaLock  } from "react-icons/fa";
 import { TbCoin } from "react-icons/tb";
 import { FaChevronRight } from "react-icons/fa6";
+import Thongbao from '../../../../components/user/common/thongbao/Thongbao';
 
 function ChiTietChuong() {
     const navigate = useNavigate();
@@ -19,6 +20,9 @@ function ChiTietChuong() {
     const [thongBao, setThongBao] = useState(null);
     const [hienThiMuaChuong, setHienThiMuaChuong] = useState(false);
     const [xuChuong, setXuChuong] = useState(0);
+    const [showThongbao, setShowThongbao] = useState(false);
+    const [showThongbaoDau, setShowThongbaoDau] = useState(false);
+    const [showThongbaoCuoi, setShowThongbaoCuoi] = useState(false);
 
     useEffect(() => {
         if (idChuong) {
@@ -79,7 +83,7 @@ function ChiTietChuong() {
                     setError("Không thể tải chương tiếp theo. Vui lòng thử lại sau.");
                 }
             } else {
-                alert("Đây là chương cuối cùng.");
+                setShowThongbaoCuoi(true);
             }
         }
     };
@@ -103,7 +107,7 @@ function ChiTietChuong() {
                     setError("Không thể tải chương trước. Vui lòng thử lại sau.");
                 }
             } else {
-                alert("Đây là chương đầu tiên.");
+                setShowThongbaoDau(true);
             }
         }
     };
@@ -112,8 +116,9 @@ function ChiTietChuong() {
         try {
             const responseMua = await axios.post(`/api/chuong/mua/${id}`);
             if (responseMua.status === 200) {
-                alert(responseMua.data.message);
                 window.location.reload();
+            } else if (responseMua.status == 201) {
+                setShowThongbao(true);
             } else {
                 console.error("Lỗi mua chương:", responseMua.data);
                 alert(responseMua.data.message);
@@ -150,6 +155,13 @@ function ChiTietChuong() {
         return (
             <MainLayout>
                 <div className='thongbao-chuong'>
+                    <Thongbao
+                        type="error"
+                        icon="⚠️"
+                        message="Bạn không đủ xu để mua chương này. Hãy nạp thêm xu!"
+                        show={showThongbao}
+                        onClose={() => setShowThongbao(false)}
+                    />
                     {hienThiMuaChuong && (
                         <>
                             <p>{thongBao}</p>
@@ -198,6 +210,20 @@ function ChiTietChuong() {
     return (
         <MainLayout>
             <div className='chitietchuong-content'>
+                <Thongbao
+                    type="info"
+                    icon="❎"
+                    message="Đây là chương cuối cùng"
+                    show={showThongbaoCuoi}
+                    onClose={() => setShowThongbaoCuoi(false)}
+                />
+                <Thongbao
+                    type="info"
+                    icon="❎"
+                    message="Đây là chương đầu tiên"
+                    show={showThongbaoDau}
+                    onClose={() => setShowThongbaoDau(false)}
+                />
                 <div className='ct-chuong-dieuhuong'>
                     <p onClick={handleNavigateHome}>Trang chủ</p>
                     <FaChevronRight />
