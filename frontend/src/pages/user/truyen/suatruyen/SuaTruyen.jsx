@@ -196,28 +196,33 @@ const SuaTruyen = () => {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label>Đăng tải</label>
-                            <label>
+                            <label className="form-title">Đăng tải</label>
+                            <div className="form-options">
+                                <div className="form-option">
                                 <input
                                     type="radio"
+                                    id="private"
                                     name="trangThaiTruyen"
                                     value="Riêng tư"
                                     checked={formData.trangThaiTruyen === "Riêng tư"}
                                     onChange={handleChange}
                                 />
-                                Riêng tư
-                            </label>
-                            <label>
+                                <label htmlFor="private">Riêng tư</label>
+                                </div>
+                                <div className="form-option">
                                 <input
                                     type="radio"
+                                    id="public"
                                     name="trangThaiTruyen"
                                     value="Công khai"
                                     checked={formData.trangThaiTruyen === "Công khai"}
                                     onChange={handleChange}
                                 />
-                                Công khai
-                            </label>
-                        </div>
+                                <label htmlFor="public">Công khai</label>
+                                </div>
+                            </div>
+                            </div>
+
                         <button type="submit" className="next-button"><strong>Tiếp tục</strong></button>
                     </form>
                 </div>
